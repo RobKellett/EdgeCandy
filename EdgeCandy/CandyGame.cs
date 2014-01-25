@@ -13,7 +13,7 @@ namespace EdgeCandy
         public CandyGame()
         {
             // load content
-            sprite = new Sprite(new Texture("test.png"));
+            sprite = new Sprite(Content.TestSplash);
         }
 
         public void Update(double elapsedTime)

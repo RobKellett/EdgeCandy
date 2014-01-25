@@ -3,11 +3,15 @@ Stuff to do
 
 Unclaimed
 ---------
-
+ - [ ] Controllable player
+ - [ ] Level editor (very simple)
+ - [ ] Options (fill or snap scaling, volume, controls)
 
 Robert
 ---------
- - [ ] Content Loading
+ - [X] Content Loading
+ - [ ] Rendering engine
+ - [ ] Animation
  
 Pi
 ---------

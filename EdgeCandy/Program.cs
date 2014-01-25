@@ -16,6 +16,7 @@ namespace EdgeCandy
             using (var window = new RenderWindow(new VideoMode(Graphics.Width, Graphics.Height), "The Edge of Candy: Scroll Saga Deluxe"))
             {
                 Graphics.Initialize();
+                Content.Load();
 
                 window.SetActive();
                 window.Closed += (sender, eventArgs) => window.Close();
