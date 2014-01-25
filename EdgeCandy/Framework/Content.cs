@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 
-namespace EdgeCandy
+namespace EdgeCandy.Framework
 {
     /// <summary>
     /// One-stop shop for all of your content needs.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using EdgeCandy.Framework;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
 using SFML.Graphics;
@@ -26,6 +27,7 @@ namespace EdgeCandy
         {
             // update
             PhysicsSubsystem.Instance.Update(elapsedTime);
+            AnimationSubsystem.Instance.Update(elapsedTime);
             GameObjectSubsystem.Instance.Synchronize();
         }
 

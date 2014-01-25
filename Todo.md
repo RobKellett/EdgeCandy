@@ -5,13 +5,13 @@ Unclaimed
 ---------
  - [ ] Controllable player
  - [ ] Level editor (very simple)
- - [ ] Options (fill or snap scaling, volume, controls)
 
 Robert
 ---------
  - [X] Content Loading
- - [ ] Rendering engine
- - [ ] Animation
+ - [ ] Rendering engine (still needs rotation)
+ - [X] Animation
+ - [ ] Options (fill or snap scaling, volume, controls)
  
 Pi
 ---------
