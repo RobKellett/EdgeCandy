@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace EdgeCandy
 {
@@ -32,6 +33,7 @@ namespace EdgeCandy
             // render
             GraphicsSubsystem.Instance.Draw();
             Graphics.Draw(sprite);
+            Graphics.DrawString("Hello, world!", new Vector2f(4, 4));
         }
     }
 }
