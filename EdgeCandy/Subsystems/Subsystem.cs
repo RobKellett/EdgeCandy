@@ -31,7 +31,7 @@ namespace EdgeCandy.Subsystems
         /// Register
         /// </summary>
         /// <param name="component">The component to register</param>
-        public void Register(U component)
+        public virtual void Register(U component)
         {
             components.Add(component);
         }

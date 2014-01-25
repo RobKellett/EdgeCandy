@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Subsystems;
+using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
 using SFML.Window;
 
 namespace EdgeCandy.Components
@@ -13,6 +15,8 @@ namespace EdgeCandy.Components
     /// </summary>
     public class PhysicsComponent
     {
+        private Body body;
+        public Body Body { get { return body; } set { body = value; } }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -20,6 +24,8 @@ namespace EdgeCandy.Components
         {
             // Automatically register with the physics subsystem.
             PhysicsSubsystem.Instance.Register(this);
+            body = FarseerPhysics.Factories.BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, 10.0f, 1.0f);
+            body.BodyType = BodyType.Dynamic;
         }
 
         /// <summary>
@@ -27,8 +33,7 @@ namespace EdgeCandy.Components
         /// </summary>
         public Vector2f Position
         {
-            get; 
-            set;
+            get { return new Vector2f(body.Position.X, body.Position.Y); }
         }
     }
 }

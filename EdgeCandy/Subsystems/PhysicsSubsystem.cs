@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
 using SFML.Window;
 
 namespace EdgeCandy.Subsystems
@@ -13,14 +15,25 @@ namespace EdgeCandy.Subsystems
     /// </summary>
     public class PhysicsSubsystem : Subsystem<PhysicsSubsystem, PhysicsComponent>
     {
+        private World _world;
+
+        public World World
+        {
+            get { return _world; }
+        }
+
+        public PhysicsSubsystem()
+        {
+            _world = new World(new Vector2(0, 5.8f));
+        }
+
         /// <summary>
         /// Simulate!
         /// </summary>
         /// <param name="elapsedTime">Time elapsed since last frame, in seconds</param>
         public void Update(double elapsedTime)
         {
-            foreach (var component in components)
-                component.Position += new Vector2f((float)elapsedTime, 0);
+            _world.Step((float)elapsedTime);
         }
     }
 }
