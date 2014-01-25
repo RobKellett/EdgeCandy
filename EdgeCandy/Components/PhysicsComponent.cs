@@ -26,6 +26,7 @@ namespace EdgeCandy.Components
             PhysicsSubsystem.Instance.Register(this);
             body = FarseerPhysics.Factories.BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, 10.0f, 1.0f);
             body.BodyType = BodyType.Dynamic;
+            body.ApplyTorque(100);
         }
 
         /// <summary>
@@ -34,6 +35,14 @@ namespace EdgeCandy.Components
         public Vector2f Position
         {
             get { return new Vector2f(body.Position.X, body.Position.Y); }
+        }
+
+        /// <summary>
+        /// Objects rotation
+        /// </summary>
+        public float Rotation
+        {
+            get { return body.Rotation; }
         }
     }
 }

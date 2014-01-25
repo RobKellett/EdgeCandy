@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
+using Microsoft.Xna.Framework;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -17,9 +18,11 @@ namespace EdgeCandy.Objects
 
         public Player()
         {
+            Physics.Body.Position = new Vector2(100, 0);
             Graphics.Sprite = new Sprite(Content.Player);
             Graphics.Animation = new Animation(1, 6, 0.667, true);
             Graphics.FrameSize = new Vector2i(32, 64);
+            Graphics.Sprite.Origin = new Vector2f(16, 32);
         }
 
         public override void SyncComponents()
@@ -28,6 +31,9 @@ namespace EdgeCandy.Objects
             // We could have multiple graphics components, some physical some purely visual,
             // we could apply an offset here, etc.  Pretty powerful model.
             Graphics.Sprite.Position = Physics.Position;
+            Graphics.Sprite.Rotation = Physics.Rotation;
+            Physics.Body.ApplyTorque(1000000);
+
         }
     }
 }
