@@ -61,10 +61,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CandyGame.cs" />
+    <Compile Include="Components\GraphicsComponent.cs" />
+    <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Content.cs" />
+    <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Graphics.cs" />
+    <Compile Include="Objects\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subsystems\GameObjectSubsystem.cs" />
+    <Compile Include="Subsystems\GraphicsSubsystem.cs" />
+    <Compile Include="Subsystems\PhysicsSubsystem.cs" />
+    <Compile Include="Subsystems\Subsystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

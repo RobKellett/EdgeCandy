@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EdgeCandy.Objects;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -33,7 +34,7 @@ namespace EdgeCandy
                 while (window.IsOpen())
                 {
                     var elapsed = stopwatch.Elapsed.TotalSeconds;
-                    stopwatch.Reset();
+                    stopwatch.Restart();
 
                     window.DispatchEvents();
                     
