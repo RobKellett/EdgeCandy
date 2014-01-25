@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using EdgeCandy.Framework;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace EdgeCandy.Subsystems
 {
@@ -13,11 +15,28 @@ namespace EdgeCandy.Subsystems
     /// </summary>
     public class GraphicsSubsystem : Subsystem<GraphicsSubsystem, GraphicsComponent>
     {
+        Dictionary<string, CameraComponent> cameraComponents = new Dictionary<string, CameraComponent>();
+        private CameraComponent activeCameraComponent;
+
+        public void Register(string name, CameraComponent camera)
+        {
+            cameraComponents.Add(name, camera);
+        }
+
+        public void SwitchCamera(string name)
+        {
+            activeCameraComponent = name == null ? null : cameraComponents[name];
+        }
+
         /// <summary>
         /// Draw!
         /// </summary>
         public void Draw()
         {
+            Graphics.SetView(new View(activeCameraComponent.Center, new Vector2f(Graphics.Width, Graphics.Height)));
+
+            Graphics.Clear();
+
             foreach (var component in components)
             {
                 component.Draw();

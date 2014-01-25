@@ -21,6 +21,8 @@ namespace EdgeCandy
             new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
             player = new Player();
             new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
+            new CameraComponent("scroll");
+            GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }
 
         public void Update(double elapsedTime)
@@ -28,6 +30,7 @@ namespace EdgeCandy
             // update
             PhysicsSubsystem.Instance.Update(elapsedTime);
             AnimationSubsystem.Instance.Update(elapsedTime);
+            CameraSubsystem.Instance.Update(elapsedTime);
             GameObjectSubsystem.Instance.Synchronize();
         }
 

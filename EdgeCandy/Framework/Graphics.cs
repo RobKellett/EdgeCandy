@@ -41,15 +41,18 @@ namespace EdgeCandy.Framework
             var color = text.Color;
             var position = text.Position;
 
-            text.Position = new Vector2f(text.Position.X + 1, text.Position.Y + 1);
+            // The line spacing is too high, so offset the Y-position to compensate
+            text.Position = new Vector2f(text.Position.X + 1, text.Position.Y - 4);
             text.Color = Color.Black;
+
+            windowTexture.Draw(text);
+            
+            text.Position = new Vector2f(text.Position.X - 1, text.Position.Y - 1);
+            text.Color = color;
 
             windowTexture.Draw(text);
 
             text.Position = position;
-            text.Color = color;
-
-            windowTexture.Draw(text);
         }
 
         public static void RenderTo(RenderTarget target)
@@ -65,6 +68,16 @@ namespace EdgeCandy.Framework
                          };
 
             target.Draw(sprite);
+        }
+
+        public static void Clear()
+        {
+            windowTexture.Clear(Color.Black);
+        }
+
+        public static void SetView(View view)
+        {
+            windowTexture.SetView(view);
         }
     }
 }
