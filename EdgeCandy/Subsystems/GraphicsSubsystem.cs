@@ -33,7 +33,7 @@ namespace EdgeCandy.Subsystems
         /// </summary>
         public void Draw()
         {
-            Graphics.SetView(new View(activeCameraComponent.Center, new Vector2f(Graphics.Width, Graphics.Height)));
+            Graphics.SetView(new View(new FloatRect(activeCameraComponent.Position.X, activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
 
             Graphics.Clear();
 

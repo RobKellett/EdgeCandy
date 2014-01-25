@@ -11,15 +11,15 @@ namespace EdgeCandy.Components
 {
     public class CameraComponent
     {
-        public Vector2f Center
+        public Vector2f Position
         {
             get
             {
-                return new Vector2f(Graphics.Width / 2 + ShakeOffset(), Graphics.Height / 2 - scroll + ShakeOffset());
+                return new Vector2f(ShakeOffset(), scroll + ShakeOffset());
             }
         }
 
-        private float scroll = 0, shake = 0;
+        private float scroll = 0, shake = 10;
 
         public CameraComponent(string name)
         {
@@ -35,7 +35,7 @@ namespace EdgeCandy.Components
 
         private float ShakeOffset()
         {
-            return shake * ((DateTime.Now.Ticks % 255) / 255f) * 2 - 1;
+            return shake * (((DateTime.Now.Ticks % 255) / 255f) * 2 - 1);
         }
     }
 }
