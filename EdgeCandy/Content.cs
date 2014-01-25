@@ -21,6 +21,7 @@ namespace EdgeCandy
         #endregion
 
         #region Textures
+        public static Texture Player { get; set; }
         public static Texture TestSplash { get; set; }
         #endregion
 
@@ -42,6 +43,7 @@ namespace EdgeCandy
         {
             Font = new Font("Content/font.ttf");
 
+            Player = new Texture("Content/player.png");
             TestSplash = new Texture("Content/test.png");
         }
     }

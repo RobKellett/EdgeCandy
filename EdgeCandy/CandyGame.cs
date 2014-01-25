@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EdgeCandy.Components;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
 using SFML.Graphics;
@@ -12,13 +13,13 @@ namespace EdgeCandy
 {
     public class CandyGame
     {
-        private Sprite sprite;
         private Player player;
         public CandyGame()
         {
             // load content
-            sprite = new Sprite(Content.TestSplash);
+            new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
             player = new Player();
+            new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
         }
 
         public void Update(double elapsedTime)
@@ -32,8 +33,6 @@ namespace EdgeCandy
         {
             // render
             GraphicsSubsystem.Instance.Draw();
-            Graphics.Draw(sprite);
-            Graphics.DrawString("Hello, world!", new Vector2f(4, 4));
         }
     }
 }

@@ -23,21 +23,6 @@ namespace EdgeCandy.Components
             GraphicsSubsystem.Instance.Register(this);
         }
 
-        /// <summary>
-        /// Our texture!
-        /// </summary>
-        public Texture Texture
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Our render position!
-        /// </summary>
-        public Vector2f RenderPosition
-        {
-            get;
-            set;
-        }
+        public virtual void Draw() { }
     }
 }

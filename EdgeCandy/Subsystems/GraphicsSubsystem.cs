@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using SFML.Graphics;
 
 namespace EdgeCandy.Subsystems
 {
@@ -19,7 +20,7 @@ namespace EdgeCandy.Subsystems
         {
             foreach (var component in components)
             {
-                
+                component.Draw();
             }
         }
     }

@@ -41,19 +41,18 @@ namespace EdgeCandy
             windowTexture.Draw(drawable);
         }
 
-        public static void DrawString(string content, Vector2f position)
+        public static void DrawText(Text text)
         {
-            var text = new Text(content, Content.Font)
-                       {
-                           Position = new Vector2f(position.X + 1, position.Y + 1),
-                           Color = Color.Black,
-                           CharacterSize = 16
-                       };
+            var color = text.Color;
+            var position = text.Position;
+
+            text.Position = new Vector2f(text.Position.X + 1, text.Position.Y + 1);
+            text.Color = Color.Black;
 
             windowTexture.Draw(text);
 
             text.Position = position;
-            text.Color = Color.White;
+            text.Color = color;
 
             windowTexture.Draw(text);
         }
