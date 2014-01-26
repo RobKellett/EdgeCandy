@@ -40,7 +40,7 @@ namespace EdgeCandy.Framework
         {
             Font = new Font("Content/font.ttf");
 
-            Player = new Texture("Content/Sprites/player.png");
+            Player = new Texture("Content/Sprites/deathsphere.png");
             TestSplash = new Texture("Content/Sprites/test.png");
             Tileset = new Texture("Content/Sprites/tileset.png");
 

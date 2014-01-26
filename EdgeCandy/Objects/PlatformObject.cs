@@ -18,7 +18,7 @@ namespace EdgeCandy.Objects
         public PlatformObject(int x, int y, int width, int height)
         {
             Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, width, height, 0,
-                                                       new Vector2(x, y));
+                                                       new Vector2(x + width/2, y + height/2));
             Physics.Body.IsStatic = true; // platforms shouldn't be pushed around
             Physics.Body.BodyType = BodyType.Static; // Is this different from the line above???
 

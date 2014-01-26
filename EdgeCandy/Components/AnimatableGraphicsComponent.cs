@@ -30,6 +30,9 @@ namespace EdgeCandy.Components
 
         public override void Draw()
         {
+            base.Draw();
+            return;
+
             // Crop the sprite to the current animation frame
             var columns = (int)Sprite.Texture.Size.X / FrameSize.X;
 
