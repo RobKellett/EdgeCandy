@@ -75,6 +75,8 @@
     <Compile Include="Framework\Content.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Framework\Graphics.cs" />
+    <Compile Include="Objects\MapObject.cs" />
+    <Compile Include="Objects\PlatformObject.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,7 +97,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Levels\TestLevel.txt" />
     <Content Include="Content\Sprites\player.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

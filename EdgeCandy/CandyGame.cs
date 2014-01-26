@@ -19,10 +19,10 @@ namespace EdgeCandy
         {
             // load content
             //new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
-            var map = new MapGraphicsComponent { Map = Content.TestMap };
+            var map = new MapObject(Content.TestMap);
             player = new Player();
             new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
-            new CameraComponent("scroll", (map.Map.Height - (Graphics.Height / 21) - 1) * 21);
+            new CameraComponent("scroll", (map.Graphics.Map.Height - (Graphics.Height / 21) - 1) * 21); // this is the most wrong way to do this
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }
