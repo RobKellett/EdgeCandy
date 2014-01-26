@@ -20,13 +20,14 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
-        public PlayerInputComponent Input = new PlayerInputComponent();
+        public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
         private RevoluteJoint axis;
 
         public const float playerWidth = 1;
         public const float playerHeight = 2;
+        public const float playerSpeed = 15;
 
         public Player()
         {
@@ -63,6 +64,11 @@ namespace EdgeCandy.Objects
             Graphics.FrameSize = new Vector2i((int)ConvertUnits.ToDisplayUnits(playerWidth), (int)ConvertUnits.ToDisplayUnits(playerHeight));
             Graphics.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
             LegGraphic.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
+
+            // Map the input to the legs
+            Input.NoInput += () => axis.MotorSpeed = 0;
+            Input.Events[Keyboard.Key.A] = (key, mods) => axis.MotorSpeed = -playerSpeed;
+            Input.Events[Keyboard.Key.D] = (key, mods) => axis.MotorSpeed = playerSpeed;
         }
 
         public override void SyncComponents()
@@ -70,8 +76,6 @@ namespace EdgeCandy.Objects
             // Physics is the be-all end-all for position
             // We could have multiple graphics components, some physical some purely visual,
             // we could apply an offset here, etc.  Pretty powerful model.
-
-            axis.MotorSpeed = Input.Movement * 5;
             
             // Since torso is shorter than the full player (by playerwidth/2), our actual centerpoint for the graphic
             // needs to be offset by playerwidth / 4.
