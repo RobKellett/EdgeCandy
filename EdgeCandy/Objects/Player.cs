@@ -20,6 +20,7 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
+        public PlayerInputComponent Input = new PlayerInputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
         private RevoluteJoint axis;
@@ -45,12 +46,12 @@ namespace EdgeCandy.Objects
 
             Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 1f, new Vector2(13, 27 + torsoHeight / 2));
             Legs.Body.BodyType = BodyType.Dynamic;
-            Legs.Body.Friction = 0.08f;
+            Legs.Body.Friction = 10f;
 
             axis = JointFactory.CreateRevoluteJoint(PhysicsSubsystem.Instance.World, Torso.Body, Legs.Body, Vector2.Zero);
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
-            axis.MotorSpeed = -1;
+            //axis.MotorSpeed = 1;
             axis.MotorImpulse = 1;
             axis.MaxMotorTorque = 10;
 
@@ -69,7 +70,8 @@ namespace EdgeCandy.Objects
             // Physics is the be-all end-all for position
             // We could have multiple graphics components, some physical some purely visual,
             // we could apply an offset here, etc.  Pretty powerful model.
-            
+
+            axis.MotorSpeed = Input.Movement * 5;
             
             // Since torso is shorter than the full player (by playerwidth/2), our actual centerpoint for the graphic
             // needs to be offset by playerwidth / 4.

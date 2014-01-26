@@ -33,6 +33,7 @@ namespace EdgeCandy
             PhysicsSubsystem.Instance.Update(elapsedTime);
             AnimationSubsystem.Instance.Update(elapsedTime);
             CameraSubsystem.Instance.Update(elapsedTime);
+            InputSubsystem.Instance.HandleInput();
             GameObjectSubsystem.Instance.Synchronize();
         }
 

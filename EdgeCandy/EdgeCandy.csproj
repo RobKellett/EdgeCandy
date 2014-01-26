@@ -67,8 +67,10 @@
     <Compile Include="Components\AnimatableGraphicsComponent.cs" />
     <Compile Include="Components\CameraComponent.cs" />
     <Compile Include="Components\GraphicsComponent.cs" />
+    <Compile Include="Components\InputComponent.cs" />
     <Compile Include="Components\MapGraphicsComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
+    <Compile Include="Components\PlayerInputComponent.cs" />
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Components\TextComponent.cs" />
     <Compile Include="Framework\Animation.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Subsystems\CameraSubsystem.cs" />
     <Compile Include="Subsystems\GameObjectSubsystem.cs" />
     <Compile Include="Subsystems\GraphicsSubsystem.cs" />
+    <Compile Include="Subsystems\InputSubsystem.cs" />
     <Compile Include="Subsystems\PhysicsSubsystem.cs" />
     <Compile Include="Subsystems\Subsystem.cs" />
   </ItemGroup>
