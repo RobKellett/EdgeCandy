@@ -19,10 +19,12 @@ namespace EdgeCandy.Components
             }
         }
 
-        private float scroll = 0, shake = 10;
+        private float scroll = 0, shake = 0;
 
-        public CameraComponent(string name)
+        public CameraComponent(string name, float initialScroll)
         {
+            scroll = initialScroll;
+
             GraphicsSubsystem.Instance.Register(name, this);
             CameraSubsystem.Instance.Register(this);
         }

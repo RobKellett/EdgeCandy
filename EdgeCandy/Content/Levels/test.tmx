@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="23" height="50" tilewidth="21" tileheight="21">
+ <tileset firstgid="1" name="spritesheet" tilewidth="21" tileheight="21" spacing="2" margin="2">
+  <image source="../../../../../../Platformer Art Pixel Redux/spritesheet.png" width="692" height="692"/>
+ </tileset>
+ <layer name="Background" width="23" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzVl2EOwjAIhRe9kmefXkR/cBrXH0uQQOEBc5kJidP18fqN0m69LcuTBW3xuP/+xv/Tvmvx2mJ17skG15ZeNV+eVzK0KTAWyZVhIvXGfHdf3N+/eFdCq6ustlWjFW1P06oTpNZ4HuveLBNScljaEX6Wbzl2v874jvqIaM/YR9YlutYj85K+M9xRJh05ZB/0GFa1j2bC6yDLp9IHu/bLDK8IE2QenF90XWaYd+yX3c8y0mMQbZRLtQ8i2jOdqu/I+K69odIPK3Xi5b3CmU3jeAXf0bOmVePIGhq5upmgPVaOy/bBrv04wuRthMfjDN6k3GfVGcK7K2iizT0i7yfdvsdHe96fBm2rlrj2mNeZ528k99HvDV9wtjDI
+  </data>
+ </layer>
+ <layer name="Foreground" width="23" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0TEOABAQRNFZF8LpOZ5CNLIdS/Nf8lsrGQkAAAAAACmbVLaq/f4VInmbl8PNW5pFWG979aCbL3gb3GoARv0N7g==
+  </data>
+ </layer>
+ <objectgroup name="Solid" width="23" height="50">
+  <object x="147" y="819" width="126" height="21"/>
+  <object x="357" y="924" width="126" height="21"/>
+  <object x="0" y="1029" width="483" height="21"/>
+ </objectgroup>
+</map>

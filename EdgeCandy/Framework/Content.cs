@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using TiledSharp;
 
 namespace EdgeCandy.Framework
 {
@@ -18,6 +19,7 @@ namespace EdgeCandy.Framework
         #region Textures
         public static Texture Player { get; set; }
         public static Texture TestSplash { get; set; }
+        public static Texture Tileset { get; set; }
         #endregion
 
         #region Music
@@ -26,8 +28,8 @@ namespace EdgeCandy.Framework
         #region SoundBuffers
         #endregion
 
-        #region LevelFragments
-        // TODO: implement LevelFragment
+        #region TmxMaps
+        public static TmxMap TestMap { get; set; }
         #endregion
 
         /// <summary>
@@ -38,8 +40,11 @@ namespace EdgeCandy.Framework
         {
             Font = new Font("Content/font.ttf");
 
-            Player = new Texture("Content/player.png");
-            TestSplash = new Texture("Content/test.png");
+            Player = new Texture("Content/Sprites/player.png");
+            TestSplash = new Texture("Content/Sprites/test.png");
+            Tileset = new Texture("Content/Sprites/tileset.png");
+
+            TestMap = new TmxMap("Content/Levels/test.tmx");
         }
     }
 }

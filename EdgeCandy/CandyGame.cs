@@ -18,10 +18,12 @@ namespace EdgeCandy
         public CandyGame()
         {
             // load content
-            new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
+            //new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
+            var map = new MapGraphicsComponent { Map = Content.TestMap };
             player = new Player();
             new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
-            new CameraComponent("scroll");
+            new CameraComponent("scroll", (map.Map.Height - (Graphics.Height / 21) - 1) * 21);
+
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }
 

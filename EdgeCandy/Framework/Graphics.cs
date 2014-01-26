@@ -7,7 +7,7 @@ namespace EdgeCandy.Framework
     public static class Graphics
     {
         private static RenderTexture windowTexture;
-        public static uint Width = 480, Height = 270;
+        public static uint Width = 483, Height = 270;
         private static uint windowWidth = Width, windowHeight = Height;
         private static float scale = 1;
 
