@@ -1,0 +1,5 @@
+﻿"The Edge of Candy: Scroll Saga Deluxe" uses the following third-party content:
+
+Mike Miller's "MV Platformer Male" - http://opengameart.org/content/mv-platformer-male-32x64   (CC0)
+Kenney's "Platformer Art: Redeux"  - http://opengameart.org/content/platformer-art-pixel-redux (CC0)
+Mark Weyer's "LPC Candy"           - http://opengameart.org/content/lpc-candy                  (CC0)
