@@ -18,17 +18,22 @@ namespace EdgeCandy.Components
 
         public override void Draw()
         {
+            var tileWidth = Map.Tilesets.Single().TileWidth;
+            var tileHeight = Map.Tilesets.Single().TileHeight;
+            var tileSpacing = Map.Tilesets.Single().Spacing;
+            var tileMargins = Map.Tilesets.Single().Margin;
+
             foreach (var layer in Map.Layers)
             {
                 foreach (var tile in layer.Tiles)
                 {
-                    var columns = (int)sprite.Texture.Size.X / 23; // sorry pi
+                    var columns = (int)sprite.Texture.Size.X / (tileWidth + tileSpacing);
 
                     int x = (tile.Gid - 1) % columns,
                         y = (tile.Gid - 1) / columns;
 
-                    sprite.TextureRect = new IntRect(x * 23 + 2, y * 23 + 2, 21, 21);
-                    sprite.Position = new Vector2f(tile.X * 21, tile.Y * 21);
+                    sprite.TextureRect = new IntRect(x * (tileWidth + tileSpacing) + tileMargins, y * (tileHeight + tileSpacing) + tileMargins, tileWidth, tileHeight);
+                    sprite.Position = new Vector2f(tile.X * tileWidth, tile.Y * tileHeight);
 
                     Graphics.Draw(sprite);
                 }

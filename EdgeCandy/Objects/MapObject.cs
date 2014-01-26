@@ -21,6 +21,10 @@ namespace EdgeCandy.Objects
             foreach (var platform in map.ObjectGroups["Solid"].Objects)
                 Platforms.Add(new PlatformObject(platform.X, platform.Y, platform.Width, platform.Height));
 
+            // "implicit" walls to prevent leaving the screen
+            Platforms.Add(new PlatformObject(-map.TileWidth, 0, map.TileWidth, map.Height * map.TileHeight));
+            Platforms.Add(new PlatformObject(map.Width * map.TileWidth, 0, map.TileWidth, map.Height * map.TileHeight));
+
             GameObjectSubsystem.Instance.Register(this);
         }
 
