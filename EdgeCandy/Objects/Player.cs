@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
+using EdgeCandy.Subsystems;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using SFML.Graphics;
 using SFML.Window;
@@ -18,7 +21,8 @@ namespace EdgeCandy.Objects
 
         public Player()
         {
-            Physics.Body.Position = new Vector2(100, 0);
+            Physics.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, 10, 1, new Vector2(100, 900));
+            Physics.Body.BodyType = BodyType.Dynamic; // Is this different from the line above???
             Graphics.Sprite = new Sprite(Content.Player);
             Graphics.Animation = new Animation(1, 6, 0.667, true);
             Graphics.FrameSize = new Vector2i(32, 64);
@@ -32,8 +36,7 @@ namespace EdgeCandy.Objects
             // we could apply an offset here, etc.  Pretty powerful model.
             Graphics.Sprite.Position = Physics.Position;
             Graphics.Sprite.Rotation = Physics.Rotation;
-            Physics.Body.ApplyTorque(1000000);
-
+            Physics.Body.ApplyTorque(100000);
         }
     }
 }

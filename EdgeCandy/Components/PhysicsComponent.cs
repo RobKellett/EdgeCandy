@@ -24,9 +24,9 @@ namespace EdgeCandy.Components
         {
             // Automatically register with the physics subsystem.
             PhysicsSubsystem.Instance.Register(this);
-            body = FarseerPhysics.Factories.BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, 10.0f, 1.0f);
-            body.BodyType = BodyType.Dynamic;
-            body.ApplyTorque(100);
+            //body = FarseerPhysics.Factories.BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, 10.0f, 1.0f);
+            //body.BodyType = BodyType.Dynamic;
+            //body.ApplyTorque(100);
         }
 
         /// <summary>
