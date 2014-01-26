@@ -35,7 +35,7 @@ namespace EdgeCandy.Components
             shake = Math.Max(0, shake - (float)elapsedTime * 2);
 
             scrollTime += (float)elapsedTime;
-            scroll -= (float)Math.Log(scrollTime) / 33; // TODO: fine the tuning
+            //scroll -= (float)Math.Log(scrollTime) / 33; // TODO: fine the tuning
         }
 
         private float ShakeOffset()
