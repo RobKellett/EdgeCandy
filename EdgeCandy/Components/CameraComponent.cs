@@ -15,11 +15,11 @@ namespace EdgeCandy.Components
         {
             get
             {
-                return new Vector2f(ShakeOffset(), scroll + ShakeOffset());
+                return new Vector2f(ShakeOffset(), scroll + ShakeOffset() - Graphics.Height);
             }
         }
 
-        private float scroll = 0, shake = 0;
+        private float scroll, scrollTime = 1, shake;
 
         public CameraComponent(string name, float initialScroll)
         {
@@ -33,6 +33,9 @@ namespace EdgeCandy.Components
         {
             // linearly decay the shake
             shake = Math.Max(0, shake - (float)elapsedTime * 2);
+
+            scrollTime += (float)elapsedTime;
+            scroll -= (float)Math.Log(scrollTime) / 33; // TODO: fine the tuning
         }
 
         private float ShakeOffset()

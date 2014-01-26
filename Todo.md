@@ -4,7 +4,6 @@ Stuff to do
 Unclaimed
 ---------
  - [ ] Controllable player
- - [ ] Level editor (very simple)
 
 Robert
 ---------

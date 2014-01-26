@@ -7,7 +7,8 @@ namespace EdgeCandy.Framework
     public static class Graphics
     {
         private static RenderTexture windowTexture;
-        public static uint Width = 483, Height = 270;
+        public const uint Width = 483, MaxHeight = 512;
+        public static uint Height = 270;
         private static uint windowWidth = Width, windowHeight = Height;
         private static float scale = 1;
 
@@ -23,7 +24,7 @@ namespace EdgeCandy.Framework
 
             scale = Math.Max(1, width / Width);
 
-            Height = (uint)(height / scale) + 1;
+            Height = Math.Min((uint)(height / scale) + 1, MaxHeight);
 
             windowTexture.Dispose();
             windowTexture = new RenderTexture(Width, Height);
