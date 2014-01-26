@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Framework;
 using EdgeCandy.Objects;
+using FarseerPhysics;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -19,6 +20,8 @@ namespace EdgeCandy
             {
                 Graphics.Initialize();
                 Content.Load();
+
+                ConvertUnits.SetDisplayUnitToSimUnitRatio(32);
 
                 window.SetActive();
                 window.Closed += (sender, eventArgs) => window.Close();

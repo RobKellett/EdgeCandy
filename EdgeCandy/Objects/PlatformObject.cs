@@ -15,7 +15,7 @@ namespace EdgeCandy.Objects
     {
         public PhysicsComponent Physics = new PhysicsComponent();
 
-        public PlatformObject(int x, int y, int width, int height)
+        public PlatformObject(float x, float y, float width, float height)
         {
             Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, width, height, 0,
                                                        new Vector2(x + width/2, y + height/2));

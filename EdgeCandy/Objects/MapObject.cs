@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
+using FarseerPhysics;
 using TiledSharp;
 
 namespace EdgeCandy.Objects
@@ -19,11 +21,21 @@ namespace EdgeCandy.Objects
             Graphics = new MapGraphicsComponent { Map = map };
 
             foreach (var platform in map.ObjectGroups["Solid"].Objects)
-                Platforms.Add(new PlatformObject(platform.X, platform.Y, platform.Width, platform.Height));
+                Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(platform.X),
+                                                 ConvertUnits.ToSimUnits(platform.Y),
+                                                 ConvertUnits.ToSimUnits(platform.Width),
+                                                 ConvertUnits.ToSimUnits(platform.Height)));
 
             // "implicit" walls to prevent leaving the screen
-            Platforms.Add(new PlatformObject(-map.TileWidth, 0, map.TileWidth, map.Height * map.TileHeight));
-            Platforms.Add(new PlatformObject(map.Width * map.TileWidth, 0, map.TileWidth, map.Height * map.TileHeight));
+            Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(-map.TileWidth),
+                                             0,
+                                             ConvertUnits.ToSimUnits(map.TileWidth),
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight)));
+
+            Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(map.Width * map.TileWidth),
+                                             0,
+                                             ConvertUnits.ToSimUnits(map.TileWidth),
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight)));
 
             GameObjectSubsystem.Instance.Register(this);
         }
