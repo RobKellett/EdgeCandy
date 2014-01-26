@@ -24,16 +24,23 @@ namespace EdgeCandy.Subsystems
 
         public PhysicsSubsystem()
         {
-            _world = new World(new Vector2(0, 5.8f));
+            _world = new World(new Vector2(0, 9.8f));
         }
 
+        private double frameCounter = 0;
+        private const float simRate = 0.016f;
         /// <summary>
         /// Simulate!
         /// </summary>
         /// <param name="elapsedTime">Time elapsed since last frame, in seconds</param>
         public void Update(double elapsedTime)
         {
-            _world.Step((float)elapsedTime);
+            frameCounter += elapsedTime;
+            while (frameCounter > simRate)
+            {
+                _world.Step(simRate);
+                frameCounter -= simRate;
+            }
         }
     }
 }
