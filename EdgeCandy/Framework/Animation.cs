@@ -31,9 +31,15 @@ namespace EdgeCandy.Framework
             Loop = loop;
         }
 
+        public void Reset()
+        {
+            currentFrame = StartingFrame;
+            finished = false;
+        }
+
         public void Update(double elapsedTime)
         {
-            if (finished) return;
+            if (finished || StartingFrame == EndingFrame) return;
 
             currentFrame += (EndingFrame - StartingFrame) / Duration * elapsedTime;
 

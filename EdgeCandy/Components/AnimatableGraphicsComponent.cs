@@ -16,7 +16,20 @@ namespace EdgeCandy.Components
     public class AnimatableGraphicsComponent : SpriteComponent
     {
         public Vector2i FrameSize { get; set; }
-        public Animation Animation { get; set; }
+
+        private Animation animation;
+
+        public Animation Animation
+        {
+            get { return animation; }
+            set
+            {
+                if (animation == value) return;
+
+                animation = value;
+                animation.Reset();
+            }
+        }
 
         public AnimatableGraphicsComponent()
         {
@@ -25,7 +38,7 @@ namespace EdgeCandy.Components
 
         public void Update(double elapsedTime)
         {
-            Animation.Update(elapsedTime);
+            animation.Update(elapsedTime);
         }
 
         public override void Draw()
@@ -33,7 +46,7 @@ namespace EdgeCandy.Components
             // Crop the sprite to the current animation frame
             var columns = (int)Sprite.Texture.Size.X / FrameSize.X;
 
-            Sprite.TextureRect = new IntRect((Animation.CurrentFrame % columns) * FrameSize.X, (Animation.CurrentFrame / columns) * FrameSize.Y, FrameSize.X, FrameSize.Y);
+            Sprite.TextureRect = new IntRect((animation.CurrentFrame % columns) * FrameSize.X, (animation.CurrentFrame / columns) * FrameSize.Y, FrameSize.X, FrameSize.Y);
 
             // Draw the sprite as usual
             base.Draw();

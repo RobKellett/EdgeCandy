@@ -25,9 +25,12 @@ namespace EdgeCandy.Objects
         public PhysicsComponent Legs = new PhysicsComponent();
         private RevoluteJoint axis;
 
+        private Animation standingAnimation = new Animation(0, 0, 0);
+        private Animation walkingAnimation = new Animation(1, 6, 0.667, true);
+
         public const float playerWidth = 1;
         public const float playerHeight = 2;
-        public const float playerSpeed = 15;
+        public const float playerSpeed = 10;
 
         public Player()
         {
@@ -47,28 +50,41 @@ namespace EdgeCandy.Objects
 
             Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 1f, new Vector2(13, 27 + torsoHeight / 2));
             Legs.Body.BodyType = BodyType.Dynamic;
-            Legs.Body.Friction = 10f;
+            Legs.Body.Friction = 1000;
 
             axis = JointFactory.CreateRevoluteJoint(PhysicsSubsystem.Instance.World, Torso.Body, Legs.Body, Vector2.Zero);
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
-            //axis.MotorSpeed = 1;
-            axis.MotorImpulse = 1;
-            axis.MaxMotorTorque = 10;
-
+            axis.MotorImpulse = 1000;
+            axis.MaxMotorTorque = 1000;
             
-
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
-            Graphics.Animation = new Animation(1, 6, 0.667, true);
+            Graphics.Animation = standingAnimation;
             Graphics.FrameSize = new Vector2i((int)ConvertUnits.ToDisplayUnits(playerWidth), (int)ConvertUnits.ToDisplayUnits(playerHeight));
             Graphics.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
             LegGraphic.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
 
             // Map the input to the legs
-            Input.NoInput += () => axis.MotorSpeed = 0;
-            Input.Events[Keyboard.Key.A] = (key, mods) => axis.MotorSpeed = -playerSpeed;
-            Input.Events[Keyboard.Key.D] = (key, mods) => axis.MotorSpeed = playerSpeed;
+            Input.NoInput += () =>
+                             {
+                                 axis.MotorSpeed = 0;
+                                 Graphics.Animation = standingAnimation;
+                             };
+
+            Input.Events[Keyboard.Key.A] = (key, mods) =>
+                                           {
+                                               axis.MotorSpeed = -playerSpeed;
+                                               Graphics.Animation = walkingAnimation;
+                                               Graphics.Sprite.Scale = new Vector2f(-1, 1); // just flip it
+                                           };
+
+            Input.Events[Keyboard.Key.D] = (key, mods) =>
+                                           {
+                                               axis.MotorSpeed = playerSpeed;
+                                               Graphics.Animation = walkingAnimation;
+                                               Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
+                                           };
         }
 
         public override void SyncComponents()
@@ -83,7 +99,7 @@ namespace EdgeCandy.Objects
                                                     ConvertUnits.ToDisplayUnits(Torso.Position.Y + playerWidth / 4));
             Graphics.Sprite.Rotation = Torso.Rotation;
             LegGraphic.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Legs.Position.X), ConvertUnits.ToDisplayUnits(Legs.Position.Y));
-            LegGraphic.Sprite.Rotation = Legs.Rotation / MathHelper.Pi * 180; // TIL SFML uses degrees, not radians
+            LegGraphic.Sprite.Rotation = MathHelper.ToDegrees(Legs.Rotation); // TIL SFML uses degrees, not radians
         }
     }
 }
