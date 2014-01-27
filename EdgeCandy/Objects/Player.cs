@@ -27,6 +27,8 @@ namespace EdgeCandy.Objects
 
         private Animation standingAnimation = new Animation(0, 0, 0);
         private Animation walkingAnimation = new Animation(1, 6, 0.667, true);
+        private Animation jumpingAnimation = new Animation(17, 17, 0);
+        private Animation fallingAnimation = new Animation(18, 19, 0.1);
 
         public const float playerWidth = 1;
         public const float playerHeight = 2;
@@ -66,45 +68,69 @@ namespace EdgeCandy.Objects
             Graphics.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
             LegGraphic.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
 
+            bool jumpInProgress = false;
+
             // Map the input to the legs
             Input.NoInput += () =>
                              {
                                  axis.MotorSpeed = 0;
-                                 Graphics.Animation = standingAnimation;
+                                 if (!jumpInProgress)
+                                    Graphics.Animation = standingAnimation;
                              };
 
             Input.Events[Keyboard.Key.A] = (key, mods) =>
                                            {
-                                               axis.MotorSpeed = -playerSpeed;
-                                               Graphics.Animation = walkingAnimation;
+                                               if (!jumpInProgress)
+                                               {
+                                                   axis.MotorSpeed = -playerSpeed;
+                                                   Graphics.Animation = walkingAnimation;
+                                               }
+                                               else
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(-playerSpeed / 333, 0));
+
                                                Graphics.Sprite.Scale = new Vector2f(-1, 1); // just flip it
                                            };
 
             Input.Events[Keyboard.Key.D] = (key, mods) =>
                                            {
-                                               axis.MotorSpeed = playerSpeed;
-                                               Graphics.Animation = walkingAnimation;
+                                               if (!jumpInProgress)
+                                               {
+                                                   axis.MotorSpeed = playerSpeed;
+                                                   Graphics.Animation = walkingAnimation;
+                                               }
+                                               else
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(playerSpeed / 333, 0));
+
                                                Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
                                            };
-            bool jumpInProgress = false;
+
             Input.Events[Keyboard.Key.W] = (key, mods) =>
             {
                 if (!jumpInProgress)
                 {
                     jumpInProgress = true;
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -8));
+                    axis.MotorSpeed = 0;
+                    Graphics.Animation = jumpingAnimation;
                 }
             };
             Legs.Body.OnCollision += (a, b, c) =>
             {
-                if (jumpInProgress)
+                if (jumpInProgress && c.Manifold.LocalNormal == -Vector2.UnitY)
                     jumpInProgress = false;
+                else
+                    Legs.Body.ApplyLinearImpulse(c.Manifold.LocalNormal);
+
                 return true;
             };
             Torso.OnFalling += (f) =>
-            {
-                LegGraphic.Sprite.Color = f ? Color.Red : Color.White;
-            };
+                               {
+                                   if (f)
+                                   {
+                                       jumpInProgress = true;
+                                       Graphics.Animation = fallingAnimation;
+                                   }
+                               };
         }
 
         public override void SyncComponents()

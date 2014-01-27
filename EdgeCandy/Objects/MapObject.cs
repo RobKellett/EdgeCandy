@@ -30,12 +30,12 @@ namespace EdgeCandy.Objects
             Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(-map.TileWidth),
                                              0,
                                              ConvertUnits.ToSimUnits(map.TileWidth),
-                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), false));
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), true));
 
             Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(map.Width * map.TileWidth),
                                              0,
                                              ConvertUnits.ToSimUnits(map.TileWidth),
-                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), false));
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), true));
 
             GameObjectSubsystem.Instance.Register(this);
         }

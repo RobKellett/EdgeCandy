@@ -15,13 +15,13 @@ namespace EdgeCandy.Objects
     {
         public PhysicsComponent Physics = new PhysicsComponent();
 
-        public PlatformObject(float x, float y, float width, float height, bool friction = true)
+        public PlatformObject(float x, float y, float width, float height, bool wall = false)
         {
-            Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, width, height, 0,
-                                                       new Vector2(x + width/2, y + height/2));
+            Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, width, height, 100,
+                                                        new Vector2(x + width / 2, y + height / 2));
+
             Physics.Body.IsStatic = true; // platforms shouldn't be pushed around
-            Physics.Body.BodyType = BodyType.Static; // Is this different from the line above???
-            if (!friction)
+            if (wall)
                 Physics.Body.Friction = 0;
 
             GameObjectSubsystem.Instance.Register(this);

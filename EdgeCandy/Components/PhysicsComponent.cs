@@ -49,7 +49,7 @@ namespace EdgeCandy.Components
             else
                 fallingFrameCount = 0;
             if (OnFalling != null)
-                OnFalling(fallingFrameCount > 3);
+                OnFalling(fallingFrameCount == 3);
         }
 
         /// <summary>
