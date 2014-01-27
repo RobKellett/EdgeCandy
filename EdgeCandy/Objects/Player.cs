@@ -44,7 +44,7 @@ namespace EdgeCandy.Objects
             // With the torso having a fixed angle joint, and the legs having a motorized joint. 
             var torsoWidth = playerWidth;
             var torsoHeight = playerHeight - playerWidth/2;
-            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 2, 0.001f, new Vector2(13, 27));
+            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 2, 0.1f, new Vector2(13, 27));
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
 
@@ -85,6 +85,21 @@ namespace EdgeCandy.Objects
                                                Graphics.Animation = walkingAnimation;
                                                Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
                                            };
+            bool jumpInProgress = false;
+            Input.Events[Keyboard.Key.W] = (key, mods) =>
+            {
+                if (!jumpInProgress)
+                {
+                    jumpInProgress = true;
+                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -8));
+                }
+            };
+            Legs.Body.OnCollision += (a, b, c) =>
+            {
+                if (jumpInProgress)
+                    jumpInProgress = false;
+                return true;
+            };
         }
 
         public override void SyncComponents()
