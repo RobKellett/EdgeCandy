@@ -1,9 +1,8 @@
-
 Stuff to do
 
 Unclaimed
 ---------
- - [ ] Controllable player
+
 
 Robert
 ---------
@@ -14,4 +13,6 @@ Robert
  
 Pi
 ---------
- - [ ] Physics setup
+ - [X] Physics setup
+ - [X] Controllable player
+ - [ ] CANDY
