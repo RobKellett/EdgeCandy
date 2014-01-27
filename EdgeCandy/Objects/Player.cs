@@ -45,6 +45,7 @@ namespace EdgeCandy.Objects
             var torsoWidth = playerWidth;
             var torsoHeight = playerHeight - playerWidth/2;
             Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 2, 0.1f, new Vector2(13, 27));
+            Torso.Body.IgnoreGravity = true;
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
 
@@ -99,6 +100,10 @@ namespace EdgeCandy.Objects
                 if (jumpInProgress)
                     jumpInProgress = false;
                 return true;
+            };
+            Torso.OnFalling += (f) =>
+            {
+                LegGraphic.Sprite.Color = f ? Color.Red : Color.White;
             };
         }
 

@@ -17,6 +17,10 @@ namespace EdgeCandy.Components
     {
         private Body body;
         public Body Body { get { return body; } set { body = value; } }
+
+        public delegate void FallingEvent(bool falling);
+
+        public event FallingEvent OnFalling;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -35,6 +39,17 @@ namespace EdgeCandy.Components
         public Vector2f Position
         {
             get { return new Vector2f(body.Position.X, body.Position.Y); }
+        }
+
+        private int fallingFrameCount = 0;
+        public void Update()
+        {
+            if (body.LinearVelocity.Y > 0.01f)
+                fallingFrameCount++;
+            else
+                fallingFrameCount = 0;
+            if (OnFalling != null)
+                OnFalling(fallingFrameCount > 3);
         }
 
         /// <summary>
