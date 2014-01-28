@@ -23,6 +23,7 @@ namespace EdgeCandy.Objects
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
+        private Fixture footSensor;
         private RevoluteJoint axis;
 
         private Animation standingAnimation = new Animation(0, 0, 0);
@@ -62,6 +63,10 @@ namespace EdgeCandy.Objects
             axis.MotorEnabled = true;
             axis.MotorImpulse = 1000;
             axis.MaxMotorTorque = 1000;
+
+            footSensor = FixtureFactory.AttachRectangle(playerWidth/2, playerWidth/2, 0,
+                new Vector2(0, torsoHeight/2 + playerWidth/2), Torso.Body);
+            footSensor.IsSensor = true;
             
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
@@ -111,7 +116,6 @@ namespace EdgeCandy.Objects
             {
                 if (!jumpInProgress)
                 {
-                    jumpInProgress = true;
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
@@ -122,20 +126,23 @@ namespace EdgeCandy.Objects
             {
                 if (jumpInProgress && c.Manifold.LocalNormal == -Vector2.UnitY)
                 {
-                    jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
                 }
 
                 return true;
             };
-            Torso.OnFalling += (f) =>
-                               {
-                                   if (f)
-                                   {
-                                       jumpInProgress = true;
-                                       Graphics.Animation = fallingAnimation;
-                                   }
-                               };
+            footSensor.OnCollision += (a, b, c) =>
+            {
+                jumpInProgress = false;
+                LegGraphic.Sprite.Color = Color.Red;
+                Graphics.Animation = standingAnimation;
+                return true;
+            };
+            footSensor.OnSeparation += (a, b) =>
+            {
+                Graphics.Animation = fallingAnimation;                
+                LegGraphic.Sprite.Color = Color.White;
+            };
         }
 
         public override void SyncComponents()
