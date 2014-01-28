@@ -70,6 +70,7 @@
     <Compile Include="Components\InputComponent.cs" />
     <Compile Include="Components\MapGraphicsComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
+    <Compile Include="Components\RectangleCompontent.cs" />
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Components\TextComponent.cs" />
     <Compile Include="Framework\Animation.cs" />

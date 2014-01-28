@@ -20,6 +20,8 @@ namespace EdgeCandy.Framework
         public static Texture Player { get; set; }
         public static Texture Ball { get; set; }
         public static Texture Tileset { get; set; }
+
+        public static Texture Pixel { get; set; }
         #endregion
 
         #region Music
@@ -45,6 +47,9 @@ namespace EdgeCandy.Framework
             Tileset = new Texture("Content/Sprites/tileset.png");
 
             TestMap = new TmxMap("Content/Levels/test.tmx");
+
+            var image = new Image(1, 1, Color.White);
+            Pixel = new Texture(image);
         }
     }
 }
