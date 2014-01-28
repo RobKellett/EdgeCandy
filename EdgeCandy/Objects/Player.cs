@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
+using FarseerPhysics.Collision;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Joints;
 using FarseerPhysics.Factories;
@@ -20,6 +22,7 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
+        public RectangleCompontent sensorGraphic = new RectangleCompontent(Color.Red);
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
@@ -116,32 +119,28 @@ namespace EdgeCandy.Objects
             {
                 if (!jumpInProgress)
                 {
+                    jumpInProgress = true;
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
                     Legs.Body.Friction = 0;
                 }
             };
-            Legs.Body.OnCollision += (a, b, c) =>
-            {
-                if (jumpInProgress && c.Manifold.LocalNormal == -Vector2.UnitY)
-                {
-                    Legs.Body.Friction = c.Friction = 1000;
-                }
-
-                return true;
-            };
             footSensor.OnCollision += (a, b, c) =>
             {
                 jumpInProgress = false;
+                Legs.Body.Friction = c.Friction = 1000;
                 LegGraphic.Sprite.Color = Color.Red;
+                sensorGraphic.Color = Color.Red;
                 Graphics.Animation = standingAnimation;
                 return true;
             };
             footSensor.OnSeparation += (a, b) =>
             {
+                jumpInProgress = true;
                 Graphics.Animation = fallingAnimation;                
                 LegGraphic.Sprite.Color = Color.White;
+                sensorGraphic.Color = Color.White;
             };
         }
 
@@ -155,6 +154,9 @@ namespace EdgeCandy.Objects
             // needs to be offset by playerwidth / 4.
             Graphics.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Torso.Position.X),
                                                     ConvertUnits.ToDisplayUnits(Torso.Position.Y + playerWidth / 4));
+            var x = Torso.Position.X;
+            var y = Torso.Position.Y + (playerHeight - playerWidth/2)/2 + playerWidth/2;
+            sensorGraphic.Rectangle = new FloatRect(x - playerWidth/4, y - playerWidth/4, playerWidth/2, playerWidth/2);
             Graphics.Sprite.Rotation = Torso.Rotation;
             LegGraphic.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Legs.Position.X), ConvertUnits.ToDisplayUnits(Legs.Position.Y));
             LegGraphic.Sprite.Rotation = MathHelper.ToDegrees(Legs.Rotation); // TIL SFML uses degrees, not radians
