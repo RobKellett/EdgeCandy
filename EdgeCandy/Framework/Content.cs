@@ -19,7 +19,6 @@ namespace EdgeCandy.Framework
         #region Textures
         public static Texture Player { get; set; }
         public static Texture Ball { get; set; }
-        public static Texture TestSplash { get; set; }
         public static Texture Tileset { get; set; }
         #endregion
 
@@ -43,7 +42,6 @@ namespace EdgeCandy.Framework
 
             Player = new Texture("Content/Sprites/player.png");
             Ball = new Texture("Content/Sprites/deathsphere.png");
-            TestSplash = new Texture("Content/Sprites/test.png");
             Tileset = new Texture("Content/Sprites/tileset.png");
 
             TestMap = new TmxMap("Content/Levels/test.tmx");

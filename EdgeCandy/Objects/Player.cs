@@ -66,8 +66,8 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
             Graphics.Animation = standingAnimation;
-            Graphics.FrameSize = new Vector2i(32, 64);
-            Graphics.Sprite.Origin = new Vector2f(16, 40);
+            Graphics.FrameSize = new Vector2i(64, 64);
+            Graphics.Sprite.Origin = new Vector2f(32, 40);
             LegGraphic.Sprite.Origin = new Vector2f(16, 32);
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
