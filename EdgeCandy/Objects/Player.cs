@@ -80,7 +80,7 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
             bool jumpInProgress = false;
-
+            bool touchingGround = false;
             // Map the input to the legs
             Input.NoInput += () =>
                              {
@@ -126,10 +126,19 @@ namespace EdgeCandy.Objects
                     Legs.Body.Friction = 0;
                 }
             };
+            Legs.Body.OnCollision += (a, b, c) =>
+            {
+                if (touchingGround)
+                {
+                    Legs.Body.Friction = c.Friction = 1000;
+                }
+                return true;
+            };
+
             footSensor.OnCollision += (a, b, c) =>
             {
                 jumpInProgress = false;
-                Legs.Body.Friction = c.Friction = 1000;
+                touchingGround = true;
                 LegGraphic.Sprite.Color = Color.Red;
                 sensorGraphic.Color = Color.Red;
                 Graphics.Animation = standingAnimation;
@@ -137,7 +146,7 @@ namespace EdgeCandy.Objects
             };
             footSensor.OnSeparation += (a, b) =>
             {
-                jumpInProgress = true;
+                touchingGround = false;
                 Graphics.Animation = fallingAnimation;                
                 LegGraphic.Sprite.Color = Color.White;
                 sensorGraphic.Color = Color.White;
