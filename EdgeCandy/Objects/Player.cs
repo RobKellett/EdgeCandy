@@ -30,9 +30,10 @@ namespace EdgeCandy.Objects
         private Animation jumpingAnimation = new Animation(17, 17, 0);
         private Animation fallingAnimation = new Animation(18, 19, 0.1);
 
-        public const float playerWidth = 1;
-        public const float playerHeight = 2;
-        public const float playerSpeed = 10;
+        public const float playerWidth = 0.5f;
+        public const float playerHeight = 1.5f;
+        public const float playerSpeed = 20;
+        public const float playerAirSpeed = 0.03f;
 
         public Player()
         {
@@ -50,8 +51,9 @@ namespace EdgeCandy.Objects
             Torso.Body.IgnoreGravity = true;
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
+            Torso.Body.Friction = 0;
 
-            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 1f, new Vector2(13, 27 + torsoHeight / 2));
+            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2));
             Legs.Body.BodyType = BodyType.Dynamic;
             Legs.Body.Friction = 1000;
 
@@ -64,9 +66,10 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
             Graphics.Animation = standingAnimation;
-            Graphics.FrameSize = new Vector2i((int)ConvertUnits.ToDisplayUnits(playerWidth), (int)ConvertUnits.ToDisplayUnits(playerHeight));
-            Graphics.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
-            LegGraphic.Sprite.Origin = new Vector2f(ConvertUnits.ToDisplayUnits(playerWidth / 2), ConvertUnits.ToDisplayUnits(playerHeight / 2));
+            Graphics.FrameSize = new Vector2i(32, 64);
+            Graphics.Sprite.Origin = new Vector2f(16, 40);
+            LegGraphic.Sprite.Origin = new Vector2f(16, 32);
+            LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
             bool jumpInProgress = false;
 
@@ -86,7 +89,7 @@ namespace EdgeCandy.Objects
                                                    Graphics.Animation = walkingAnimation;
                                                }
                                                else
-                                                   Legs.Body.ApplyLinearImpulse(new Vector2(-playerSpeed / 333, 0));
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(-playerAirSpeed, 0));
 
                                                Graphics.Sprite.Scale = new Vector2f(-1, 1); // just flip it
                                            };
@@ -99,7 +102,7 @@ namespace EdgeCandy.Objects
                                                    Graphics.Animation = walkingAnimation;
                                                }
                                                else
-                                                   Legs.Body.ApplyLinearImpulse(new Vector2(playerSpeed / 333, 0));
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(playerAirSpeed, 0));
 
                                                Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
                                            };
@@ -109,17 +112,19 @@ namespace EdgeCandy.Objects
                 if (!jumpInProgress)
                 {
                     jumpInProgress = true;
-                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -8));
+                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
+                    Legs.Body.Friction = 0;
                 }
             };
             Legs.Body.OnCollision += (a, b, c) =>
             {
                 if (jumpInProgress && c.Manifold.LocalNormal == -Vector2.UnitY)
+                {
                     jumpInProgress = false;
-                else
-                    Legs.Body.ApplyLinearImpulse(c.Manifold.LocalNormal);
+                    Legs.Body.Friction = c.Friction = 1000;
+                }
 
                 return true;
             };
