@@ -85,13 +85,13 @@ namespace EdgeCandy.Objects
             Input.NoInput += () =>
                              {
                                  axis.MotorSpeed = 0;
-                                 if (!jumpInProgress)
+                                 if (!jumpInProgress && touchingGround)
                                     Graphics.Animation = standingAnimation;
                              };
 
             Input.Events[Keyboard.Key.A] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress)
+                                               if (!jumpInProgress && touchingGround)
                                                {
                                                    axis.MotorSpeed = -playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -104,7 +104,7 @@ namespace EdgeCandy.Objects
 
             Input.Events[Keyboard.Key.D] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress)
+                                               if (!jumpInProgress && touchingGround)
                                                {
                                                    axis.MotorSpeed = playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -126,6 +126,12 @@ namespace EdgeCandy.Objects
                     Legs.Body.Friction = 0;
                 }
             };
+            Torso.OnFalling += (isFalling) =>
+            {
+                if(isFalling)
+                    Graphics.Animation = fallingAnimation;
+            };
+
             Legs.Body.OnCollision += (a, b, c) =>
             {
                 if (touchingGround)
