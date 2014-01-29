@@ -128,7 +128,7 @@ namespace EdgeCandy.Objects
             };
             Torso.OnFalling += (isFalling) =>
             {
-                if(isFalling)
+                if (isFalling)
                     Graphics.Animation = fallingAnimation;
             };
 
@@ -156,7 +156,6 @@ namespace EdgeCandy.Objects
             footSensor.OnSeparation += (a, b) =>
             {
                 touchingGround = false;
-                Graphics.Animation = fallingAnimation;                
                 sensorGraphic.Color = Color.White;
             };
         }
