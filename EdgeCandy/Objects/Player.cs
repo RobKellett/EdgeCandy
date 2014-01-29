@@ -140,6 +140,7 @@ namespace EdgeCandy.Objects
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
                     LegGraphic.Sprite.Color = Color.Red;
+                    Graphics.Animation = standingAnimation;
                 }
                 return true;
             };
@@ -150,7 +151,6 @@ namespace EdgeCandy.Objects
             {
                 touchingGround = true;
                 sensorGraphic.Color = Color.Red;
-                Graphics.Animation = standingAnimation;
                 return true;
             };
             footSensor.OnSeparation += (a, b) =>
