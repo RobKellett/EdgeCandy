@@ -137,6 +137,7 @@ namespace EdgeCandy.Objects
                 dynamic userData = a.Body.UserData ?? b.Body.UserData;
                 if (touchingGround && (userData == null || !userData.isWall))
                 {
+                    jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
                     LegGraphic.Sprite.Color = Color.Red;
                 }
@@ -147,7 +148,6 @@ namespace EdgeCandy.Objects
 
             footSensor.OnCollision += (a, b, c) =>
             {
-                jumpInProgress = false;
                 touchingGround = true;
                 sensorGraphic.Color = Color.Red;
                 Graphics.Animation = standingAnimation;
