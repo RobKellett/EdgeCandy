@@ -134,7 +134,8 @@ namespace EdgeCandy.Objects
 
             Legs.Body.OnCollision += (a, b, c) =>
             {
-                if (touchingGround)
+                dynamic userData = a.Body.UserData ?? b.Body.UserData;
+                if (touchingGround && (userData == null || !userData.isWall))
                 {
                     Legs.Body.Friction = c.Friction = 1000;
                 }

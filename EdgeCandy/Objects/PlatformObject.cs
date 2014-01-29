@@ -22,7 +22,10 @@ namespace EdgeCandy.Objects
 
             Physics.Body.IsStatic = true; // platforms shouldn't be pushed around
             if (wall)
+            {
                 Physics.Body.Friction = 0;
+                Physics.Body.UserData = new { isWall = true };
+            }
 
             GameObjectSubsystem.Instance.Register(this);
         }
