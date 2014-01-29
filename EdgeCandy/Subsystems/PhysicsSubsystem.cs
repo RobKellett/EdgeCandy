@@ -40,10 +40,10 @@ namespace EdgeCandy.Subsystems
             {
                 _world.Step(simRate);
                 frameCounter -= simRate;
-            }
 
-            foreach (var component in components)
-                component.Update();
+                foreach (var component in components)
+                    component.Update();
+            }
         }
     }
 }
