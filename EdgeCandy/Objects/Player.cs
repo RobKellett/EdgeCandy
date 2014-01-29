@@ -22,7 +22,7 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
-        public RectangleCompontent sensorGraphic = new RectangleCompontent(Color.Red);
+        public RectangleCompontent sensorGraphic = new RectangleCompontent(Color.White);
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
@@ -68,7 +68,7 @@ namespace EdgeCandy.Objects
             axis.MaxMotorTorque = 1000;
 
             footSensor = FixtureFactory.AttachRectangle(playerWidth/2, playerWidth/2, 0,
-                new Vector2(0, torsoHeight/2 + playerWidth/2), Torso.Body);
+                new Vector2(0, torsoHeight/2 + playerWidth/2 + 0.1f), Torso.Body);
             footSensor.IsSensor = true;
             
             LegGraphic.Sprite = new Sprite(Content.Ball);
@@ -138,15 +138,17 @@ namespace EdgeCandy.Objects
                 if (touchingGround && (userData == null || !userData.isWall))
                 {
                     Legs.Body.Friction = c.Friction = 1000;
+                    LegGraphic.Sprite.Color = Color.Red;
                 }
                 return true;
             };
+
+            Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
 
             footSensor.OnCollision += (a, b, c) =>
             {
                 jumpInProgress = false;
                 touchingGround = true;
-                LegGraphic.Sprite.Color = Color.Red;
                 sensorGraphic.Color = Color.Red;
                 Graphics.Animation = standingAnimation;
                 return true;
@@ -155,7 +157,6 @@ namespace EdgeCandy.Objects
             {
                 touchingGround = false;
                 Graphics.Animation = fallingAnimation;                
-                LegGraphic.Sprite.Color = Color.White;
                 sensorGraphic.Color = Color.White;
             };
         }
@@ -172,7 +173,7 @@ namespace EdgeCandy.Objects
                                                     ConvertUnits.ToDisplayUnits(Torso.Position.Y + playerWidth / 4));
             var x = Torso.Position.X;
             var y = Torso.Position.Y + (playerHeight - playerWidth/2)/2 + playerWidth/2;
-            sensorGraphic.Rectangle = new FloatRect(x - playerWidth/4, y - playerWidth/4, playerWidth/2, playerWidth/2);
+            sensorGraphic.Rectangle = new FloatRect(x - playerWidth/4, y - playerWidth/4 + 0.1f, playerWidth/2, playerWidth/2 + 0.1f);
             Graphics.Sprite.Rotation = Torso.Rotation;
             LegGraphic.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Legs.Position.X), ConvertUnits.ToDisplayUnits(Legs.Position.Y));
             LegGraphic.Sprite.Rotation = MathHelper.ToDegrees(Legs.Rotation); // TIL SFML uses degrees, not radians
