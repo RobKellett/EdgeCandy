@@ -58,7 +58,7 @@ namespace EdgeCandy.Objects
             {
                 Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
                 Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.X),
-                                                           ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.Y), 1);
+                                                           ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.Y), 25);
                 Physics.Body.Position = ConvertUnits.ToSimUnits(position);
 
                 Physics.Body.BodyType = BodyType.Dynamic;

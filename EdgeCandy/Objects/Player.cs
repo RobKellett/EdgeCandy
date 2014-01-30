@@ -26,7 +26,6 @@ namespace EdgeCandy.Objects
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
-        private Fixture footSensor;
         private RevoluteJoint axis;
 
         private Animation standingAnimation = new Animation(0, 0, 0);
@@ -38,6 +37,7 @@ namespace EdgeCandy.Objects
         public const float playerHeight = 1.5f;
         public const float playerSpeed = 20;
         public const float playerAirSpeed = 0.03f;
+        public const float playerJumpForce = 8f;
 
         public Player()
         {
@@ -49,15 +49,15 @@ namespace EdgeCandy.Objects
             //   |legs |  <-- circle
             //    \---/
             // With the torso having a fixed angle joint, and the legs having a motorized joint. 
-            var torsoWidth = playerWidth;
-            var torsoHeight = playerHeight - playerWidth/2;
-            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 2, 0.1f, new Vector2(13, 27));
+            var torsoWidth = playerWidth + 0.25f;
+            var torsoHeight = playerHeight - playerWidth;
+            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 4, 0.1f, new Vector2(13, 27));
             Torso.Body.IgnoreGravity = true;
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
             Torso.Body.Friction = 0;
 
-            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2));
+            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2 + playerWidth / 4));
             Legs.Body.BodyType = BodyType.Dynamic;
             Legs.Body.Friction = 1000;
 
@@ -65,11 +65,7 @@ namespace EdgeCandy.Objects
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
             axis.MotorImpulse = 1000;
-            axis.MaxMotorTorque = 1000;
-
-            footSensor = FixtureFactory.AttachRectangle(playerWidth/2, playerWidth/2, 0,
-                new Vector2(0, torsoHeight/2 + playerWidth/2 + 0.1f), Torso.Body);
-            footSensor.IsSensor = true;
+            axis.MaxMotorTorque = 10;
             
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
@@ -80,19 +76,18 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
             bool jumpInProgress = false;
-            bool touchingGround = false;
             // Map the input to the legs
             Input.NoInput += () =>
                              {
                                  sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
-                                 if (!jumpInProgress && touchingGround)
+                                 if (!jumpInProgress)
                                     Graphics.Animation = standingAnimation;
                              };
 
             Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress && touchingGround)
+                                               if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = -playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -105,7 +100,7 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress && touchingGround)
+                                               if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -118,10 +113,10 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
-                if (!jumpInProgress && touchingGround)
+                if (!jumpInProgress)
                 {
                     jumpInProgress = true;
-                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
+                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
                     Legs.Body.Friction = 0;
@@ -159,13 +154,16 @@ namespace EdgeCandy.Objects
             Torso.OnFalling += (isFalling) =>
             {
                 if (isFalling)
+                {
                     Graphics.Animation = fallingAnimation;
+                    jumpInProgress = true;
+                }
             };
 
             Legs.Body.OnCollision += (a, b, c) =>
             {
                 dynamic userData = a.Body.UserData ?? b.Body.UserData;
-                if (touchingGround && (userData == null || !userData.isWall))
+                if ((userData == null || !userData.isWall))
                 {
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
@@ -176,18 +174,6 @@ namespace EdgeCandy.Objects
             };
 
             Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
-
-            footSensor.OnCollision += (a, b, c) =>
-            {
-                touchingGround = true;
-                sensorGraphic.Color = Color.Red;
-                return true;
-            };
-            footSensor.OnSeparation += (a, b) =>
-            {
-                touchingGround = false;
-                sensorGraphic.Color = Color.White;
-            };
         }
 
         public override void SyncComponents()
