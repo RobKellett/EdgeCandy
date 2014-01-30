@@ -118,7 +118,7 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
-                if (!jumpInProgress)
+                if (!jumpInProgress && touchingGround)
                 {
                     jumpInProgress = true;
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
