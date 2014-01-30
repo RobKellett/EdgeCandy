@@ -84,12 +84,13 @@ namespace EdgeCandy.Objects
             // Map the input to the legs
             Input.NoInput += () =>
                              {
+                                 sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
                                  if (!jumpInProgress && touchingGround)
                                     Graphics.Animation = standingAnimation;
                              };
 
-            Input.Events[Keyboard.Key.A] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
                                            {
                                                if (!jumpInProgress && touchingGround)
                                                {
@@ -102,7 +103,7 @@ namespace EdgeCandy.Objects
                                                Graphics.Sprite.Scale = new Vector2f(-1, 1); // just flip it
                                            };
 
-            Input.Events[Keyboard.Key.D] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
                                            {
                                                if (!jumpInProgress && touchingGround)
                                                {
@@ -115,7 +116,7 @@ namespace EdgeCandy.Objects
                                                Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
                                            };
 
-            Input.Events[Keyboard.Key.W] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
                 if (!jumpInProgress)
                 {
@@ -126,6 +127,22 @@ namespace EdgeCandy.Objects
                     Legs.Body.Friction = 0;
                 }
             };
+            Input.MouseInput += (btn) =>
+            {
+                switch (btn)
+                {
+                    case Mouse.Button.Left:
+                        sensorGraphic.Color = Color.Blue;
+                        break;
+                    case Mouse.Button.Middle:
+                        sensorGraphic.Color = Color.Black;
+                        break;
+                    case Mouse.Button.Right:
+                        sensorGraphic.Color = Color.Green;
+                        break;
+                }
+            };
+
             Torso.OnFalling += (isFalling) =>
             {
                 if (isFalling)

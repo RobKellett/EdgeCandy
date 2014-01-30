@@ -14,10 +14,17 @@ namespace EdgeCandy
 {
     class Program
     {
+        public static Window Window
+        {
+            get;
+            set;
+        }
+
         static void Main(string[] args)
         {
             using (var window = new RenderWindow(new VideoMode(Graphics.Width, Graphics.Height), "The Edge of Candy: Scroll Saga Deluxe"))
             {
+                Window = window;
                 Graphics.Initialize();
                 Content.Load();
 

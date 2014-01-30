@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Subsystems;
+using Microsoft.Xna.Framework;
 using SFML.Window;
 
 namespace EdgeCandy.Components
@@ -19,21 +20,29 @@ namespace EdgeCandy.Components
             Alt = 4,
         }
 
-        public delegate void InputEvent(Keyboard.Key key, Modifiers mod);
+        public delegate void KeyInputEvent(Keyboard.Key key, Modifiers mod);
 
         public delegate void NoInputEvent();
 
+        public delegate void MouseInputEvent(Mouse.Button button);
+
         public event NoInputEvent NoInput;
-        public Dictionary<Keyboard.Key, InputEvent> Events
+        public event MouseInputEvent MouseInput;
+        public Dictionary<Keyboard.Key, KeyInputEvent> KeyEvents
         {
             get;
             set;
         }
 
+        public Vector2i MousePosition
+        {
+            get { return Mouse.GetPosition(Program.Window); }
+        }
+
         public InputComponent()
         {
             InputSubsystem.Instance.Register(this);
-            Events = new Dictionary<Keyboard.Key, InputEvent>();
+            KeyEvents = new Dictionary<Keyboard.Key, KeyInputEvent>();
         }
 
         public void HandleInput()
@@ -46,12 +55,18 @@ namespace EdgeCandy.Components
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl) || Keyboard.IsKeyPressed(Keyboard.Key.RControl))
                 mods |= Modifiers.Ctrl;
             bool Any = false;
-            foreach(var kvp in Events)
+            foreach(var kvp in KeyEvents)
                 if (Keyboard.IsKeyPressed(kvp.Key))
                 {
                     kvp.Value(kvp.Key, mods);
                     Any = true;
                 }
+            var btns = new [] {Mouse.Button.Left, Mouse.Button.Middle, Mouse.Button.Right};
+            foreach (var btn in btns.Where(Mouse.IsButtonPressed))
+            {
+                MouseInput(btn);
+                Any = true;
+            }
             if (!Any)
                 NoInput();
         }
