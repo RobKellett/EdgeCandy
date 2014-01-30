@@ -38,6 +38,7 @@ namespace EdgeCandy.Objects
         public const float playerHeight = 1.5f;
         public const float playerSpeed = 20;
         public const float playerAirSpeed = 0.03f;
+        public const float playerJumpForce = 8f;
 
         public Player()
         {
@@ -49,15 +50,15 @@ namespace EdgeCandy.Objects
             //   |legs |  <-- circle
             //    \---/
             // With the torso having a fixed angle joint, and the legs having a motorized joint. 
-            var torsoWidth = playerWidth;
-            var torsoHeight = playerHeight - playerWidth/2;
-            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 2, 0.1f, new Vector2(13, 27));
+            var torsoWidth = playerWidth + 0.25f;
+            var torsoHeight = playerHeight - playerWidth;
+            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 4, 0.1f, new Vector2(13, 27));
             Torso.Body.IgnoreGravity = true;
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
             Torso.Body.Friction = 0;
 
-            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2));
+            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2 + playerWidth / 4));
             Legs.Body.BodyType = BodyType.Dynamic;
             Legs.Body.Friction = 1000;
 
@@ -65,7 +66,7 @@ namespace EdgeCandy.Objects
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
             axis.MotorImpulse = 1000;
-            axis.MaxMotorTorque = 1000;
+            axis.MaxMotorTorque = 10;
 
             footSensor = FixtureFactory.AttachRectangle(playerWidth/2, playerWidth/2, 0,
                 new Vector2(0, torsoHeight/2 + playerWidth/2 + 0.1f), Torso.Body);
@@ -121,7 +122,7 @@ namespace EdgeCandy.Objects
                 if (!jumpInProgress && touchingGround)
                 {
                     jumpInProgress = true;
-                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -7));
+                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
                     Legs.Body.Friction = 0;
