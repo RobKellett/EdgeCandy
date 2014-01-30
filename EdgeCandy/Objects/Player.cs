@@ -132,13 +132,26 @@ namespace EdgeCandy.Objects
                 switch (btn)
                 {
                     case Mouse.Button.Left:
-                        sensorGraphic.Color = Color.Blue;
-                        break;
-                    case Mouse.Button.Middle:
-                        sensorGraphic.Color = Color.Black;
-                        break;
-                    case Mouse.Button.Right:
-                        sensorGraphic.Color = Color.Green;
+                        var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
+                            ConvertUnits.ToSimUnits(Input.MousePosition.Y + 780));
+                        var position = new Vector2(Torso.Position.X, Torso.Position.Y);
+                        var direction = mousePos - position;
+                        direction.Normalize();
+//                        mousePos.Normalize();
+//                        mousePos *= 10;
+                        PhysicsSubsystem.Instance.World.RayCast((fix, point, floatA, floatB) =>
+                        {
+                            if (floatB != 1 && fix.Body.UserData != null && ((dynamic) fix.Body.UserData).isCandy)
+                            {
+                                var pos = point; //ConvertUnits.ToDisplayUnits(point);
+                                new RectangleCompontent(Color.White)
+                                {
+                                    Rectangle = new FloatRect(pos.X, pos.Y, 0.1f, 0.1f)
+                                };
+                            }
+                            return 0;
+                        }, 
+                        position, position + direction);
                         break;
                 }
             };

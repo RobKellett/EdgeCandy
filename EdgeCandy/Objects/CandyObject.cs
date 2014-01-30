@@ -63,6 +63,8 @@ namespace EdgeCandy.Objects
 
                 Physics.Body.BodyType = BodyType.Dynamic;
             }
+            Physics.Body.UserData = new {isCandy = true, isWall = false};
+            Physics.Body.Friction = 0;
         }
 
         public override void SyncComponents()

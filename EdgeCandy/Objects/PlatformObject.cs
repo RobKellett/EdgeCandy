@@ -24,7 +24,7 @@ namespace EdgeCandy.Objects
             if (wall)
             {
                 Physics.Body.Friction = 0;
-                Physics.Body.UserData = new { isWall = true };
+                Physics.Body.UserData = new { isWall = true, isCandy = false };
             }
 
             GameObjectSubsystem.Instance.Register(this);
