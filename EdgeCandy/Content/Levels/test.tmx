@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="23" height="50" tilewidth="21" tileheight="21">
  <tileset firstgid="1" name="spritesheet" tilewidth="21" tileheight="21" spacing="2" margin="2">
-  <image source="../../../../../../Platformer Art Pixel Redux/spritesheet.png" width="692" height="692"/>
+  <image source="../Sprites/tileset.png" width="692" height="692"/>
  </tileset>
  <layer name="Background" width="23" height="50">
   <data encoding="base64" compression="zlib">
@@ -17,5 +17,23 @@
   <object x="147" y="819" width="126" height="21"/>
   <object x="357" y="924" width="126" height="21"/>
   <object x="0" y="1029" width="483" height="21"/>
+ </objectgroup>
+ <objectgroup name="Candy" width="23" height="50">
+  <object name="Chocolate" x="357" y="945" width="42" height="84"/>
+  <object name="Rancher" x="168" y="798" width="21" height="21"/>
+  <object name="Rancher" x="189" y="798" width="21" height="21"/>
+  <object name="Rancher" x="210" y="798" width="21" height="21"/>
+  <object name="Rancher" x="168" y="777" width="21" height="21"/>
+  <object name="Rancher" x="189" y="777" width="21" height="21"/>
+  <object name="Rancher" x="210" y="777" width="21" height="21"/>
+  <object name="Rancher" x="168" y="756" width="21" height="21"/>
+  <object name="Rancher" x="189" y="756" width="21" height="21"/>
+  <object name="Rancher" x="210" y="756" width="21" height="21"/>
+  <object name="Rancher" x="168" y="735" width="21" height="21"/>
+  <object name="Rancher" x="189" y="735" width="21" height="21"/>
+  <object name="Rancher" x="210" y="735" width="21" height="21"/>
+  <object name="DoubleCandyCane" x="21" y="966" width="42" height="63"/>
+  <object name="CandyCane" x="84" y="966" width="21" height="63"/>
+  <object name="CandyCane" x="126" y="966" width="21" height="63"/>
  </objectgroup>
 </map>
