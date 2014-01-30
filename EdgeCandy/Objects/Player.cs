@@ -26,7 +26,6 @@ namespace EdgeCandy.Objects
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
-        private Fixture footSensor;
         private RevoluteJoint axis;
 
         private Animation standingAnimation = new Animation(0, 0, 0);
@@ -67,10 +66,6 @@ namespace EdgeCandy.Objects
             axis.MotorEnabled = true;
             axis.MotorImpulse = 1000;
             axis.MaxMotorTorque = 10;
-
-            footSensor = FixtureFactory.AttachRectangle(playerWidth/2, playerWidth/2, 0,
-                new Vector2(0, torsoHeight/2 + playerWidth/2 + 0.1f), Torso.Body);
-            footSensor.IsSensor = true;
             
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
@@ -81,19 +76,18 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
             bool jumpInProgress = false;
-            bool touchingGround = false;
             // Map the input to the legs
             Input.NoInput += () =>
                              {
                                  sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
-                                 if (!jumpInProgress && touchingGround)
+                                 if (!jumpInProgress)
                                     Graphics.Animation = standingAnimation;
                              };
 
             Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress && touchingGround)
+                                               if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = -playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -106,7 +100,7 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
                                            {
-                                               if (!jumpInProgress && touchingGround)
+                                               if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = playerSpeed;
                                                    Graphics.Animation = walkingAnimation;
@@ -119,7 +113,7 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
-                if (!jumpInProgress && touchingGround)
+                if (!jumpInProgress)
                 {
                     jumpInProgress = true;
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
@@ -147,13 +141,16 @@ namespace EdgeCandy.Objects
             Torso.OnFalling += (isFalling) =>
             {
                 if (isFalling)
+                {
                     Graphics.Animation = fallingAnimation;
+                    jumpInProgress = true;
+                }
             };
 
             Legs.Body.OnCollision += (a, b, c) =>
             {
                 dynamic userData = a.Body.UserData ?? b.Body.UserData;
-                if (touchingGround && (userData == null || !userData.isWall))
+                if ((userData == null || !userData.isWall))
                 {
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
@@ -164,18 +161,6 @@ namespace EdgeCandy.Objects
             };
 
             Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
-
-            footSensor.OnCollision += (a, b, c) =>
-            {
-                touchingGround = true;
-                sensorGraphic.Color = Color.Red;
-                return true;
-            };
-            footSensor.OnSeparation += (a, b) =>
-            {
-                touchingGround = false;
-                sensorGraphic.Color = Color.White;
-            };
         }
 
         public override void SyncComponents()
