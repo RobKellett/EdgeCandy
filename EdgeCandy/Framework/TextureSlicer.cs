@@ -30,7 +30,17 @@ namespace EdgeCandy.Framework
                 for (uint x = 0; x < input.Size.X; x++)
                 {
                     var pos = new Vector2f(x, y);
-                    if (WhichSideOfLine(startPoint, endPoint, pos))
+                    var posX = new Vector2(x, y);
+                    var start = new Vector2(startPoint.X, startPoint.Y);
+                    var end = new Vector2(endPoint.X, endPoint.Y);
+                    var line = end - start;
+                    line.Normalize();
+                    if(Vector2.DistanceSquared(posX - start, line * Vector2.Dot(posX, line)) < 5f)
+                    {
+                        outputA.SetPixel(x, y, Color.Red);
+                        outputB.SetPixel(x, y, Color.Red);
+                    }
+                    else if (WhichSideOfLine(startPoint, endPoint, pos))
                         outputA.SetPixel(x, y, input.GetPixel(x, y));
                     else
                         outputB.SetPixel(x, y, input.GetPixel(x, y));

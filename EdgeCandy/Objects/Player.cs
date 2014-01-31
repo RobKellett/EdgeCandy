@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -9,12 +10,14 @@ using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using FarseerPhysics.Collision;
+using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Joints;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using SFML.Graphics;
 using SFML.Window;
+using Transform = SFML.Graphics.Transform;
 
 namespace EdgeCandy.Objects
 {
@@ -132,21 +135,126 @@ namespace EdgeCandy.Objects
                         var position = new Vector2(Torso.Position.X, Torso.Position.Y);
                         var direction = mousePos - position;
                         direction.Normalize();
+                        direction *= 20.5f;
+                        var endPos = position + direction;
 //                        mousePos.Normalize();
 //                        mousePos *= 10;
-                        PhysicsSubsystem.Instance.World.RayCast((fix, point, floatA, floatB) =>
+                        ////PhysicsSubsystem.Instance.World.RayCast((fix, point, floatA, floatB) =>
+                        ////{
+                        ////    var userData = fix.Body.UserData as CandyObject;
+                        ////    if (floatB != 1 && userData != null)
+                        ////    {
+
+                        ////        Vertices first;
+                        ////        Vertices second;
+                        ////        FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fix, );
+                        ////        textureA.CopyToImage().SaveToFile("a.png");
+                        ////        textureB.CopyToImage().SaveToFile("b.png");
+                        ////        var pos = point; //ConvertUnits.ToDisplayUnits(point);
+                        ////        new RectangleCompontent(Color.White)
+                        ////        {
+                        ////            Rectangle = new FloatRect(pos.X, pos.Y, 0.1f, 0.1f)
+                        ////        };
+                        ////    }
+                        //    return 0;
+                        //}, 
+                        //position, position + direction);
+                        
+                        // Find the first thing hit, and if it's a candy, keep track of it.
+                        Vector2 hitPoint;
+                        Fixture candyHit;
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
                         {
-                            if (floatB != 1 && fix.Body.UserData != null && ((dynamic) fix.Body.UserData).isCandy)
+                            if (f.Body.UserData is CandyObject)
                             {
-                                var pos = point; //ConvertUnits.ToDisplayUnits(point);
-                                new RectangleCompontent(Color.White)
-                                {
-                                    Rectangle = new FloatRect(pos.X, pos.Y, 0.1f, 0.1f)
-                                };
+                                hitPoint = p;
+                                candyHit = f;
                             }
                             return 0;
-                        }, 
-                        position, position + direction);
+                        }, position, position + direction);
+
+                        List<Fixture> fixtures = new List<Fixture>();
+                        List<Vector2> entryPoints = new List<Vector2>();
+                        List<Vector2> exitPoints = new List<Vector2>();
+
+                        //Get the entry points
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+                                          {
+                                              if (f.Body.UserData is CandyObject)
+                                              {
+                                                  fixtures.Add(f);
+                                                  entryPoints.Add(p);
+                                              }
+                                              return 1;
+                                          }, position, endPos);
+
+                        //Reverse the ray to get the exitpoints
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+                                          {
+                                              if(f.Body.UserData is CandyObject)
+                                                  exitPoints.Add(p);
+                                              return 1;
+                                          }, endPos, position);
+
+                        while (fixtures.Count > exitPoints.Count)
+                        {
+                            fixtures.Remove(fixtures.Last());
+                            entryPoints.Remove(entryPoints.Last());
+                        }
+
+                        exitPoints.Reverse();
+
+                        for (int i = 0; i < fixtures.Count; i++)
+                        {
+                            
+                            var originalCandy = fixtures[i].Body.UserData as CandyObject;
+                            Debug.Assert(originalCandy != null);
+                            var textureOrigin = originalCandy.Sprite.Sprite.Texture;
+                            Texture textureA, textureB;
+                            var spriteOrigin = originalCandy.Sprite.Sprite.Origin;
+                            var relativeEntryPoint =
+                                new Vector2f(ConvertUnits.ToDisplayUnits(entryPoints[i].X - originalCandy.Physics.Position.X),
+                                                ConvertUnits.ToDisplayUnits(entryPoints[i].Y - originalCandy.Physics.Position.Y));
+                            var rotation = Transform.Identity;
+                            rotation.Rotate(-originalCandy.Sprite.Sprite.Rotation);
+                            var rotatedEntryPoint = rotation.TransformPoint(relativeEntryPoint);
+                            var startPoint = spriteOrigin + rotatedEntryPoint;
+                            var relativeExitPoint =
+                                new Vector2f(ConvertUnits.ToDisplayUnits(exitPoints[i].X - originalCandy.Physics.Position.X),
+                                                ConvertUnits.ToDisplayUnits(exitPoints[i].Y - originalCandy.Physics.Position.Y));
+                            var rotatedExitPoint = rotation.TransformPoint(relativeExitPoint);
+                            var endPoint = spriteOrigin + rotatedExitPoint; 
+                            TextureSlicer.SliceAndDice(startPoint, endPoint, textureOrigin, out textureA,
+                                out textureB);
+                            textureA.CopyToImage().SaveToFile("a.png");
+                            textureB.CopyToImage().SaveToFile("b.png");
+                            Vertices first;
+                            Vertices second;
+                            FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixtures[i], entryPoints[i], exitPoints[i], out first, out second);
+                            //Delete the original shape and create two new. Retain the properties of the body.
+                            if (first.CheckPolygon() == PolygonError.NoError)
+                            {
+                                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixtures[i].Shape.Density, fixtures[i].Body.Position);
+                                firstFixture.Rotation = fixtures[i].Body.Rotation;
+                                firstFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
+                                firstFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
+                                firstFixture.BodyType = BodyType.Dynamic;
+                                originalCandy.Physics.Body = firstFixture;
+                                originalCandy.Sprite.Sprite.Texture = textureA;
+                            }
+
+                            if (second.CheckPolygon() == PolygonError.NoError)
+                            {
+                                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixtures[i].Shape.Density, fixtures[i].Body.Position);
+                                secondFixture.Rotation = fixtures[i].Body.Rotation;
+                                secondFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
+                                secondFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
+                                secondFixture.BodyType = BodyType.Dynamic;
+                                var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
+                            }
+
+                            PhysicsSubsystem.Instance.World.RemoveBody(fixtures[i].Body);
+                        }
                         break;
                 }
             };
@@ -162,8 +270,8 @@ namespace EdgeCandy.Objects
 
             Legs.Body.OnCollision += (a, b, c) =>
             {
-                dynamic userData = a.Body.UserData ?? b.Body.UserData;
-                if ((userData == null || !userData.isWall))
+                var userData = (a.Body.UserData ?? b.Body.UserData) as WallObject;
+                if (userData == null)
                 {
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;

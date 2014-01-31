@@ -28,6 +28,13 @@ namespace EdgeCandy.Objects
         public SpriteComponent Sprite = new SpriteComponent();
         public PhysicsComponent Physics = new PhysicsComponent();
 
+        public CandyObject(Body body, Texture tex, Vector2 position)
+        {
+            Sprite.Sprite = new Sprite(tex);
+            Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
+            Physics.Body = body;
+        }
+
         public CandyObject(CandyKind kind, Vector2 position, Vector2 size = default(Vector2))
         {
             switch (kind)
@@ -63,8 +70,7 @@ namespace EdgeCandy.Objects
 
                 Physics.Body.BodyType = BodyType.Dynamic;
             }
-            Physics.Body.UserData = new {isCandy = true, isWall = false};
-            Physics.Body.Friction = 0;
+            Physics.Body.UserData = this;
         }
 
         public override void SyncComponents()
