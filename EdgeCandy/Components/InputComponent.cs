@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace EdgeCandy.Components
 {
-    public class InputComponent
+    public class InputComponent : IUpdateableComponent
     {
         [Flags]
         public enum Modifiers
@@ -41,11 +41,11 @@ namespace EdgeCandy.Components
 
         public InputComponent()
         {
-            InputSubsystem.Instance.Register(this);
+            UpdateSubsystem.Instance.Register(this);
             KeyEvents = new Dictionary<Keyboard.Key, KeyInputEvent>();
         }
 
-        public void HandleInput()
+        public void Update(double elapsedTime)
         {
             Modifiers mods = Modifiers.None;
             if(Keyboard.IsKeyPressed(Keyboard.Key.LShift) || Keyboard.IsKeyPressed(Keyboard.Key.RShift))

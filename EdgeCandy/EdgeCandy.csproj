@@ -68,11 +68,13 @@
     <Compile Include="Components\CameraComponent.cs" />
     <Compile Include="Components\GraphicsComponent.cs" />
     <Compile Include="Components\InputComponent.cs" />
+    <Compile Include="Components\IUpdateableComponent.cs" />
     <Compile Include="Components\MapGraphicsComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\RectangleCompontent.cs" />
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Components\TextComponent.cs" />
+    <Compile Include="Components\TimerComponent.cs" />
     <Compile Include="Framework\Animation.cs" />
     <Compile Include="Framework\Content.cs" />
     <Compile Include="Framework\TextureSlicer.cs" />
@@ -85,13 +87,11 @@
     <Compile Include="Objects\WallObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Subsystems\AnimationSubsystem.cs" />
-    <Compile Include="Subsystems\CameraSubsystem.cs" />
     <Compile Include="Subsystems\GameObjectSubsystem.cs" />
     <Compile Include="Subsystems\GraphicsSubsystem.cs" />
-    <Compile Include="Subsystems\InputSubsystem.cs" />
     <Compile Include="Subsystems\PhysicsSubsystem.cs" />
     <Compile Include="Subsystems\Subsystem.cs" />
+    <Compile Include="Subsystems\UpdateSubsystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

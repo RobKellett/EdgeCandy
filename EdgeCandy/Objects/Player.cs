@@ -9,6 +9,7 @@ using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using FarseerPhysics.Collision;
+using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Joints;
 using FarseerPhysics.Factories;
@@ -32,6 +33,12 @@ namespace EdgeCandy.Objects
         private Animation walkingAnimation = new Animation(1, 6, 0.667, true);
         private Animation jumpingAnimation = new Animation(17, 17, 0);
         private Animation fallingAnimation = new Animation(18, 19, 0.1);
+        private Animation aerialAnimation = new Animation(19, 19, 0);
+        private Animation vSwingAnimation = new Animation(20, 23, .1);
+        private Animation vSwingAerialAnimation = new Animation(40, 43, .1);
+
+        private TimerComponent attackTimer = new TimerComponent(0.33);
+        private TimerComponent jumpTimer = new TimerComponent(0.1);
 
         public const float playerWidth = 0.5f;
         public const float playerHeight = 1.5f;
@@ -75,18 +82,20 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite.Origin = new Vector2f(16, 32);
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
-            bool jumpInProgress = false;
+            bool jumpInProgress = false, canJump = true, attacking = false, canAttack = true; // 1WEEK
             // Map the input to the legs
             Input.NoInput += () =>
                              {
                                  sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
-                                 if (!jumpInProgress)
+                                 if (!jumpInProgress && !attacking)
                                     Graphics.Animation = standingAnimation;
                              };
-
+            
             Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
                                            {
+                                               if (attacking) return;
+
                                                if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = -playerSpeed;
@@ -100,6 +109,8 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
                                            {
+                                               if (attacking) return;
+
                                                if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = playerSpeed;
@@ -113,21 +124,30 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
-                if (!jumpInProgress)
+                if (canJump && !jumpInProgress && !attacking)
                 {
                     jumpInProgress = true;
+                    //canJump = false; // uncomment for jump timer
                     Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
                     axis.MotorSpeed = 0;
                     Graphics.Animation = jumpingAnimation;
                     Legs.Body.Friction = 0;
                 }
             };
+
             Input.MouseInput += (btn) =>
             {
                 switch (btn)
                 {
                     case Mouse.Button.Left:
+                        if (!canAttack) break;
+
+                        canAttack = false;
                         sensorGraphic.Color = Color.Blue;
+                        Graphics.Animation = jumpInProgress ? vSwingAerialAnimation : vSwingAnimation;
+                        axis.MotorSpeed = 0;
+                        attacking = true;
+                        attackTimer.Start();
                         break;
                     case Mouse.Button.Middle:
                         sensorGraphic.Color = Color.Black;
@@ -142,7 +162,8 @@ namespace EdgeCandy.Objects
             {
                 if (isFalling)
                 {
-                    Graphics.Animation = fallingAnimation;
+                    if (!attacking)
+                        Graphics.Animation = fallingAnimation;
                     jumpInProgress = true;
                 }
             };
@@ -155,12 +176,26 @@ namespace EdgeCandy.Objects
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
                     LegGraphic.Sprite.Color = Color.Red;
-                    Graphics.Animation = standingAnimation;
+                    if (!attacking)
+                        Graphics.Animation = standingAnimation;
+                    //jumpTimer.Start(); // uncomment for jump timer
                 }
                 return true;
             };
 
             Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
+
+            var swingFinished = new EventHandler((sender, args) => 
+                                      {
+                                          attacking = false;
+                                          Graphics.Animation = jumpInProgress ? aerialAnimation : standingAnimation;
+                                      });
+
+            vSwingAnimation.Finished += swingFinished;
+            vSwingAerialAnimation.Finished += swingFinished;
+
+            attackTimer.DingDingDing += (sender, args) => canAttack = true;
+            jumpTimer.DingDingDing += (sender, args) => canJump = true;
         }
 
         public override void SyncComponents()

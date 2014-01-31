@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace EdgeCandy.Components
 {
-    public class CameraComponent
+    public class CameraComponent : IUpdateableComponent
     {
         public Vector2f Position
         {
@@ -26,7 +26,7 @@ namespace EdgeCandy.Components
             scroll = initialScroll;
 
             GraphicsSubsystem.Instance.Register(name, this);
-            CameraSubsystem.Instance.Register(this);
+            UpdateSubsystem.Instance.Register(this);
         }
 
         public void Update(double elapsedTime)
