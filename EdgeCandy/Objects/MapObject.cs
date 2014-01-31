@@ -15,7 +15,7 @@ namespace EdgeCandy.Objects
     public class MapObject : GameObject
     {
         public MapGraphicsComponent Graphics;
-        public List<PlatformObject> Platforms = new List<PlatformObject>();
+        public List<GameObject> Platforms = new List<GameObject>();
         public List<CandyObject> Candies = new List<CandyObject>(); 
 
         public MapObject(TmxMap map)
@@ -29,15 +29,15 @@ namespace EdgeCandy.Objects
                                                  ConvertUnits.ToSimUnits(platform.Height)));
 
             // "implicit" walls to prevent leaving the screen
-            Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(-map.TileWidth),
+            Platforms.Add(new WallObject(ConvertUnits.ToSimUnits(-map.TileWidth),
                                              0,
                                              ConvertUnits.ToSimUnits(map.TileWidth),
-                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), true));
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight)));
 
-            Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(map.Width * map.TileWidth),
+            Platforms.Add(new WallObject(ConvertUnits.ToSimUnits(map.Width * map.TileWidth),
                                              0,
                                              ConvertUnits.ToSimUnits(map.TileWidth),
-                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight), true));
+                                             ConvertUnits.ToSimUnits(map.Height * map.TileHeight)));
 
             foreach (var candy in map.ObjectGroups["Candy"].Objects)
             {

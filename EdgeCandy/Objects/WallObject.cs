@@ -11,16 +11,19 @@ using Microsoft.Xna.Framework;
 
 namespace EdgeCandy.Objects
 {
-    public class PlatformObject : GameObject
+    public class WallObject : GameObject
     {
         public PhysicsComponent Physics = new PhysicsComponent();
 
-        public PlatformObject(float x, float y, float width, float height)
+        public WallObject(float x, float y, float width, float height)
         {
             Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, width, height, 100,
                                                         new Vector2(x + width / 2, y + height / 2));
 
             Physics.Body.IsStatic = true; // platforms shouldn't be pushed around
+            Physics.Body.Friction = 0;
+            Physics.Body.UserData = new { isWall = true };
+
             GameObjectSubsystem.Instance.Register(this);
         }
 
