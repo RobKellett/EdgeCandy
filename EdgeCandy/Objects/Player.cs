@@ -277,6 +277,9 @@ namespace EdgeCandy.Objects
                             Vertices second;
                             FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixtures[i], entryPoints[i], exitPoints[i], out first, out second);
                             //Delete the original shape and create two new. Retain the properties of the body.
+                            if (first.GetArea()*fixtures[i].Shape.Density < 0.5 ||
+                                second.GetArea()*fixtures[i].Shape.Density < 0.5)
+                                return;
                             if (first.CheckPolygon() == PolygonError.NoError)
                             {
                                 Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixtures[i].Shape.Density, fixtures[i].Body.Position);
