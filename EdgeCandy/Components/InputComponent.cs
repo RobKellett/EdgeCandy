@@ -45,6 +45,7 @@ namespace EdgeCandy.Components
             KeyEvents = new Dictionary<Keyboard.Key, KeyInputEvent>();
         }
 
+        private bool wasPressingW = false;
         public void Update(double elapsedTime)
         {
             Modifiers mods = Modifiers.None;
@@ -55,12 +56,28 @@ namespace EdgeCandy.Components
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl) || Keyboard.IsKeyPressed(Keyboard.Key.RControl))
                 mods |= Modifiers.Ctrl;
             bool Any = false;
-            foreach(var kvp in KeyEvents)
+            foreach (var kvp in KeyEvents)
+            {
                 if (Keyboard.IsKeyPressed(kvp.Key))
                 {
+                    if (kvp.Key == Keyboard.Key.W) // 1WEEK
+                    {
+                        if (wasPressingW)
+                            continue;
+
+                        wasPressingW = true;
+                    }
+
                     kvp.Value(kvp.Key, mods);
                     Any = true;
                 }
+                else
+                {
+                    if (kvp.Key == Keyboard.Key.W)
+                        wasPressingW = false;
+                }
+            }
+
             var btns = new [] {Mouse.Button.Left, Mouse.Button.Middle, Mouse.Button.Right};
             foreach (var btn in btns.Where(Mouse.IsButtonPressed))
             {
