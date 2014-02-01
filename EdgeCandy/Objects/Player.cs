@@ -26,21 +26,32 @@ namespace EdgeCandy.Objects
         public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
         public RectangleCompontent sensorGraphic = new RectangleCompontent(Color.White);
+        public RectangleCompontent pistonGraphic = new RectangleCompontent(new Color(255, 0, 255, 128));
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
+        public PhysicsComponent Piston = new PhysicsComponent();
         private RevoluteJoint axis;
+        private DistanceJoint spring;
+        private PrismaticJoint prismatic;
 
         private Animation standingAnimation = new Animation(0, 0, 0);
         private Animation walkingAnimation = new Animation(1, 6, 0.667, true);
         private Animation jumpingAnimation = new Animation(17, 17, 0);
         private Animation fallingAnimation = new Animation(18, 19, 0.1);
+        private Animation aerialAnimation = new Animation(19, 19, 0);
+        private Animation vSwingAnimation = new Animation(20, 23, .1);
+        private Animation vSwingAerialAnimation = new Animation(40, 43, .1);
+
+        private TimerComponent attackTimer = new TimerComponent(0.33);
+        private TimerComponent jumpTimer = new TimerComponent(0.25);
+        private TimerComponent springResetTimer = new TimerComponent(0.1);
 
         public const float playerWidth = 0.5f;
         public const float playerHeight = 1.5f;
         public const float playerSpeed = 20;
         public const float playerAirSpeed = 0.03f;
-        public const float playerJumpForce = 8f;
+        public const float playerJumpForce = 1.5f;
 
         public Player()
         {
@@ -64,11 +75,27 @@ namespace EdgeCandy.Objects
             Legs.Body.BodyType = BodyType.Dynamic;
             Legs.Body.Friction = 1000;
 
+            Piston.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, playerWidth, playerHeight / 2,
+                                                      0.5f, new Vector2(13, 27));
+            Piston.Body.BodyType = BodyType.Dynamic;
+
             axis = JointFactory.CreateRevoluteJoint(PhysicsSubsystem.Instance.World, Torso.Body, Legs.Body, Vector2.Zero);
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
             axis.MotorImpulse = 1000;
             axis.MaxMotorTorque = 10;
+
+            //prismatic = JointFactory.CreatePrismaticJoint(PhysicsSubsystem.Instance.World, Piston.Body, Torso.Body,
+            //                                              Vector2.Zero, -Vector2.UnitY);
+            spring = JointFactory.CreateDistanceJoint(PhysicsSubsystem.Instance.World, Piston.Body, Torso.Body);
+            spring.Frequency = 10f;
+            spring.DampingRatio = 1f;
+            spring.CollideConnected = false;
+
+            prismatic = JointFactory.CreatePrismaticJoint(PhysicsSubsystem.Instance.World, Piston.Body, Torso.Body,
+                                                          Vector2.Zero, Vector2.UnitY);
+            prismatic.CollideConnected = false;
+            Piston.Body.IgnoreCollisionWith(Legs.Body);
             
             LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
@@ -78,18 +105,20 @@ namespace EdgeCandy.Objects
             LegGraphic.Sprite.Origin = new Vector2f(16, 32);
             LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
-            bool jumpInProgress = false;
+            bool jumpInProgress = false, canJump = true, attacking = false, canAttack = true; // 1WEEK
             // Map the input to the legs
             Input.NoInput += () =>
                              {
                                  sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
-                                 if (!jumpInProgress)
+                                 if (!jumpInProgress && !attacking)
                                     Graphics.Animation = standingAnimation;
                              };
-
+            
             Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
                                            {
+                                               if (attacking) return;
+
                                                if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = -playerSpeed;
@@ -103,6 +132,8 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
                                            {
+                                               if (attacking) return;
+
                                                if (!jumpInProgress)
                                                {
                                                    axis.MotorSpeed = playerSpeed;
@@ -116,20 +147,34 @@ namespace EdgeCandy.Objects
 
             Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
             {
-                if (!jumpInProgress)
+                if (canJump)// && !jumpInProgress && !attacking)
                 {
                     jumpInProgress = true;
-                    Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
+                    canJump = false;
+                    //Legs.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
+                    //Piston.Body.ApplyLinearImpulse(new Vector2(0, -playerJumpForce));
+                    spring.Length = playerJumpForce;
                     axis.MotorSpeed = 0;
-                    Graphics.Animation = jumpingAnimation;
                     Legs.Body.Friction = 0;
+                    jumpTimer.Start();
+                    springResetTimer.Start();
                 }
             };
+
             Input.MouseInput += (btn) =>
             {
                 switch (btn)
                 {
                     case Mouse.Button.Left:
+                        if (!canAttack) break;
+
+                        canAttack = false;
+                        sensorGraphic.Color = Color.Blue;
+                        Graphics.Animation = jumpInProgress ? vSwingAerialAnimation : vSwingAnimation;
+                        axis.MotorSpeed = 0;
+                        attacking = true;
+                        attackTimer.Start();
+
                         var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
                             ConvertUnits.ToSimUnits(Input.MousePosition.Y + 780));
                         var position = new Vector2(Torso.Position.X, Torso.Position.Y);
@@ -202,11 +247,11 @@ namespace EdgeCandy.Objects
                             entryPoints.Remove(entryPoints.Last());
                         }
 
-                        exitPoints.Reverse();
+//                        exitPoints.Reverse();
 
                         for (int i = 0; i < fixtures.Count; i++)
                         {
-                            
+                            if (fixtures[i].Body.Mass < 2.5) continue;
                             var originalCandy = fixtures[i].Body.UserData as CandyObject;
                             Debug.Assert(originalCandy != null);
                             var textureOrigin = originalCandy.Sprite.Sprite.Texture;
@@ -239,6 +284,7 @@ namespace EdgeCandy.Objects
                                 firstFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
                                 firstFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
                                 firstFixture.BodyType = BodyType.Dynamic;
+                                firstFixture.UserData = originalCandy;
                                 originalCandy.Physics.Body = firstFixture;
                                 originalCandy.Sprite.Sprite.Texture = textureA;
                             }
@@ -251,10 +297,18 @@ namespace EdgeCandy.Objects
                                 secondFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
                                 secondFixture.BodyType = BodyType.Dynamic;
                                 var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
+                                secondFixture.UserData = secondCandy;
                             }
 
                             PhysicsSubsystem.Instance.World.RemoveBody(fixtures[i].Body);
                         }
+
+                        break;
+                    case Mouse.Button.Middle:
+                        sensorGraphic.Color = Color.Black;
+                        break;
+                    case Mouse.Button.Right:
+                        sensorGraphic.Color = Color.Green;
                         break;
                 }
             };
@@ -263,7 +317,8 @@ namespace EdgeCandy.Objects
             {
                 if (isFalling)
                 {
-                    Graphics.Animation = fallingAnimation;
+                    if (!attacking)
+                        Graphics.Animation = fallingAnimation;
                     jumpInProgress = true;
                 }
             };
@@ -276,12 +331,32 @@ namespace EdgeCandy.Objects
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
                     LegGraphic.Sprite.Color = Color.Red;
-                    Graphics.Animation = standingAnimation;
+                    if (!attacking)
+                        Graphics.Animation = standingAnimation;
                 }
                 return true;
             };
 
+            Piston.Body.OnCollision += (a, b, c) =>
+                                       {
+                                           Graphics.Animation = jumpingAnimation;
+                                           return true;
+                                       };
+
             Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
+
+            var swingFinished = new EventHandler((sender, args) => 
+                                      {
+                                          attacking = false;
+                                          Graphics.Animation = jumpInProgress ? aerialAnimation : standingAnimation;
+                                      });
+
+            vSwingAnimation.Finished += swingFinished;
+            vSwingAerialAnimation.Finished += swingFinished;
+
+            attackTimer.DingDingDing += (sender, args) => canAttack = true;
+            jumpTimer.DingDingDing += (sender, args) => canJump = true;
+            springResetTimer.DingDingDing += (sender, args) => spring.Length = 0;
         }
 
         public override void SyncComponents()
@@ -297,6 +372,7 @@ namespace EdgeCandy.Objects
             var x = Torso.Position.X;
             var y = Torso.Position.Y + (playerHeight - playerWidth/2)/2 + playerWidth/2;
             sensorGraphic.Rectangle = new FloatRect(x - playerWidth/4, y - playerWidth/4 + 0.1f, playerWidth/2, playerWidth/2 + 0.1f);
+            pistonGraphic.Rectangle = new FloatRect(Piston.Body.Position.X - playerWidth/2, Piston.Body.Position.Y - playerHeight/4, playerWidth, playerHeight/2);
             Graphics.Sprite.Rotation = Torso.Rotation;
             LegGraphic.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Legs.Position.X), ConvertUnits.ToDisplayUnits(Legs.Position.Y));
             LegGraphic.Sprite.Rotation = MathHelper.ToDegrees(Legs.Rotation); // TIL SFML uses degrees, not radians

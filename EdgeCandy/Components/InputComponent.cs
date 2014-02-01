@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace EdgeCandy.Components
 {
-    public class InputComponent
+    public class InputComponent : IUpdateableComponent
     {
         [Flags]
         public enum Modifiers
@@ -41,11 +41,12 @@ namespace EdgeCandy.Components
 
         public InputComponent()
         {
-            InputSubsystem.Instance.Register(this);
+            UpdateSubsystem.Instance.Register(this);
             KeyEvents = new Dictionary<Keyboard.Key, KeyInputEvent>();
         }
 
-        public void HandleInput()
+        private bool wasPressingW = false;
+        public void Update(double elapsedTime)
         {
             Modifiers mods = Modifiers.None;
             if(Keyboard.IsKeyPressed(Keyboard.Key.LShift) || Keyboard.IsKeyPressed(Keyboard.Key.RShift))
@@ -55,12 +56,28 @@ namespace EdgeCandy.Components
             if (Keyboard.IsKeyPressed(Keyboard.Key.LControl) || Keyboard.IsKeyPressed(Keyboard.Key.RControl))
                 mods |= Modifiers.Ctrl;
             bool Any = false;
-            foreach(var kvp in KeyEvents)
+            foreach (var kvp in KeyEvents)
+            {
                 if (Keyboard.IsKeyPressed(kvp.Key))
                 {
+                    if (kvp.Key == Keyboard.Key.W) // 1WEEK
+                    {
+                        if (wasPressingW)
+                            continue;
+
+                        wasPressingW = true;
+                    }
+
                     kvp.Value(kvp.Key, mods);
                     Any = true;
                 }
+                else
+                {
+                    if (kvp.Key == Keyboard.Key.W)
+                        wasPressingW = false;
+                }
+            }
+
             var btns = new [] {Mouse.Button.Left, Mouse.Button.Middle, Mouse.Button.Right};
             foreach (var btn in btns.Where(Mouse.IsButtonPressed))
             {

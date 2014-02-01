@@ -35,12 +35,7 @@ namespace EdgeCandy.Framework
                     var end = new Vector2(endPoint.X, endPoint.Y);
                     var line = end - start;
                     line.Normalize();
-                    if(Vector2.DistanceSquared(posX - start, line * Vector2.Dot(posX, line)) < 5f)
-                    {
-                        outputA.SetPixel(x, y, Color.Red);
-                        outputB.SetPixel(x, y, Color.Red);
-                    }
-                    else if (WhichSideOfLine(startPoint, endPoint, pos))
+                    if (WhichSideOfLine(startPoint, endPoint, pos))
                         outputA.SetPixel(x, y, input.GetPixel(x, y));
                     else
                         outputB.SetPixel(x, y, input.GetPixel(x, y));

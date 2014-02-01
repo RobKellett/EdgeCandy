@@ -20,18 +20,18 @@
  </objectgroup>
  <objectgroup name="Candy" width="23" height="50">
   <object name="Chocolate" x="357" y="945" width="42" height="84"/>
-  <object name="Rancher" x="168" y="798" width="21" height="21"/>
-  <object name="Rancher" x="189" y="798" width="21" height="21"/>
-  <object name="Rancher" x="210" y="798" width="21" height="21"/>
-  <object name="Rancher" x="168" y="777" width="21" height="21"/>
-  <object name="Rancher" x="189" y="777" width="21" height="21"/>
-  <object name="Rancher" x="210" y="777" width="21" height="21"/>
-  <object name="Rancher" x="168" y="756" width="21" height="21"/>
-  <object name="Rancher" x="189" y="756" width="21" height="21"/>
-  <object name="Rancher" x="210" y="756" width="21" height="21"/>
-  <object name="Rancher" x="168" y="735" width="21" height="21"/>
-  <object name="Rancher" x="189" y="735" width="21" height="21"/>
-  <object name="Rancher" x="210" y="735" width="21" height="21"/>
+  <object name="Rancher" x="189" y="1008" width="21" height="21"/>
+  <object name="Rancher" x="210" y="1008" width="21" height="21"/>
+  <object name="Rancher" x="231" y="1008" width="21" height="21"/>
+  <object name="Rancher" x="189" y="987" width="21" height="21"/>
+  <object name="Rancher" x="210" y="987" width="21" height="21"/>
+  <object name="Rancher" x="231" y="987" width="21" height="21"/>
+  <object name="Rancher" x="189" y="966" width="21" height="21"/>
+  <object name="Rancher" x="210" y="966" width="21" height="21"/>
+  <object name="Rancher" x="231" y="966" width="21" height="21"/>
+  <object name="Rancher" x="189" y="945" width="21" height="21"/>
+  <object name="Rancher" x="210" y="945" width="21" height="21"/>
+  <object name="Rancher" x="231" y="945" width="21" height="21"/>
   <object name="DoubleCandyCane" x="21" y="966" width="42" height="63"/>
   <object name="CandyCane" x="84" y="966" width="21" height="63"/>
   <object name="CandyCane" x="126" y="966" width="21" height="63"/>

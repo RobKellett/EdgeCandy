@@ -13,7 +13,7 @@ namespace EdgeCandy.Components
     /// <summary>
     /// A SpriteComponent with animations
     /// </summary>
-    public class AnimatableGraphicsComponent : SpriteComponent
+    public class AnimatableGraphicsComponent : SpriteComponent, IUpdateableComponent
     {
         public Vector2i FrameSize { get; set; }
 
@@ -33,7 +33,7 @@ namespace EdgeCandy.Components
 
         public AnimatableGraphicsComponent()
         {
-            AnimationSubsystem.Instance.Register(this);
+            UpdateSubsystem.Instance.Register(this);
         }
 
         public void Update(double elapsedTime)
