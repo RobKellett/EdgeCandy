@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,17 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent Sprite = new SpriteComponent();
         public PhysicsComponent Physics = new PhysicsComponent();
+        public TimerComponent DecayTimer = new TimerComponent(5);
+
+        public float RepeatsX = 1, RepeatsY = 1; // 1WEEK
 
         public CandyObject(Body body, Texture tex, Vector2 position)
         {
             Sprite.Sprite = new Sprite(tex);
             Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
             Physics.Body = body;
+
+            DecayTimer.DingDingDing += (sender, args) => Kill();
         }
 
         public CandyObject(CandyKind kind, Vector2 position, Vector2 size = default(Vector2))
@@ -50,8 +56,10 @@ namespace EdgeCandy.Objects
                         };
                     Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World,
                                                                ConvertUnits.ToSimUnits(size.X),
-                                                               ConvertUnits.ToSimUnits(size.Y), 1);
+                                                               ConvertUnits.ToSimUnits(size.Y), 25);
                     Physics.Body.Position = new Vector2(ConvertUnits.ToSimUnits(position.X + size.X / 2), ConvertUnits.ToSimUnits(position.Y + size.Y / 2));
+                    RepeatsX = size.X / Content.Chocolate.Size.X;
+                    RepeatsY = size.Y / Content.Chocolate.Size.Y;
                     break;
                 case CandyKind.DoubleCandyCane:
                     Sprite.Sprite = new Sprite(Content.DoubleCandyCane);
@@ -71,12 +79,23 @@ namespace EdgeCandy.Objects
                 Physics.Body.BodyType = BodyType.Dynamic;
             }
             Physics.Body.UserData = this;
+
+            DecayTimer.DingDingDing += (sender, args) => Kill();
         }
 
         public override void SyncComponents()
         {
             Sprite.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Physics.Position.X), ConvertUnits.ToDisplayUnits(Physics.Position.Y));
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
+        }
+
+        public void Kill()
+        {
+            GraphicsSubsystem.Instance.Unregister(Sprite);
+            PhysicsSubsystem.Instance.Unregister(Physics);
+            UpdateSubsystem.Instance.Unregister(DecayTimer);
+            GameObjectSubsystem.Instance.Unregister(this);
+            //this = null; // SEPPUKU
         }
     }
 }

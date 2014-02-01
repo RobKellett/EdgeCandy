@@ -270,7 +270,7 @@ namespace EdgeCandy.Objects
                             var rotatedExitPoint = rotation.TransformPoint(relativeExitPoint);
                             var endPoint = spriteOrigin + rotatedExitPoint; 
                             TextureSlicer.SliceAndDice(startPoint, endPoint, textureOrigin, out textureA,
-                                out textureB);
+                                out textureB, originalCandy.RepeatsX, originalCandy.RepeatsY);
                             textureA.CopyToImage().SaveToFile("a.png");
                             textureB.CopyToImage().SaveToFile("b.png");
                             Vertices first;
@@ -290,6 +290,10 @@ namespace EdgeCandy.Objects
                                 firstFixture.UserData = originalCandy;
                                 originalCandy.Physics.Body = firstFixture;
                                 originalCandy.Sprite.Sprite.Texture = textureA;
+                                originalCandy.RepeatsX = originalCandy.RepeatsY = 1; // 1WEEK
+
+                                if (first.GetArea()*fixtures[i].Shape.Density < 5)
+                                    originalCandy.DecayTimer.Start();
                             }
 
                             if (second.CheckPolygon() == PolygonError.NoError)
@@ -301,6 +305,9 @@ namespace EdgeCandy.Objects
                                 secondFixture.BodyType = BodyType.Dynamic;
                                 var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
                                 secondFixture.UserData = secondCandy;
+
+                                if (second.GetArea()*fixtures[i].Shape.Density < 5)
+                                    secondCandy.DecayTimer.Start();
                             }
 
                             PhysicsSubsystem.Instance.World.RemoveBody(fixtures[i].Body);

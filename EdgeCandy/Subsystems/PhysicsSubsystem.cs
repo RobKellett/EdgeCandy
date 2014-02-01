@@ -44,6 +44,15 @@ namespace EdgeCandy.Subsystems
                 foreach (var component in components)
                     component.Update();
             }
+
+            Clean();
+        }
+
+        public override void Unregister(PhysicsComponent component)
+        {
+            _world.RemoveBody(component.Body);
+
+            base.Unregister(component);
         }
     }
 }

@@ -41,6 +41,8 @@ namespace EdgeCandy.Subsystems
             {
                 component.Draw();
             }
+
+            Clean();
         }
     }
 }
