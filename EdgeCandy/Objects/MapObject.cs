@@ -8,6 +8,8 @@ using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using Microsoft.Xna.Framework;
+using SFML.Graphics;
+using SFML.Window;
 using TiledSharp;
 
 namespace EdgeCandy.Objects
@@ -17,6 +19,10 @@ namespace EdgeCandy.Objects
         public MapGraphicsComponent Graphics;
         public List<GameObject> Platforms = new List<GameObject>();
         public List<CandyObject> Candies = new List<CandyObject>(); 
+        public List<TextComponent> Hints = new List<TextComponent>(); 
+        public List<PowerupObject> Powerups = new List<PowerupObject>();
+
+        public Vector2 Spawn;
 
         public MapObject(TmxMap map)
         {
@@ -53,7 +59,26 @@ namespace EdgeCandy.Objects
                 }
             }
 
-            GameObjectSubsystem.Instance.Register(this);
+            foreach (var obj in map.ObjectGroups["Misc"].Objects)
+            {
+                if (obj.Name == "Text")
+                {
+                    Hints.Add(new TextComponent
+                              {
+                                  Text =
+                                      new Text(obj.Properties["Text"], Content.Font, 16)
+                                      {
+                                          Position = new Vector2f(obj.X, obj.Y)
+                                      }
+                              });
+                }
+                else if (obj.Name == "Powerup")
+                {
+                    Powerups.Add(new PowerupObject(new Vector2f(obj.X + obj.Width / 2, obj.Y + obj.Height / 2)));
+                }
+                else if (obj.Name == "Spawn")
+                    Spawn = new Vector2(ConvertUnits.ToSimUnits(obj.X + obj.Width / 2), ConvertUnits.ToSimUnits(obj.Y + obj.Height / 2));
+            }
         }
 
         public override void SyncComponents()

@@ -28,12 +28,17 @@ namespace EdgeCandy.Subsystems
             activeCameraComponent = name == null ? null : cameraComponents[name];
         }
 
+        public Vector2f GetCameraOffset()
+        {
+            return activeCameraComponent.Position;
+        }
+
         /// <summary>
         /// Draw!
         /// </summary>
         public void Draw()
         {
-            Graphics.SetView(new View(new FloatRect(activeCameraComponent.Position.X, activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
+            Graphics.SetView(new View(new FloatRect((int)activeCameraComponent.Position.X, (int)activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
 
             Graphics.Clear();
 

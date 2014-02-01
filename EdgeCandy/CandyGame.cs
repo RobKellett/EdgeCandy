@@ -19,8 +19,8 @@ namespace EdgeCandy
         {
             // load content
             //new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
-            var map = new MapObject(Content.TestMap);
-            player = new Player();
+            var map = new MapObject(Content.Level);
+            player = new Player(map.Spawn);
             new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
             new CameraComponent("scroll", map.Graphics.Map.Height * map.Graphics.Map.TileHeight); // could be worse
 

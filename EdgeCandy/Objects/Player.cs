@@ -21,10 +21,7 @@ namespace EdgeCandy.Objects
 {
     public class Player : GameObject
     {
-        public SpriteComponent LegGraphic = new SpriteComponent();
         public AnimatableGraphicsComponent Graphics = new AnimatableGraphicsComponent();
-        public RectangleCompontent sensorGraphic = new RectangleCompontent(Color.White);
-        public RectangleCompontent pistonGraphic = new RectangleCompontent(new Color(255, 0, 255, 128));
         public InputComponent Input = new InputComponent();
         public PhysicsComponent Torso = new PhysicsComponent();
         public PhysicsComponent Legs = new PhysicsComponent();
@@ -38,8 +35,10 @@ namespace EdgeCandy.Objects
         private Animation jumpingAnimation = new Animation(17, 17, 0);
         private Animation fallingAnimation = new Animation(18, 19, 0.1);
         private Animation aerialAnimation = new Animation(19, 19, 0);
-        private Animation vSwingAnimation = new Animation(20, 23, .1);
-        private Animation vSwingAerialAnimation = new Animation(40, 43, .1);
+        private Animation vSwingAnimation = new Animation(20, 23, .15);
+        private Animation vSwingAerialAnimation = new Animation(40, 43, .15);
+        private Animation hSwingAnimation = new Animation(24, 26, .15);
+        private Animation hSwingAerialAnimation = new Animation(44, 46, .15);
 
         private TimerComponent attackTimer = new TimerComponent(0.33);
         private TimerComponent jumpTimer = new TimerComponent(0.25);
@@ -51,7 +50,7 @@ namespace EdgeCandy.Objects
         public const float playerAirSpeed = 0.03f;
         public const float playerJumpForce = 1.5f;
 
-        public Player()
+        public Player(Vector2 spawn)
         {
             // To locomote the player, we're going to create a model like this:
             //   +-----+
@@ -63,25 +62,24 @@ namespace EdgeCandy.Objects
             // With the torso having a fixed angle joint, and the legs having a motorized joint. 
             var torsoWidth = playerWidth + 0.25f;
             var torsoHeight = playerHeight - playerWidth;
-            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 4, 0.1f, new Vector2(13, 27));
+            Torso.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, torsoWidth, playerHeight - playerWidth / 4, 0.1f, spawn);
             Torso.Body.IgnoreGravity = true;
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
             Torso.Body.Friction = 0;
 
-            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(13, 27 + torsoHeight / 2 + playerWidth / 4));
+            Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(spawn.X, spawn.Y + torsoHeight / 2 + playerWidth / 4));
             Legs.Body.BodyType = BodyType.Dynamic;
             Legs.Body.Friction = 1000;
 
             Piston.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, playerWidth, playerHeight / 2,
-                                                      0.5f, new Vector2(13, 27));
+                                                      0.5f, spawn);
             Piston.Body.BodyType = BodyType.Dynamic;
 
             axis = JointFactory.CreateRevoluteJoint(PhysicsSubsystem.Instance.World, Torso.Body, Legs.Body, Vector2.Zero);
             axis.CollideConnected = false;
             axis.MotorEnabled = true;
-            axis.MotorImpulse = 1000;
-            axis.MaxMotorTorque = 10;
+            axis.MaxMotorTorque = 20;
 
             //prismatic = JointFactory.CreatePrismaticJoint(PhysicsSubsystem.Instance.World, Piston.Body, Torso.Body,
             //                                              Vector2.Zero, -Vector2.UnitY);
@@ -95,19 +93,15 @@ namespace EdgeCandy.Objects
             prismatic.CollideConnected = false;
             Piston.Body.IgnoreCollisionWith(Legs.Body);
             
-            LegGraphic.Sprite = new Sprite(Content.Ball);
             Graphics.Sprite = new Sprite(Content.Player);
             Graphics.Animation = standingAnimation;
             Graphics.FrameSize = new Vector2i(64, 64);
             Graphics.Sprite.Origin = new Vector2f(32, 40);
-            LegGraphic.Sprite.Origin = new Vector2f(16, 32);
-            LegGraphic.Sprite.Scale = new Vector2f(playerWidth, playerWidth);
 
             bool jumpInProgress = false, canJump = true, attacking = false, canAttack = true; // 1WEEK
             // Map the input to the legs
             Input.NoInput += () =>
                              {
-                                 sensorGraphic.Color = Color.Red;
                                  axis.MotorSpeed = 0;
                                  if (!jumpInProgress && !attacking)
                                     Graphics.Animation = standingAnimation;
@@ -167,17 +161,21 @@ namespace EdgeCandy.Objects
                         if (!canAttack) break;
 
                         canAttack = false;
-                        sensorGraphic.Color = Color.Blue;
                         Graphics.Animation = jumpInProgress ? vSwingAerialAnimation : vSwingAnimation;
                         axis.MotorSpeed = 0;
                         attacking = true;
                         attackTimer.Start();
                         break;
                     case Mouse.Button.Middle:
-                        sensorGraphic.Color = Color.Black;
                         break;
                     case Mouse.Button.Right:
-                        sensorGraphic.Color = Color.Green;
+                        if (!canAttack) break;
+
+                        canAttack = false;
+                        Graphics.Animation = jumpInProgress ? hSwingAerialAnimation : hSwingAnimation;
+                        axis.MotorSpeed = 0;
+                        attacking = true;
+                        attackTimer.Start();
                         break;
                 }
             };
@@ -199,7 +197,6 @@ namespace EdgeCandy.Objects
                 {
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;
-                    LegGraphic.Sprite.Color = Color.Red;
                     if (!attacking)
                         Graphics.Animation = standingAnimation;
                 }
@@ -212,8 +209,6 @@ namespace EdgeCandy.Objects
                                            return true;
                                        };
 
-            Legs.Body.OnSeparation += (a, b) => { LegGraphic.Sprite.Color = Color.White; };
-
             var swingFinished = new EventHandler((sender, args) => 
                                       {
                                           attacking = false;
@@ -222,6 +217,8 @@ namespace EdgeCandy.Objects
 
             vSwingAnimation.Finished += swingFinished;
             vSwingAerialAnimation.Finished += swingFinished;
+            hSwingAnimation.Finished += swingFinished;
+            hSwingAerialAnimation.Finished += swingFinished;
 
             attackTimer.DingDingDing += (sender, args) => canAttack = true;
             jumpTimer.DingDingDing += (sender, args) => canJump = true;
@@ -240,11 +237,7 @@ namespace EdgeCandy.Objects
                                                     ConvertUnits.ToDisplayUnits(Torso.Position.Y + playerWidth / 4));
             var x = Torso.Position.X;
             var y = Torso.Position.Y + (playerHeight - playerWidth/2)/2 + playerWidth/2;
-            sensorGraphic.Rectangle = new FloatRect(x - playerWidth/4, y - playerWidth/4 + 0.1f, playerWidth/2, playerWidth/2 + 0.1f);
-            pistonGraphic.Rectangle = new FloatRect(Piston.Body.Position.X - playerWidth/2, Piston.Body.Position.Y - playerHeight/4, playerWidth, playerHeight/2);
             Graphics.Sprite.Rotation = Torso.Rotation;
-            LegGraphic.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Legs.Position.X), ConvertUnits.ToDisplayUnits(Legs.Position.Y));
-            LegGraphic.Sprite.Rotation = MathHelper.ToDegrees(Legs.Rotation); // TIL SFML uses degrees, not radians
         }
     }
 }

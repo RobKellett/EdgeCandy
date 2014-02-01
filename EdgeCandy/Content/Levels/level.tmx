@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="23" height="150" tilewidth="21" tileheight="21">
+ <tileset firstgid="1" name="tileset" tilewidth="21" tileheight="21" spacing="2" margin="2">
+  <image source="../Sprites/tileset.png" width="692" height="692"/>
+ </tileset>
+ <layer name="Background" width="23" height="150">
+  <data encoding="base64" compression="zlib">
+   eJzdWkFOxDAMXC1f4u0LDwEOfQbwABaJSpFlO+OxnXY5RFp1W2cyntiJk9v1cnlJtk159npvt7/fz0/2t95/4zvje7vtzekfxSu/HXFXt5nt6DiOwI1iRPwawR3l5rd/zXaGYxS3NnaUD8v2CtwrbI/jyHLCtFmsYm1Y40FsR3jQbEe+R2MxGr+7dFLlSwa79U3X3NkM2yj2WWxgcFfH7yN1onGVnfMeP3J9wvhMvovgtjBpfaFxUFsrbcbzbl/u45PjnNn2fOVht9YQVe0/2s6uU7rWgxWceH0e7ctIrrDy/GwuRPnP5DTZV+U+bYbhaF9KnGfOxcw89Hzp5VlNB1lOUM1X7Bu6dBLFHpmX2nM2Dnbnhkeon6yyXVEviO7nuzkZtbj/1uoJ3jo2u5e1YlXFHplZ26N+8fYkbE7O+LJTJ6iGpO3onmYlbs+XlfUZjxOEU4aT2ffe2tOb816L+HelBqOcrsT9qLYrYxVS95F9dnFy1FkGa5vBi/Id0UCWk5V8R+PvKn1nuD0T38i4tTFq9diqPMzmNIYTtjbqYV+pE/T+API840umpmTt0ZE6R+Wcj+DO3LVAOOnCjeJE/M7ilrVX6c+jzhuOXGuuOjtCbVeu29A6G1KDHGNCp06ss2hWK9Gzug6+K9adKCfMnlyrzSB5uXPuaLW2KtuzJjWIYImMibk3E/Wlp6XZc8uvZ7vjZ2HuulNZfQ4ofSHn1dnq35W22bpe5AwmOr+yeQc988rkePaOX4cvrXG8K82zHTn3R33B3IE68zk3q5PRBx+k7c49iWefvStXzfeOQ9O113a+o/m3Sydn0fcbwSUyDmTOr+R7pqcq24gGZd8zjhDNR+LJrK6s7Xc+7+2roX1fa3Ixq5OqNdvoy8pzkkrMu+0f5nuhAQ==
+  </data>
+ </layer>
+ <layer name="Foreground" width="23" height="150">
+  <data encoding="base64" compression="zlib">
+   eJzt1DEKgDAMBdAUD6ROnsLRk3h/cBKkBbVC6eB78NcQkpAIAAAAAAAAAAAAAADujCliumROvTv6r3wXfJfP8k0o1c7Q/+jn6eZPy9Cuh61h7b1B7dr7rskqRQ7M6CKv
+  </data>
+ </layer>
+ <objectgroup name="Solid" width="23" height="150">
+  <object x="0" y="3066" width="483" height="84"/>
+  <object x="315" y="2982" width="168" height="21"/>
+  <object x="0" y="2898" width="273" height="21"/>
+  <object x="210" y="2814" width="273" height="21"/>
+  <object x="399" y="2730" width="84" height="21"/>
+  <object x="252" y="2646" width="105" height="21"/>
+ </objectgroup>
+ <objectgroup name="Candy" width="23" height="150">
+  <object name="CandyCane" x="105" y="2835" width="21" height="63"/>
+  <object name="DoubleCandyCane" x="315" y="2751" width="42" height="63"/>
+ </objectgroup>
+ <objectgroup name="Misc" width="23" height="150">
+  <object name="Spawn" x="42" y="3003" width="21" height="63"/>
+  <object name="Text" x="42" y="2982" width="42" height="21">
+   <properties>
+    <property name="Text" value="Press A or D to move"/>
+   </properties>
+  </object>
+  <object name="Text" x="336" y="2898" width="42" height="21">
+   <properties>
+    <property name="Text" value="Press W to jump"/>
+   </properties>
+  </object>
+  <object name="Text" x="21" y="2814" width="42" height="21">
+   <properties>
+    <property name="Text" value="Click a candy to crush it"/>
+   </properties>
+  </object>
+  <object name="Text" x="210" y="2730" width="42" height="21">
+   <properties>
+    <property name="Text" value="Right-click a candy to slice it"/>
+   </properties>
+  </object>
+  <object name="Powerup" x="294" y="2604" width="21" height="21"/>
+  <object name="Text" x="231" y="2562" width="42" height="21">
+   <properties>
+    <property name="Text" value="Slicing uses up Power Canes"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

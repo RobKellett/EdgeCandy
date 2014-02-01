@@ -30,6 +30,7 @@ namespace EdgeCandy.Framework
 
         public static Texture DoubleCandyCane { get; set; }
         public static Texture Player { get; set; }
+        public static Texture Powerup { get; set; }
 
         private static Texture[] ranchers;
         public static Texture Rancher
@@ -49,6 +50,7 @@ namespace EdgeCandy.Framework
 
         #region TmxMaps
         public static TmxMap TestMap { get; set; }
+        public static TmxMap Level { get; set; }
         #endregion
 
         /// <summary>
@@ -70,6 +72,8 @@ namespace EdgeCandy.Framework
 
             DoubleCandyCane = new Texture("Content/Sprites/Candy/double_candy_cane.png");
             Player = new Texture("Content/Sprites/player.png");
+            Powerup = new Texture("Content/Sprites/powerup.png");
+
             ranchers = new[]
                 {
                     new Texture("Content/Sprites/Candy/rancher_green.png"),
@@ -80,6 +84,7 @@ namespace EdgeCandy.Framework
             Tileset = new Texture("Content/Sprites/tileset.png");
 
             TestMap = new TmxMap("Content/Levels/test.tmx");
+            Level = new TmxMap("Content/Levels/level.tmx");
 
             var image = new Image(1, 1, Color.White);
             Pixel = new Texture(image);

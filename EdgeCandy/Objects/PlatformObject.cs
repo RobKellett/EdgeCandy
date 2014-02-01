@@ -21,8 +21,6 @@ namespace EdgeCandy.Objects
                                                         new Vector2(x + width / 2, y + height / 2));
 
             Physics.Body.IsStatic = true; // platforms shouldn't be pushed around
-
-            GameObjectSubsystem.Instance.Register(this);
         }
 
         public override void SyncComponents()

@@ -84,6 +84,7 @@
     <Compile Include="Objects\MapObject.cs" />
     <Compile Include="Objects\PlatformObject.cs" />
     <Compile Include="Objects\Player.cs" />
+    <Compile Include="Objects\PowerupObject.cs" />
     <Compile Include="Objects\WallObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Content\font.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\level.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\test.tmx">
@@ -135,6 +139,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\powerup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\tileset.png">
