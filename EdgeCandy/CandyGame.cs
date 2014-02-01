@@ -22,7 +22,7 @@ namespace EdgeCandy
             var map = new MapObject(Content.Level);
             player = new Player(map.Spawn);
             new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
-            new CameraComponent("scroll", map.Graphics.Map.Height * map.Graphics.Map.TileHeight); // could be worse
+            new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }

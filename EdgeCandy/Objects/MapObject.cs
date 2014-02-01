@@ -21,12 +21,14 @@ namespace EdgeCandy.Objects
         public List<CandyObject> Candies = new List<CandyObject>(); 
         public List<TextComponent> Hints = new List<TextComponent>(); 
         public List<PowerupObject> Powerups = new List<PowerupObject>();
+        public TmxMap Map { get; set; }
 
         public Vector2 Spawn;
 
         public MapObject(TmxMap map)
         {
-            Graphics = new MapGraphicsComponent { Map = map };
+            Map = map;
+            Graphics = new MapGraphicsComponent(map);
 
             foreach (var platform in map.ObjectGroups["Solid"].Objects)
                 Platforms.Add(new PlatformObject(ConvertUnits.ToSimUnits(platform.X),

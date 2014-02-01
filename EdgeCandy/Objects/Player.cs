@@ -47,7 +47,7 @@ namespace EdgeCandy.Objects
         public const float playerWidth = 0.5f;
         public const float playerHeight = 1.5f;
         public const float playerSpeed = 20;
-        public const float playerAirSpeed = 0.03f;
+        public const float playerAirSpeed = 0.015f;
         public const float playerJumpForce = 1.5f;
 
         public Player(Vector2 spawn)
