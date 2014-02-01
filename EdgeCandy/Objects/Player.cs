@@ -180,7 +180,7 @@ namespace EdgeCandy.Objects
                         var position = new Vector2(Torso.Position.X, Torso.Position.Y);
                         var direction = mousePos - position;
                         direction.Normalize();
-                        direction *= 20.5f;
+                        direction *= 2.5f;
                         var endPos = position + direction;
 //                        mousePos.Normalize();
 //                        mousePos *= 10;
@@ -271,8 +271,6 @@ namespace EdgeCandy.Objects
                             var endPoint = spriteOrigin + rotatedExitPoint; 
                             TextureSlicer.SliceAndDice(startPoint, endPoint, textureOrigin, out textureA,
                                 out textureB, originalCandy.RepeatsX, originalCandy.RepeatsY);
-                            textureA.CopyToImage().SaveToFile("a.png");
-                            textureB.CopyToImage().SaveToFile("b.png");
                             Vertices first;
                             Vertices second;
                             FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixtures[i], entryPoints[i], exitPoints[i], out first, out second);
@@ -282,7 +280,7 @@ namespace EdgeCandy.Objects
                                 return;
                             if (first.CheckPolygon() == PolygonError.NoError)
                             {
-                                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixtures[i].Shape.Density, fixtures[i].Body.Position);
+                                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixtures[i].Shape.Density * 0.9f, fixtures[i].Body.Position);
                                 firstFixture.Rotation = fixtures[i].Body.Rotation;
                                 firstFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
                                 firstFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
@@ -298,7 +296,7 @@ namespace EdgeCandy.Objects
 
                             if (second.CheckPolygon() == PolygonError.NoError)
                             {
-                                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixtures[i].Shape.Density, fixtures[i].Body.Position);
+                                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixtures[i].Shape.Density * 0.9f, fixtures[i].Body.Position);
                                 secondFixture.Rotation = fixtures[i].Body.Rotation;
                                 secondFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
                                 secondFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
