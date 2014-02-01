@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
 using Microsoft.Xna.Framework;
 using SFML.Window;
@@ -34,9 +35,14 @@ namespace EdgeCandy.Components
             set;
         }
 
-        public Vector2i MousePosition
+        public Vector2f MousePosition
         {
-            get { return Mouse.GetPosition(Program.Window); }
+            get
+            {
+                var mp = Mouse.GetPosition(Program.Window);
+                return new Vector2f(mp.X / Graphics.Scale, mp.Y / Graphics.Scale) - (Graphics.Offset / Graphics.Scale) +
+                       GraphicsSubsystem.Instance.GetCameraOffset();
+            }
         }
 
         public InputComponent()

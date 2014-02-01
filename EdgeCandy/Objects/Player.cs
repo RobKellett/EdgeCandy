@@ -176,7 +176,7 @@ namespace EdgeCandy.Objects
                         attackTimer.Start();
 
                         var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
-                            ConvertUnits.ToSimUnits(Input.MousePosition.Y + 780));
+                            ConvertUnits.ToSimUnits(Input.MousePosition.Y));
                         var position = new Vector2(Torso.Position.X, Torso.Position.Y);
                         var direction = mousePos - position;
                         direction.Normalize();

@@ -11,6 +11,16 @@ namespace EdgeCandy.Framework
         public static uint Height = 270;
         private static uint windowWidth = Width, windowHeight = Height;
         private static float scale = 1;
+        public static float Scale { get { return scale; } }
+
+        public static Vector2f Offset
+        {
+            get
+            {
+                return new Vector2f((int)(windowWidth - Width * scale) / 2,
+                                    (int)(windowHeight - Height * scale) / 2);
+            }
+        }
 
         public static void Initialize()
         {
@@ -63,9 +73,7 @@ namespace EdgeCandy.Framework
             var sprite = new Sprite(windowTexture.Texture)
                          {
                              Scale = new Vector2f(scale, scale),
-                             Position =
-                                 new Vector2f((int)(windowWidth - Width * scale) / 2,
-                                              (int)(windowHeight - Height * scale) / 2)
+                             Position = Offset
                          };
 
             target.Draw(sprite);
