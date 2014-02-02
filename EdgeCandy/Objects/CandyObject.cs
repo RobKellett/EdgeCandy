@@ -73,7 +73,7 @@ namespace EdgeCandy.Objects
                 case CandyKind.Rancher:
                     Sprite.Sprite = new Sprite(Content.Rancher);
                     HitPoints = 2;
-                    density = 2;
+                    density = 1;
                     break;
             }
 
@@ -93,6 +93,9 @@ namespace EdgeCandy.Objects
         {
             Sprite.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Physics.Position.X), ConvertUnits.ToDisplayUnits(Physics.Position.Y));
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
+
+            if (Sprite.Sprite.Position.Y - Sprite.Sprite.Texture.Size.Y > GraphicsSubsystem.Instance.GetCameraOffset().Y + Graphics.Height)
+                Kill();
         }
 
         public void Hit(float damage, Vector2 point, Vector2 direction)
@@ -149,14 +152,14 @@ namespace EdgeCandy.Objects
             Sprite.Sprite.Texture = textureA;
             RepeatsX = RepeatsY = 1; // 1WEEK
 
-            if (first.GetArea() < 0.1f)
+            if (crush)
             {
                 Physics.Body.IgnoreCollisionWith(GameplayState.Player.Torso.Body);
                 Physics.Body.IgnoreCollisionWith(GameplayState.Player.Legs.Body);
                 Physics.Body.IgnoreCollisionWith(GameplayState.Player.Piston.Body);
+                if (first.GetArea() > 0.25f)
+                    Crush(direction);
             }
-            else if (crush)
-                Crush(direction);
 
             Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, 1f,
                                                             fixture.Body.Position);
@@ -167,14 +170,14 @@ namespace EdgeCandy.Objects
             var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position) { HitPoints = 0 };
             secondFixture.UserData = secondCandy;
 
-            if (second.GetArea() < 0.05f)
+            if (crush)
             {
                 secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Torso.Body);
                 secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Legs.Body);
                 secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Piston.Body);
+                if (second.GetArea() > 0.25f)
+                    secondCandy.Crush(direction);
             }
-            else if (crush)
-                secondCandy.Crush(direction);
 
             PhysicsSubsystem.Instance.World.RemoveBody(fixture.Body);
         }

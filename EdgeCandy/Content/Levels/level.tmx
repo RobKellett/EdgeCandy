@@ -5,12 +5,12 @@
  </tileset>
  <layer name="Background" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzdWkFOxDAMXC1f2rcvPAT20GcAD6BIVIoi2xmP7aTLIRIq2+lk7NiOk/v1cnkNjk149raP+9/ftxf9Xet/7W/a3x3Ym/F9lG//bss7e4ywvfNYwRvliNjVw9urze/3JeyIxihvae6oHhr2DN4zsNt5RDVhxihWsRjafBBsjw4Stud9NBaj8bvKT7JsyXDX3qlaO5uCjXIfxQaGd3b8XuknklbRNW/p09cnjM363yK8NU7St9A4KNVKm/K82pbH/Pp5jrAtW1nctRoia/xH7GidUlUPZmhifXO1LT25Qsvzo7Xg1T+S0/pvZe7TRhxW27LneeZczKxDy5ZWnpX8IKoJ6vMZ+4YqP/Fy96xL6TkbB6tzwzP0T2ZhZ/QLvPv5ak1aXzz+lvoJVh0b3ctqsSpjj8zU9qhdrD0Jm5Mjtqz0E9SHemzvnmYmb8uWmf0ZSxNEU0aT0ftW7WmteWt47DvTB72azuT9rNiZsQrp+/TfrNJk1VkGi83wRfX2+EBUk5l6e+PvLP+OaHsmvZF5S3OU+rFZeZjNaYwmbG/U4j7TT9D7A8jziC2ZnpK2R0f6HJlr3sM7ctcC0aSKN8oTsTvLu++99vZcdd6wstacdXaEYmfWbWifDelBtjGh0k+0s2jWV7xndRV6Z9SdqCbMnlzqzSB5uXLtSL22LOzR6H0Q4eKZE3NvxmPL9318kMOy69nu+Ek+Kb2fed+HwWZt8QCwZ/a/M7HZvp7m3xKud31F8w565hXJ8ewdvwpbavPQ4oqG7Tn3R23B3IE68zk36yfeeILaIJP36N7Yar0PHmz89pxtV/rJWfybqU+QeSBrfqbeI3/KwvbUEGjtjvi8J56M+srSfudzH18F4/uak4tZP8mq2VpbZp6TZHI+sH8A5DimWw==
+   eJzdWVtOAzEMrOgdOAk3L7R87CWogI+9BM8DkJUaKUS247GdpPBhUfYxdsbjxMkebna7+4stxW+vPSQ7CPc1vvIzt/vfz7ewEVsu+NkPhZ3ve/1o47bkgcKmcCxjydh1HhDj/EbmsvYhYXtzGhl3C9vKOfXeyLg18fTke2F+b7nPhmBH1WUEH1G57FGXHO81trYGkVqdqW8rV9y6g/CMxs1ximqSi7vGr/+n/NTXrHwvjM+oXLb0eE01j/grsaN6QWSOta7Jf63ma+yI/tLCtzYXSF/ljX1GLhH+I9dLrd8S26OViLUYGcOIOTZyzyrFXfux+v1v/ffZaNfCidYoPXqxpR5Is3edpUGplxutk+gzjijdlTGM7u0tmNS9czAnXNxROdRie/LQS9/I+SAa/4yzxyizaJCbn6Rcts4sUM64/iR6HvTUiXVN86w7T0Dc0vldPY4oDV7zmWnE2QylJ0uuOQ2iMfbIpfSdwvN9pzW2Ut8jdeL5LpOx35K9d7CPZMdkp2Tr5S9id3v+3mOy52QvQVZjHxm/XpOw6/FqOCvf8cbd4pvCtuT1VHH/OolvzbipMa4EdgsDzYE1l5ymKU6kmK31Gq0TKZcazrln6uutXEq8tuKgOCnfKblZFVxF1jwSN5pD6Xlq/u4VtzZOjZ6sfK8C/nZdqp2enJQxadbGaE56YVs4QfRt6SGo/Es+8/PlnNBTJ2uDb3SNk+ZYhFeNUT3E5j+i79RygswjNfYq+Kf0oq0dqkdGxs/FMkqDmliQnGp6H6t59yRSXkfNg5Z6qfuXHnFTfdHo+UQat5Xvnrn0xE3Vh0bf0vvWuNE+X9KJZx/CcTIjl9w4tP0bte5oxov0yBJ2fU+rl9m1g+gk4oyj555EwqfOOGbwneOwzt/a/X9vnVyLvi39iWYcmpofyXdLT1HYSA+h7d01mkfmk9a5MrXf+Uz21cG+b2LWYqtOonq2MpfevUQrbg9PG/YPDN2ZLw==
   </data>
  </layer>
  <layer name="Foreground" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzt1jsKgDAQBUA/B1IrT2HpSTyrnsfKQiMo0fiBGXhdWEJ2CZtlAAAAAAAAAAAAAP9Q53Fp8nWdaufMXcZinam4r/bX7L3j2RA6mlvetZ13/XnPthfEi/nHCV3dS3jO0cwv2jLdHfqEtYcEtWN3vTPpJMgMPT8uiw==
+   eJzt2E0OgjAQhuFaz8PfykMQ3HkSz4qHcSULm2ChQMsUpLxPMgs3TTP9OoBKAQAAAACAFGRaqdyzCr33ruHDnNsarpzU3yIn65Rdr+6C/SoFzvxMmIPyUsxgSEaW5qSO2CuptfOROXWEfaewtrlPMfd9dpnwc9jlrWV/H5XvPOVZ/D+KSzeTegUZpq8VPRVFX+X17z993Z89k7eYz82B1ya/8lwZrCayyTuE21gfEc9cRl1ln8vYPZDS6t96Jfz9M/VMY57488kwtmfnnTPZD/9xyAmZ4xha+16C7cxl3rhd4+3hEXHtZ4S1Q9/1llRDDeoDqqxRAQ==
   </data>
  </layer>
  <objectgroup name="Solid" width="23" height="150">
@@ -20,10 +20,32 @@
   <object x="210" y="2814" width="273" height="21"/>
   <object x="399" y="2730" width="84" height="21"/>
   <object x="252" y="2646" width="105" height="21"/>
-  <object x="0" y="2562" width="105" height="21"/>
+  <object x="0" y="2562" width="168" height="21"/>
   <object x="168" y="2478" width="315" height="21"/>
   <object x="0" y="2394" width="315" height="21"/>
   <object x="378" y="2394" width="105" height="21"/>
+  <object x="0" y="2310" width="105" height="21"/>
+  <object x="168" y="2226" width="315" height="21"/>
+  <object x="294" y="2142" width="105" height="21"/>
+  <object x="294" y="2079" width="21" height="63"/>
+  <object x="168" y="2079" width="126" height="21"/>
+  <object x="399" y="1743" width="84" height="21"/>
+  <object x="273" y="1827" width="63" height="21"/>
+  <object x="147" y="1911" width="63" height="21"/>
+  <object x="0" y="1995" width="84" height="21"/>
+  <object x="0" y="1659" width="399" height="21"/>
+  <object x="0" y="1575" width="42" height="21"/>
+  <object x="63" y="1491" width="63" height="21"/>
+  <object x="0" y="1407" width="42" height="21"/>
+  <object x="105" y="1365" width="21" height="126"/>
+  <object x="105" y="1344" width="294" height="21"/>
+  <object x="105" y="1218" width="294" height="21"/>
+  <object x="441" y="1281" width="42" height="21"/>
+  <object x="21" y="1134" width="42" height="21"/>
+  <object x="441" y="1134" width="42" height="21"/>
+  <object x="105" y="1050" width="294" height="21"/>
+  <object x="105" y="924" width="294" height="21"/>
+  <object x="231" y="1029" width="42" height="21"/>
  </objectgroup>
  <objectgroup name="Candy" width="23" height="150">
   <object name="CandyCane" x="105" y="2835" width="21" height="63"/>
@@ -35,6 +57,22 @@
   <object name="Rancher" x="441" y="2352"/>
   <object name="Rancher" x="420" y="2310" width="21" height="21"/>
   <object name="Chocolate" x="252" y="2415" width="21" height="63"/>
+  <object name="CandyCane" x="273" y="2163" width="21" height="63"/>
+  <object name="Chocolate" x="84" y="2331" width="21" height="63"/>
+  <object name="Rancher" x="294" y="2016" width="21" height="21"/>
+  <object name="Rancher" x="294" y="2037" width="21" height="21"/>
+  <object name="Rancher" x="294" y="2058" width="21" height="21"/>
+  <object name="Chocolate" x="399" y="1659" width="84" height="21"/>
+  <object name="DoubleCandyCane" x="168" y="1596" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="189" y="1533" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="231" y="1533" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="252" y="1596" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="210" y="1470" width="42" height="63"/>
+  <object name="Chocolate" x="105" y="1239" width="42" height="105"/>
+  <object name="Chocolate" x="189" y="1239" width="42" height="105"/>
+  <object name="Chocolate" x="273" y="1239" width="42" height="105"/>
+  <object name="Chocolate" x="357" y="1239" width="42" height="105"/>
+  <object name="DoubleCandyCane" x="231" y="966" width="42" height="63"/>
  </objectgroup>
  <objectgroup name="Misc" width="23" height="150">
   <object name="Spawn" x="42" y="3003" width="21" height="63"/>
@@ -69,5 +107,9 @@
     <property name="Text" value="Good luck!"/>
    </properties>
   </object>
+  <object name="Powerup" x="21" y="2352" width="21" height="21"/>
+  <object name="Powerup" x="231" y="1428" width="21" height="21"/>
+  <object name="Powerup" x="231" y="1617" width="21" height="21"/>
+  <object name="Powerup" x="210" y="1617" width="21" height="21"/>
  </objectgroup>
 </map>

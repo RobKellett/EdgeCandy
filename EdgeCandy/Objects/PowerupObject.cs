@@ -26,9 +26,7 @@ namespace EdgeCandy.Objects
         {
             Sprite.Sprite = new Sprite(Content.Powerup)
                             {
-                                Origin =
-                                    new Vector2f(Content.Powerup.Size.X / 2,
-                                                 Content.Powerup.Size.Y / 2),
+                                Origin = new Vector2f(10.5f, 10.5f),
                                 Position = position
                             };
             Sprite.Animation = animation;

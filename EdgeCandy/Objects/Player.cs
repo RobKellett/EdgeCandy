@@ -181,8 +181,13 @@ namespace EdgeCandy.Objects
                         {
                             var candy = f.Body.UserData as CandyObject;
                             if (candy != null && candy.HitPoints > 0)
+                            {
                                 candy.Hit(1, p, direction);
-                            return 0;
+                                return 0;
+                            }
+                            if (f.Body.UserData is PlatformObject)
+                                return 0;
+                            return 1;
                         }, position, endPos);
 
                         break;

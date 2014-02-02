@@ -20,7 +20,7 @@ namespace EdgeCandy.States
         {
             var map = new MapObject(Content.Level);
             Player = new Player(map.Spawn);
-            camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 90); // could be worse
+            camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 100); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }
