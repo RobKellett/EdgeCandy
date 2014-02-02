@@ -50,7 +50,7 @@ namespace EdgeCandy.Objects
             {
                 case CandyKind.CandyCane:
                     Sprite.Sprite = new Sprite(Content.CandyCane);
-                    HitPoints = 3;
+                    HitPoints = 5;
                     break;
                 case CandyKind.Chocolate:
                     Sprite.Sprite = new Sprite(Content.Chocolate) 
@@ -64,15 +64,15 @@ namespace EdgeCandy.Objects
                     Physics.Body.Position = new Vector2(ConvertUnits.ToSimUnits(position.X + size.X / 2), ConvertUnits.ToSimUnits(position.Y + size.Y / 2));
                     RepeatsX = size.X / Content.Chocolate.Size.X;
                     RepeatsY = size.Y / Content.Chocolate.Size.Y;
-                    HitPoints = 1;
+                    HitPoints = 3;
                     break;
                 case CandyKind.DoubleCandyCane:
                     Sprite.Sprite = new Sprite(Content.DoubleCandyCane);
-                    HitPoints = 6;
+                    HitPoints = 12;
                     break;
                 case CandyKind.Rancher:
                     Sprite.Sprite = new Sprite(Content.Rancher);
-                    HitPoints = 2;
+                    HitPoints = 4;
                     density = 1;
                     break;
             }
@@ -107,12 +107,12 @@ namespace EdgeCandy.Objects
             if (HitPoints <= 0)
                 Crush(direction);
             else
-                Physics.Body.ApplyLinearImpulse(direction * Physics.Body.Mass, point);
+                Physics.Body.ApplyLinearImpulse(direction * Physics.Body.Mass * 2, point);
         }
 
         public void Slice(Vector2 entryPoint, Vector2 exitPoint, bool crush = false, Vector2 direction = default(Vector2))
         {
-            HitPoints = 0;
+            HitPoints = Math.Min(HitPoints, 1);
 
             var textureOrigin = Sprite.Sprite.Texture;
             Texture textureA, textureB;
@@ -167,7 +167,7 @@ namespace EdgeCandy.Objects
             secondFixture.LinearVelocity = fixture.Body.LinearVelocity;
             secondFixture.AngularVelocity = fixture.Body.AngularVelocity;
             secondFixture.BodyType = BodyType.Dynamic;
-            var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position) { HitPoints = 0 };
+            var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position) { HitPoints = HitPoints };
             secondFixture.UserData = secondCandy;
 
             if (crush)
@@ -218,7 +218,7 @@ namespace EdgeCandy.Objects
             if (startPoint != Vector2.Zero && endPoint != Vector2.Zero)
                 Slice(startPoint, endPoint, true);
 
-            Physics.Body.ApplyLinearImpulse(direction);
+            Physics.Body.ApplyLinearImpulse(direction * 10);
         }
 
         public void Kill()

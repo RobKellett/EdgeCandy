@@ -5,12 +5,12 @@
  </tileset>
  <layer name="Background" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzdWVtOAzEMrOgdOAk3L7R87CWogI+9BM8DkJUaKUS247GdpPBhUfYxdsbjxMkebna7+4stxW+vPSQ7CPc1vvIzt/vfz7ewEVsu+NkPhZ3ve/1o47bkgcKmcCxjydh1HhDj/EbmsvYhYXtzGhl3C9vKOfXeyLg18fTke2F+b7nPhmBH1WUEH1G57FGXHO81trYGkVqdqW8rV9y6g/CMxs1ximqSi7vGr/+n/NTXrHwvjM+oXLb0eE01j/grsaN6QWSOta7Jf63ma+yI/tLCtzYXSF/ljX1GLhH+I9dLrd8S26OViLUYGcOIOTZyzyrFXfux+v1v/ffZaNfCidYoPXqxpR5Is3edpUGplxutk+gzjijdlTGM7u0tmNS9czAnXNxROdRie/LQS9/I+SAa/4yzxyizaJCbn6Rcts4sUM64/iR6HvTUiXVN86w7T0Dc0vldPY4oDV7zmWnE2QylJ0uuOQ2iMfbIpfSdwvN9pzW2Ut8jdeL5LpOx35K9d7CPZMdkp2Tr5S9id3v+3mOy52QvQVZjHxm/XpOw6/FqOCvf8cbd4pvCtuT1VHH/OolvzbipMa4EdgsDzYE1l5ymKU6kmK31Gq0TKZcazrln6uutXEq8tuKgOCnfKblZFVxF1jwSN5pD6Xlq/u4VtzZOjZ6sfK8C/nZdqp2enJQxadbGaE56YVs4QfRt6SGo/Es+8/PlnNBTJ2uDb3SNk+ZYhFeNUT3E5j+i79RygswjNfYq+Kf0oq0dqkdGxs/FMkqDmliQnGp6H6t59yRSXkfNg5Z6qfuXHnFTfdHo+UQat5Xvnrn0xE3Vh0bf0vvWuNE+X9KJZx/CcTIjl9w4tP0bte5oxov0yBJ2fU+rl9m1g+gk4oyj555EwqfOOGbwneOwzt/a/X9vnVyLvi39iWYcmpofyXdLT1HYSA+h7d01mkfmk9a5MrXf+Uz21cG+b2LWYqtOonq2MpfevUQrbg9PG/YPDN2ZLw==
+   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
   </data>
  </layer>
  <layer name="Foreground" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzt2E0OgjAQhuFaz8PfykMQ3HkSz4qHcSULm2ChQMsUpLxPMgs3TTP9OoBKAQAAAACAFGRaqdyzCr33ruHDnNsarpzU3yIn65Rdr+6C/SoFzvxMmIPyUsxgSEaW5qSO2CuptfOROXWEfaewtrlPMfd9dpnwc9jlrWV/H5XvPOVZ/D+KSzeTegUZpq8VPRVFX+X17z993Z89k7eYz82B1ya/8lwZrCayyTuE21gfEc9cRl1ln8vYPZDS6t96Jfz9M/VMY57488kwtmfnnTPZD/9xyAmZ4xha+16C7cxl3rhd4+3hEXHtZ4S1Q9/1llRDDeoDqqxRAQ==
+   eJzt2E0OgjAQhuFaj2P4W3kGQnDHSTyrHsaVLCBBoNDClAK+TzILN02dfkxRpQAAAAAAwJlEWql4phIdepdwlXfO77bi/Ez5KJoiL+ukda8egv1KmzOAHZv5R773I0S+84UZsc1J4fH7SK0dj8ypI+z7DGu3mfe5738XCd/DJh8t+/moXOcpd/F+JJd6JnUKMtq+ZvRUFH2V133+6Wt4/Zm8xXwuD7w2+ZVnymA2kU3eIczG+gh/5jJqqv65jD0HUl76t94n/v0zdacxT9y5ZBjb6+edMwmH/zjkLJnjGFr7XoLtzGW+db/620Plce2nh7WXvuvZVEkN6gsP9FEE
   </data>
  </layer>
  <objectgroup name="Solid" width="23" height="150">
@@ -40,12 +40,14 @@
   <object x="105" y="1365" width="21" height="126"/>
   <object x="105" y="1344" width="294" height="21"/>
   <object x="105" y="1218" width="294" height="21"/>
-  <object x="441" y="1281" width="42" height="21"/>
+  <object x="441" y="1302" width="42" height="21"/>
   <object x="21" y="1134" width="42" height="21"/>
   <object x="441" y="1134" width="42" height="21"/>
   <object x="105" y="1050" width="294" height="21"/>
-  <object x="105" y="924" width="294" height="21"/>
+  <object x="147" y="924" width="210" height="21"/>
   <object x="231" y="1029" width="42" height="21"/>
+  <object x="441" y="966" width="42" height="21"/>
+  <object x="21" y="966" width="42" height="21"/>
  </objectgroup>
  <objectgroup name="Candy" width="23" height="150">
   <object name="CandyCane" x="105" y="2835" width="21" height="63"/>
@@ -111,5 +113,6 @@
   <object name="Powerup" x="231" y="1428" width="21" height="21"/>
   <object name="Powerup" x="231" y="1617" width="21" height="21"/>
   <object name="Powerup" x="210" y="1617" width="21" height="21"/>
+  <object name="Powerup" x="168" y="1008" width="21" height="21"/>
  </objectgroup>
 </map>
