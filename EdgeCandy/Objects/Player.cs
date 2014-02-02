@@ -52,8 +52,14 @@ namespace EdgeCandy.Objects
         public const float playerAirSpeed = 0.015f;
         public const float playerJumpForce = 1.5f;
 
+        public int SlicingPower
+        {
+            get; set;
+        }
+
         public Player(Vector2 spawn)
         {
+            SlicingPower = 20;
             // To locomote the player, we're going to create a model like this:
             //   +-----+
             //   |     |
@@ -161,76 +167,27 @@ namespace EdgeCandy.Objects
                 {
                     case Mouse.Button.Left:
                         if (!canAttack) break;
-
                         canAttack = false;
                         Graphics.Animation = jumpInProgress ? vSwingAerialAnimation : vSwingAnimation;
                         axis.MotorSpeed = 0;
                         attacking = true;
                         attackTimer.Start();
 
-                        var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
-                            ConvertUnits.ToSimUnits(Input.MousePosition.Y));
-                        var position = new Vector2(Torso.Position.X, Torso.Position.Y);
-                        var direction = mousePos - position;
-                        direction.Normalize();
-                        direction *= 2.5f;
-                        var endPos = position + direction;
-                        
-                        // Find the first thing hit, and if it's a candy, keep track of it.
-                        List<Fixture> fixtures = new List<Fixture>();
-                        List<Vector2> entryPoints = new List<Vector2>();
-                        List<Vector2> exitPoints = new List<Vector2>();
-
-                        //Get the entry points
-                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
-                                          {
-                                              if (f.Body.UserData is PlatformObject)
-                                              {
-                                                  return 0;
-                                              }
-                                              if (f.Body.UserData is CandyObject)
-                                              {
-                                                  fixtures.Add(f);
-                                                  entryPoints.Add(p);
-                                              }
-                                              return 1;
-                                          }, position, endPos);
-                        if (!entryPoints.Any())
-                            return;
-                        //Reverse the ray to get the exitpoints
-                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
-                                          {
-                                              if(f.Body.UserData is CandyObject)
-                                                  exitPoints.Add(p);
-                                              return 1;
-                                          }, endPos, position);
-
-                        while (fixtures.Count > exitPoints.Count)
-                        {
-                            fixtures.Remove(fixtures.Last());
-                            entryPoints.Remove(entryPoints.Last());
-                        }
-
-
-                        for (int i = 0; i < fixtures.Count; i++)
-                        {
-                            if (fixtures[i].Body.Mass < 2.5) continue;
-                            var originalCandy = fixtures[i].Body.UserData as CandyObject;
-                            Debug.Assert(originalCandy != null);
-                            originalCandy.Slice(entryPoints[i], exitPoints[i]);
-                        }
-
+                        Crush();
                         break;
                     case Mouse.Button.Middle:
+
                         break;
                     case Mouse.Button.Right:
-                        if (!canAttack) break;
+                        if (!canAttack || SlicingPower <= 5) break;
 
                         canAttack = false;
                         Graphics.Animation = jumpInProgress ? hSwingAerialAnimation : hSwingAnimation;
                         axis.MotorSpeed = 0;
                         attacking = true;
                         attackTimer.Start();
+
+                        Slice();
                         break;
                 }
             };
@@ -278,6 +235,94 @@ namespace EdgeCandy.Objects
             attackTimer.DingDingDing += (sender, args) => canAttack = true;
             jumpTimer.DingDingDing += (sender, args) => canJump = true;
             springResetTimer.DingDingDing += (sender, args) => spring.Length = 0;
+        }
+
+        public void Slice()
+        {
+            var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
+    ConvertUnits.ToSimUnits(Input.MousePosition.Y));
+            var position = new Vector2(Torso.Position.X, Torso.Position.Y);
+            var direction = mousePos - position;
+            direction.Normalize();
+            direction *= 2.5f;
+            var endPos = position + direction;
+
+            // Find the first thing hit, and if it's a candy, keep track of it.
+            List<Fixture> fixtures = new List<Fixture>();
+            List<Vector2> entryPoints = new List<Vector2>();
+            List<Vector2> exitPoints = new List<Vector2>();
+
+            //Get the entry points
+            PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+            {
+                if (f.Body.UserData is PlatformObject)
+                {
+                    return 0;
+                }
+                if (f.Body.UserData is CandyObject)
+                {
+                    fixtures.Add(f);
+                    entryPoints.Add(p);
+                }
+                return 1;
+            }, position, endPos);
+            if (!entryPoints.Any())
+                return;
+            //Reverse the ray to get the exitpoints
+            PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+            {
+                if (f.Body.UserData is CandyObject)
+                    exitPoints.Add(p);
+                return 1;
+            }, endPos, position);
+
+            while (fixtures.Count > exitPoints.Count)
+            {
+                fixtures.Remove(fixtures.Last());
+                entryPoints.Remove(entryPoints.Last());
+            }
+
+
+            for (int i = 0; i < fixtures.Count && SlicingPower >= 5; i++)
+            {
+                if (fixtures[i].Body.Mass < 2.5) continue;
+                var originalCandy = fixtures[i].Body.UserData as CandyObject;
+                Debug.Assert(originalCandy != null);
+                if (originalCandy.Slice(entryPoints[i], exitPoints[i]))
+                    SlicingPower -= 5;
+            }
+
+        }
+
+        public void Crush()
+        {
+            var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X), ConvertUnits.ToSimUnits(Input.MousePosition.Y));
+            var position = new Vector2(Torso.Position.X, Torso.Position.Y);
+            var direction = mousePos - position;
+            direction.Normalize();
+            direction *= 2.5f;
+            var endPos = position + direction;
+
+            // Find the first thing hit, and if it's a candy, keep track of it.
+            Fixture fixture = null;
+            Vector2 entryPoint = Vector2.Zero;  
+            
+            //Get the entry points
+            PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+            {
+                if (f.Body.UserData is CandyObject)
+                {
+                    fixture = f;
+                    entryPoint  = p;
+                }
+                return 0;
+            }, position, endPos);
+            if (fixture == null)
+                return;
+            
+            var originalCandy = fixture.Body.UserData as CandyObject;
+            Debug.Assert(originalCandy != null);
+            originalCandy.Crush(entryPoint, direction);
         }
 
         public override void SyncComponents()

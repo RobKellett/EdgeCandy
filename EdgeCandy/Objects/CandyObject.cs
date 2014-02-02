@@ -34,12 +34,21 @@ namespace EdgeCandy.Objects
 
         public float RepeatsX = 1, RepeatsY = 1; // 1WEEK
 
+        public double Health
+        {
+            get; set;
+        }
+
+        public double OriginalHealth
+        {
+            get; set;
+        }
+
         public CandyObject(Body body, Texture tex, Vector2 position)
         {
             Sprite.Sprite = new Sprite(tex);
             Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
             Physics.Body = body;
-
             DecayTimer.DingDingDing += (sender, args) => Kill();
         }
 
@@ -70,7 +79,8 @@ namespace EdgeCandy.Objects
                     Sprite.Sprite = new Sprite(Content.Rancher);
                     break;
             }
-
+            Health = 100;
+            OriginalHealth = 100;
             if (kind != CandyKind.Chocolate)
             {
                 Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
@@ -91,7 +101,7 @@ namespace EdgeCandy.Objects
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
         }
 
-        public void Slice(Vector2 entryPoint, Vector2 exitPoint)
+        public bool Slice(Vector2 entryPoint, Vector2 exitPoint)
         {
             var textureOrigin = Sprite.Sprite.Texture;
             Texture textureA, textureB;
@@ -115,9 +125,10 @@ namespace EdgeCandy.Objects
             var fixture = Physics.Body.FixtureList[0];
             FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixture, entryPoint, exitPoint, out first, out second);
             //Delete the original shape and create two new. Retain the properties of the body.
+            var originalArea = first.GetArea() + second.GetArea();
             if (first.GetArea() * fixture.Shape.Density < 0.5 ||
                 second.GetArea() * fixture.Shape.Density < 0.5)
-                return;
+                return false;
             if (first.CheckPolygon() == PolygonError.NoError)
             {
                 Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixture.Shape.Density * 0.9f, fixture.Body.Position);
@@ -129,7 +140,7 @@ namespace EdgeCandy.Objects
                 Physics.Body = firstFixture;
                 Sprite.Sprite.Texture = textureA;
                 RepeatsX = RepeatsY = 1; // 1WEEK
-
+                Health = OriginalHealth*(first.GetArea()/originalArea);
                 if (first.GetArea() * fixture.Shape.Density < 5)
                     DecayTimer.Start();
             }
@@ -143,12 +154,26 @@ namespace EdgeCandy.Objects
                 secondFixture.BodyType = BodyType.Dynamic;
                 var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
                 secondFixture.UserData = secondCandy;
-
+                secondCandy.Health = OriginalHealth * (second.GetArea() / originalArea);
+                secondCandy.OriginalHealth = secondCandy.Health;
                 if (second.GetArea() * fixture.Shape.Density < 5)
                     secondCandy.DecayTimer.Start();
             }
 
+            OriginalHealth = Health;
+
             PhysicsSubsystem.Instance.World.RemoveBody(fixture.Body);
+            return true;
+        }
+
+        public void Crush(Vector2 impactPoint, Vector2 direction)
+        {
+            Physics.Body.ApplyForce(direction*1500, impactPoint);
+            Health -= 10;
+            if (Health < 10)
+            {
+                Slice(impactPoint, impactPoint + direction * 10);
+            }
         }
 
         public void Kill()

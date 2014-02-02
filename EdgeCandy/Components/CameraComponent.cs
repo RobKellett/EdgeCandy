@@ -36,7 +36,7 @@ namespace EdgeCandy.Components
             // linearly decay the shake
             shake = Math.Max(0, shake - (float)elapsedTime * 2);
 
-            totalTime += (float)elapsedTime;
+            totalTime += (float)elapsedTime / 2;
             scroll = initialScroll * (float)Math.Cos((totalTime / timeToFinish) * Math.PI / 2); // TODO: fine the tuning
         }
 
