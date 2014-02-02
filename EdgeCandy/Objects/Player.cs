@@ -218,68 +218,13 @@ namespace EdgeCandy.Objects
                             entryPoints.Remove(entryPoints.Last());
                         }
 
-//                        exitPoints.Reverse();
 
                         for (int i = 0; i < fixtures.Count; i++)
                         {
                             if (fixtures[i].Body.Mass < 2.5) continue;
                             var originalCandy = fixtures[i].Body.UserData as CandyObject;
                             Debug.Assert(originalCandy != null);
-                            var textureOrigin = originalCandy.Sprite.Sprite.Texture;
-                            Texture textureA, textureB;
-                            var spriteOrigin = originalCandy.Sprite.Sprite.Origin;
-                            var relativeEntryPoint =
-                                new Vector2f(ConvertUnits.ToDisplayUnits(entryPoints[i].X - originalCandy.Physics.Position.X),
-                                                ConvertUnits.ToDisplayUnits(entryPoints[i].Y - originalCandy.Physics.Position.Y));
-                            var rotation = Transform.Identity;
-                            rotation.Rotate(-originalCandy.Sprite.Sprite.Rotation);
-                            var rotatedEntryPoint = rotation.TransformPoint(relativeEntryPoint);
-                            var startPoint = spriteOrigin + rotatedEntryPoint;
-                            var relativeExitPoint =
-                                new Vector2f(ConvertUnits.ToDisplayUnits(exitPoints[i].X - originalCandy.Physics.Position.X),
-                                                ConvertUnits.ToDisplayUnits(exitPoints[i].Y - originalCandy.Physics.Position.Y));
-                            var rotatedExitPoint = rotation.TransformPoint(relativeExitPoint);
-                            var endPoint = spriteOrigin + rotatedExitPoint; 
-                            TextureSlicer.SliceAndDice(startPoint, endPoint, textureOrigin, out textureA,
-                                out textureB, originalCandy.RepeatsX, originalCandy.RepeatsY);
-                            Vertices first;
-                            Vertices second;
-                            FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixtures[i], entryPoints[i], exitPoints[i], out first, out second);
-                            //Delete the original shape and create two new. Retain the properties of the body.
-                            if (first.GetArea()*fixtures[i].Shape.Density < 0.5 ||
-                                second.GetArea()*fixtures[i].Shape.Density < 0.5)
-                                return;
-                            if (first.CheckPolygon() == PolygonError.NoError)
-                            {
-                                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixtures[i].Shape.Density * 0.9f, fixtures[i].Body.Position);
-                                firstFixture.Rotation = fixtures[i].Body.Rotation;
-                                firstFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
-                                firstFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
-                                firstFixture.BodyType = BodyType.Dynamic;
-                                firstFixture.UserData = originalCandy;
-                                originalCandy.Physics.Body = firstFixture;
-                                originalCandy.Sprite.Sprite.Texture = textureA;
-                                originalCandy.RepeatsX = originalCandy.RepeatsY = 1; // 1WEEK
-
-                                if (first.GetArea()*fixtures[i].Shape.Density < 5)
-                                    originalCandy.DecayTimer.Start();
-                            }
-
-                            if (second.CheckPolygon() == PolygonError.NoError)
-                            {
-                                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixtures[i].Shape.Density * 0.9f, fixtures[i].Body.Position);
-                                secondFixture.Rotation = fixtures[i].Body.Rotation;
-                                secondFixture.LinearVelocity = fixtures[i].Body.LinearVelocity;
-                                secondFixture.AngularVelocity = fixtures[i].Body.AngularVelocity;
-                                secondFixture.BodyType = BodyType.Dynamic;
-                                var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
-                                secondFixture.UserData = secondCandy;
-
-                                if (second.GetArea()*fixtures[i].Shape.Density < 5)
-                                    secondCandy.DecayTimer.Start();
-                            }
-
-                            PhysicsSubsystem.Instance.World.RemoveBody(fixtures[i].Body);
+                            originalCandy.Slice(entryPoints[i], exitPoints[i]);
                         }
 
                         break;

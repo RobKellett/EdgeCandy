@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
+using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using EdgeCandy.Framework;
 using SFML.Graphics;
 using SFML.Window;
+using Transform = SFML.Graphics.Transform;
 
 namespace EdgeCandy.Objects
 {
@@ -87,6 +89,66 @@ namespace EdgeCandy.Objects
         {
             Sprite.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Physics.Position.X), ConvertUnits.ToDisplayUnits(Physics.Position.Y));
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
+        }
+
+        public void Slice(Vector2 entryPoint, Vector2 exitPoint)
+        {
+            var textureOrigin = Sprite.Sprite.Texture;
+            Texture textureA, textureB;
+            var spriteOrigin = Sprite.Sprite.Origin;
+            var relativeEntryPoint =
+                new Vector2f(ConvertUnits.ToDisplayUnits(entryPoint.X - Physics.Position.X),
+                                ConvertUnits.ToDisplayUnits(entryPoint.Y - Physics.Position.Y));
+            var rotation = Transform.Identity;
+            rotation.Rotate(-Sprite.Sprite.Rotation);
+            var rotatedEntryPoint = rotation.TransformPoint(relativeEntryPoint);
+            var startPoint = spriteOrigin + rotatedEntryPoint;
+            var relativeExitPoint =
+                new Vector2f(ConvertUnits.ToDisplayUnits(exitPoint.X - Physics.Position.X),
+                                ConvertUnits.ToDisplayUnits(exitPoint.Y - Physics.Position.Y));
+            var rotatedExitPoint = rotation.TransformPoint(relativeExitPoint);
+            var endPoint = spriteOrigin + rotatedExitPoint;
+            TextureSlicer.SliceAndDice(startPoint, endPoint, textureOrigin, out textureA,
+                out textureB, RepeatsX, RepeatsY);
+            Vertices first;
+            Vertices second;
+            var fixture = Physics.Body.FixtureList[0];
+            FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixture, entryPoint, exitPoint, out first, out second);
+            //Delete the original shape and create two new. Retain the properties of the body.
+            if (first.GetArea() * fixture.Shape.Density < 0.5 ||
+                second.GetArea() * fixture.Shape.Density < 0.5)
+                return;
+            if (first.CheckPolygon() == PolygonError.NoError)
+            {
+                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixture.Shape.Density * 0.9f, fixture.Body.Position);
+                firstFixture.Rotation = fixture.Body.Rotation;
+                firstFixture.LinearVelocity = fixture.Body.LinearVelocity;
+                firstFixture.AngularVelocity = fixture.Body.AngularVelocity;
+                firstFixture.BodyType = BodyType.Dynamic;
+                firstFixture.UserData = this;
+                Physics.Body = firstFixture;
+                Sprite.Sprite.Texture = textureA;
+                RepeatsX = RepeatsY = 1; // 1WEEK
+
+                if (first.GetArea() * fixture.Shape.Density < 5)
+                    DecayTimer.Start();
+            }
+
+            if (second.CheckPolygon() == PolygonError.NoError)
+            {
+                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixture.Shape.Density * 0.9f, fixture.Body.Position);
+                secondFixture.Rotation = fixture.Body.Rotation;
+                secondFixture.LinearVelocity = fixture.Body.LinearVelocity;
+                secondFixture.AngularVelocity = fixture.Body.AngularVelocity;
+                secondFixture.BodyType = BodyType.Dynamic;
+                var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
+                secondFixture.UserData = secondCandy;
+
+                if (second.GetArea() * fixture.Shape.Density < 5)
+                    secondCandy.DecayTimer.Start();
+            }
+
+            PhysicsSubsystem.Instance.World.RemoveBody(fixture.Body);
         }
 
         public void Kill()
