@@ -73,7 +73,7 @@ namespace EdgeCandy.Objects
                 case CandyKind.Rancher:
                     Sprite.Sprite = new Sprite(Content.Rancher);
                     HitPoints = 4;
-                    density = 1;
+                    density = 5;
                     break;
             }
 
@@ -94,7 +94,7 @@ namespace EdgeCandy.Objects
             Sprite.Sprite.Position = new Vector2f(ConvertUnits.ToDisplayUnits(Physics.Position.X), ConvertUnits.ToDisplayUnits(Physics.Position.Y));
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
 
-            if (Sprite.Sprite.Position.Y - Sprite.Sprite.Texture.Size.Y > GraphicsSubsystem.Instance.GetCameraOffset().Y + Graphics.Height)
+            if (Sprite.Sprite.Position.Y - Sprite.Sprite.Texture.Size.Y - 64 > GraphicsSubsystem.Instance.GetCameraOffset().Y + Graphics.Height)
                 Kill();
         }
 
@@ -107,7 +107,7 @@ namespace EdgeCandy.Objects
             if (HitPoints <= 0)
                 Crush(direction);
             else
-                Physics.Body.ApplyLinearImpulse(direction * Physics.Body.Mass * 2, point);
+                Physics.Body.ApplyLinearImpulse(direction * 10, point);
         }
 
         public void Slice(Vector2 entryPoint, Vector2 exitPoint, bool crush = false, Vector2 direction = default(Vector2))
