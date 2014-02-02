@@ -20,7 +20,7 @@ namespace EdgeCandy.Subsystems
 
         public void Register(string name, CameraComponent camera)
         {
-            cameraComponents.Add(name, camera);
+            cameraComponents[name] = camera;
         }
 
         public void SwitchCamera(string name)
@@ -40,7 +40,10 @@ namespace EdgeCandy.Subsystems
         {
             Clean();
 
-            Graphics.SetView(new View(new FloatRect((int)activeCameraComponent.Position.X, (int)activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
+            if (activeCameraComponent != null)
+                Graphics.SetView(new View(new FloatRect((int)activeCameraComponent.Position.X, (int)activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
+            else
+                Graphics.SetView(new View(new FloatRect(0, 0, Graphics.Width, Graphics.Height)));
 
             Graphics.Clear();
 

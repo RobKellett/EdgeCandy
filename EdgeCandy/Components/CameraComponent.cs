@@ -19,11 +19,13 @@ namespace EdgeCandy.Components
             }
         }
 
-        private float scroll, shake;
+        private float scroll, totalTime, shake;
+        private readonly float initialScroll, timeToFinish;
 
-        public CameraComponent(string name, float initialScroll)
+        public CameraComponent(string name, float initialScroll, float timeToFinish)
         {
-            scroll = initialScroll;
+            this.initialScroll = scroll = initialScroll;
+            this.timeToFinish = timeToFinish;
 
             GraphicsSubsystem.Instance.Register(name, this);
             UpdateSubsystem.Instance.Register(this);
@@ -34,7 +36,8 @@ namespace EdgeCandy.Components
             // linearly decay the shake
             shake = Math.Max(0, shake - (float)elapsedTime * 2);
 
-            scroll -= 15 * (float)elapsedTime; // TODO: fine the tuning
+            totalTime += (float)elapsedTime;
+            scroll = initialScroll * (float)Math.Cos((totalTime / timeToFinish) * Math.PI / 2); // TODO: fine the tuning
         }
 
         private float ShakeOffset()

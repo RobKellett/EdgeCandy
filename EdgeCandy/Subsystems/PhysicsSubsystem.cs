@@ -54,5 +54,12 @@ namespace EdgeCandy.Subsystems
 
             base.Unregister(component);
         }
+
+        public override void Kill()
+        {
+            _world.Clear();
+
+            base.Kill();
+        }
     }
 }

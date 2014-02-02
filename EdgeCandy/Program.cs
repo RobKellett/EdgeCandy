@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Framework;
 using EdgeCandy.Objects;
+using EdgeCandy.States;
+using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using SFML.Graphics;
 using SFML.Window;
@@ -14,10 +16,15 @@ namespace EdgeCandy
 {
     class Program
     {
-        public static Window Window
+        public static Window Window { get; set; }
+        public static IGameState GameState { get; private set; }
+
+        public static void ChangeState<T>() where T : IGameState, new()
         {
-            get;
-            set;
+            UpdateSubsystem.Instance.Kill();
+            PhysicsSubsystem.Instance.Kill();
+            GraphicsSubsystem.Instance.Kill();
+            GameState = new T();
         }
 
         static void Main(string[] args)
@@ -40,7 +47,7 @@ namespace EdgeCandy
 
                 var stopwatch = new Stopwatch();
 
-                var game = new CandyGame();
+                GameState = new GameOverState(); //new GameplayState();
 
                 while (window.IsOpen())
                 {
@@ -49,11 +56,11 @@ namespace EdgeCandy
 
                     window.DispatchEvents();
                     
-                    game.Update(elapsed);
+                    GameState.Update(elapsed);
 
                     window.Clear();
 
-                    game.Draw(elapsed);
+                    GameState.Draw(elapsed);
 
                     Graphics.RenderTo(window);
                     window.Display();

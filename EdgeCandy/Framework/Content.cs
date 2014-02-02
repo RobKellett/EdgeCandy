@@ -29,6 +29,7 @@ namespace EdgeCandy.Framework
         }
 
         public static Texture DoubleCandyCane { get; set; }
+        public static Texture Noise { get; set; }
         public static Texture Player { get; set; }
         public static Texture Powerup { get; set; }
 
@@ -71,6 +72,7 @@ namespace EdgeCandy.Framework
                 };
 
             DoubleCandyCane = new Texture("Content/Sprites/Candy/double_candy_cane.png");
+            Noise = new Texture("Content/Sprites/noise.png");
             Player = new Texture("Content/Sprites/player.png");
             Powerup = new Texture("Content/Sprites/powerup.png");
 

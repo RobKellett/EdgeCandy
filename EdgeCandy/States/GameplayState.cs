@@ -7,22 +7,20 @@ using EdgeCandy.Components;
 using EdgeCandy.Framework;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
-using SFML.Graphics;
-using SFML.Window;
+using FarseerPhysics;
 
-namespace EdgeCandy
+namespace EdgeCandy.States
 {
-    public class CandyGame
+    public class GameplayState : IGameState
     {
         private Player player;
-        public CandyGame()
+        private CameraComponent camera;
+
+        public GameplayState()
         {
-            // load content
-            //new SpriteComponent { Sprite = new Sprite(Content.TestSplash)};
             var map = new MapObject(Content.Level);
             player = new Player(map.Spawn);
-            new TextComponent { Text = new Text("Hello, world!", Content.Font, 16) };
-            new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight); // could be worse
+            camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 90); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
         }
@@ -33,11 +31,14 @@ namespace EdgeCandy
             UpdateSubsystem.Instance.Update(elapsedTime);
             PhysicsSubsystem.Instance.Update(elapsedTime);
             GameObjectSubsystem.Instance.Synchronize();
+
+            if (player.Torso.Position.Y > ConvertUnits.ToSimUnits(camera.Position.Y + Graphics.Height) + 1)
+                Program.ChangeState<GameOverState>();
         }
 
         public void Draw(double elapsedTime)
         {
-            // render
+            // draw
             GraphicsSubsystem.Instance.Draw();
         }
     }

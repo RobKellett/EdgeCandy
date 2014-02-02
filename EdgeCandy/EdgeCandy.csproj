@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CandyGame.cs" />
     <Compile Include="Components\AnimatableGraphicsComponent.cs" />
     <Compile Include="Components\CameraComponent.cs" />
     <Compile Include="Components\GraphicsComponent.cs" />
@@ -88,6 +87,9 @@
     <Compile Include="Objects\WallObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\GameOverState.cs" />
+    <Compile Include="States\GameplayState.cs" />
+    <Compile Include="States\IGameState.cs" />
     <Compile Include="Subsystems\GameObjectSubsystem.cs" />
     <Compile Include="Subsystems\GraphicsSubsystem.cs" />
     <Compile Include="Subsystems\PhysicsSubsystem.cs" />
@@ -136,6 +138,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\deathsphere.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\noise.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\player.png">

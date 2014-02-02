@@ -54,5 +54,11 @@ namespace EdgeCandy.Subsystems
             componentsToAdd.Clear();
             componentsOutToPasture.Clear();
         }
+
+        public virtual void Kill()
+        {
+            componentsToAdd.Clear();
+            componentsOutToPasture.AddRange(components);
+        }
     }
 }

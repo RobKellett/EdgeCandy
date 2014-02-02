@@ -5,12 +5,12 @@
  </tileset>
  <layer name="Background" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzdWkFOxDAMXC1f4u0LDwEOfQbwABaJSpFlO+OxnXY5RFp1W2cyntiJk9v1cnlJtk159npvt7/fz0/2t95/4zvje7vtzekfxSu/HXFXt5nt6DiOwI1iRPwawR3l5rd/zXaGYxS3NnaUD8v2CtwrbI/jyHLCtFmsYm1Y40FsR3jQbEe+R2MxGr+7dFLlSwa79U3X3NkM2yj2WWxgcFfH7yN1onGVnfMeP3J9wvhMvovgtjBpfaFxUFsrbcbzbl/u45PjnNn2fOVht9YQVe0/2s6uU7rWgxWceH0e7ctIrrDy/GwuRPnP5DTZV+U+bYbhaF9KnGfOxcw89Hzp5VlNB1lOUM1X7Bu6dBLFHpmX2nM2Dnbnhkeon6yyXVEviO7nuzkZtbj/1uoJ3jo2u5e1YlXFHplZ26N+8fYkbE7O+LJTJ6iGpO3onmYlbs+XlfUZjxOEU4aT2ffe2tOb816L+HelBqOcrsT9qLYrYxVS95F9dnFy1FkGa5vBi/Id0UCWk5V8R+PvKn1nuD0T38i4tTFq9diqPMzmNIYTtjbqYV+pE/T+API840umpmTt0ZE6R+Wcj+DO3LVAOOnCjeJE/M7ilrVX6c+jzhuOXGuuOjtCbVeu29A6G1KDHGNCp06ss2hWK9Gzug6+K9adKCfMnlyrzSB5uXPuaLW2KtuzJjWIYImMibk3E/Wlp6XZc8uvZ7vjZ2HuulNZfQ4ofSHn1dnq35W22bpe5AwmOr+yeQc988rkePaOX4cvrXG8K82zHTn3R33B3IE68zk3q5PRBx+k7c49iWefvStXzfeOQ9O113a+o/m3Sydn0fcbwSUyDmTOr+R7pqcq24gGZd8zjhDNR+LJrK6s7Xc+7+2roX1fa3Ixq5OqNdvoy8pzkkrMu+0f5nuhAQ==
+   eJzdWkFOxDAMXC1f2rcvPAT20GcAD6BIVIoi2xmP7aTLIRIq2+lk7NiOk/v1cnkNjk149raP+9/ftxf9Xet/7W/a3x3Ym/F9lG//bss7e4ywvfNYwRvliNjVw9urze/3JeyIxihvae6oHhr2DN4zsNt5RDVhxihWsRjafBBsjw4Stud9NBaj8bvKT7JsyXDX3qlaO5uCjXIfxQaGd3b8XuknklbRNW/p09cnjM363yK8NU7St9A4KNVKm/K82pbH/Pp5jrAtW1nctRoia/xH7GidUlUPZmhifXO1LT25Qsvzo7Xg1T+S0/pvZe7TRhxW27LneeZczKxDy5ZWnpX8IKoJ6vMZ+4YqP/Fy96xL6TkbB6tzwzP0T2ZhZ/QLvPv5ak1aXzz+lvoJVh0b3ctqsSpjj8zU9qhdrD0Jm5Mjtqz0E9SHemzvnmYmb8uWmf0ZSxNEU0aT0ftW7WmteWt47DvTB72azuT9rNiZsQrp+/TfrNJk1VkGi83wRfX2+EBUk5l6e+PvLP+OaHsmvZF5S3OU+rFZeZjNaYwmbG/U4j7TT9D7A8jziC2ZnpK2R0f6HJlr3sM7ctcC0aSKN8oTsTvLu++99vZcdd6wstacdXaEYmfWbWifDelBtjGh0k+0s2jWV7xndRV6Z9SdqCbMnlzqzSB5uXLtSL22LOzR6H0Q4eKZE3NvxmPL9318kMOy69nu+Ek+Kb2fed+HwWZt8QCwZ/a/M7HZvp7m3xKud31F8w565hXJ8ewdvwpbavPQ4oqG7Tn3R23B3IE68zk36yfeeILaIJP36N7Yar0PHmz89pxtV/rJWfybqU+QeSBrfqbeI3/KwvbUEGjtjvi8J56M+srSfudzH18F4/uak4tZP8mq2VpbZp6TZHI+sH8A5DimWw==
   </data>
  </layer>
  <layer name="Foreground" width="23" height="150">
   <data encoding="base64" compression="zlib">
-   eJzt1DEKgDAMBdAUD6ROnsLRk3h/cBKkBbVC6eB78NcQkpAIAAAAAAAAAAAAAADujCliumROvTv6r3wXfJfP8k0o1c7Q/+jn6eZPy9Cuh61h7b1B7dr7rskqRQ7M6CKv
+   eJzt1jsKgDAQBUA/B1IrT2HpSTyrnsfKQiMo0fiBGXhdWEJ2CZtlAAAAAAAAAAAAAP9Q53Fp8nWdaufMXcZinam4r/bX7L3j2RA6mlvetZ13/XnPthfEi/nHCV3dS3jO0cwv2jLdHfqEtYcEtWN3vTPpJMgMPT8uiw==
   </data>
  </layer>
  <objectgroup name="Solid" width="23" height="150">
@@ -20,10 +20,21 @@
   <object x="210" y="2814" width="273" height="21"/>
   <object x="399" y="2730" width="84" height="21"/>
   <object x="252" y="2646" width="105" height="21"/>
+  <object x="0" y="2562" width="105" height="21"/>
+  <object x="168" y="2478" width="315" height="21"/>
+  <object x="0" y="2394" width="315" height="21"/>
+  <object x="378" y="2394" width="105" height="21"/>
  </objectgroup>
  <objectgroup name="Candy" width="23" height="150">
   <object name="CandyCane" x="105" y="2835" width="21" height="63"/>
   <object name="DoubleCandyCane" x="315" y="2751" width="42" height="63"/>
+  <object name="Rancher" x="399" y="2373" width="21" height="21"/>
+  <object name="Rancher" x="420" y="2373" width="21" height="21"/>
+  <object name="Rancher" x="441" y="2373" width="21" height="21"/>
+  <object name="Rancher" x="420" y="2352"/>
+  <object name="Rancher" x="441" y="2352"/>
+  <object name="Rancher" x="420" y="2310" width="21" height="21"/>
+  <object name="Chocolate" x="252" y="2415" width="21" height="63"/>
  </objectgroup>
  <objectgroup name="Misc" width="23" height="150">
   <object name="Spawn" x="42" y="3003" width="21" height="63"/>
@@ -51,6 +62,11 @@
   <object name="Text" x="231" y="2562" width="42" height="21">
    <properties>
     <property name="Text" value="Slicing uses up Power Canes"/>
+   </properties>
+  </object>
+  <object name="Text" x="189" y="2310" width="42" height="21">
+   <properties>
+    <property name="Text" value="Good luck!"/>
    </properties>
   </object>
  </objectgroup>
