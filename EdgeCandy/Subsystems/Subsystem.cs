@@ -15,6 +15,8 @@ namespace EdgeCandy.Subsystems
     {
         private static T instance;
         protected List<U> components = new List<U>();
+        protected List<U> componentsToAdd = new List<U>(); 
+        protected List<U> componentsOutToPasture = new List<U>();
 
         /// <summary>
         /// Singleton Instance
@@ -33,7 +35,24 @@ namespace EdgeCandy.Subsystems
         /// <param name="component">The component to register</param>
         public virtual void Register(U component)
         {
-            components.Add(component);
+            componentsToAdd.Add(component);
+        }
+
+        public virtual void Unregister(U component)
+        {
+            componentsOutToPasture.Add(component);
+        }
+
+        public virtual void Clean()
+        {
+            foreach (var component in componentsToAdd)
+                components.Add(component);
+
+            foreach (var component in componentsOutToPasture)
+                components.Remove(component);
+
+            componentsToAdd.Clear();
+            componentsOutToPasture.Clear();
         }
     }
 }

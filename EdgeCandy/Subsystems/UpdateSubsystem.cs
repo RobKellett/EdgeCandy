@@ -13,6 +13,8 @@ namespace EdgeCandy.Subsystems
         {
             foreach (var component in components)
                 component.Update(elapsedTime);
+
+            Clean();
         }
     }
 }

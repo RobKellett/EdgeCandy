@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -16,6 +17,7 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using SFML.Graphics;
 using SFML.Window;
+using Transform = SFML.Graphics.Transform;
 
 namespace EdgeCandy.Objects
 {
@@ -165,6 +167,59 @@ namespace EdgeCandy.Objects
                         axis.MotorSpeed = 0;
                         attacking = true;
                         attackTimer.Start();
+
+                        var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
+                            ConvertUnits.ToSimUnits(Input.MousePosition.Y));
+                        var position = new Vector2(Torso.Position.X, Torso.Position.Y);
+                        var direction = mousePos - position;
+                        direction.Normalize();
+                        direction *= 2.5f;
+                        var endPos = position + direction;
+                        
+                        // Find the first thing hit, and if it's a candy, keep track of it.
+                        List<Fixture> fixtures = new List<Fixture>();
+                        List<Vector2> entryPoints = new List<Vector2>();
+                        List<Vector2> exitPoints = new List<Vector2>();
+
+                        //Get the entry points
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+                                          {
+                                              if (f.Body.UserData is PlatformObject)
+                                              {
+                                                  return 0;
+                                              }
+                                              if (f.Body.UserData is CandyObject)
+                                              {
+                                                  fixtures.Add(f);
+                                                  entryPoints.Add(p);
+                                              }
+                                              return 1;
+                                          }, position, endPos);
+                        if (!entryPoints.Any())
+                            return;
+                        //Reverse the ray to get the exitpoints
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+                                          {
+                                              if(f.Body.UserData is CandyObject)
+                                                  exitPoints.Add(p);
+                                              return 1;
+                                          }, endPos, position);
+
+                        while (fixtures.Count > exitPoints.Count)
+                        {
+                            fixtures.Remove(fixtures.Last());
+                            entryPoints.Remove(entryPoints.Last());
+                        }
+
+
+                        for (int i = 0; i < fixtures.Count; i++)
+                        {
+                            if (fixtures[i].Body.Mass < 2.5) continue;
+                            var originalCandy = fixtures[i].Body.UserData as CandyObject;
+                            Debug.Assert(originalCandy != null);
+                            originalCandy.Slice(entryPoints[i], exitPoints[i]);
+                        }
+
                         break;
                     case Mouse.Button.Middle:
                         break;
@@ -192,8 +247,8 @@ namespace EdgeCandy.Objects
 
             Legs.Body.OnCollision += (a, b, c) =>
             {
-                dynamic userData = a.Body.UserData ?? b.Body.UserData;
-                if ((userData == null || !userData.isWall))
+                var userData = (a.Body.UserData ?? b.Body.UserData) as WallObject;
+                if (userData == null)
                 {
                     jumpInProgress = false;
                     Legs.Body.Friction = c.Friction = 1000;

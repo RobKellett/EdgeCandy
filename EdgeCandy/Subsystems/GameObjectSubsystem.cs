@@ -18,6 +18,8 @@ namespace EdgeCandy.Subsystems
         {
             foreach(var obj in components)
                 obj.SyncComponents();
+
+            Clean();
         }
     }
 }

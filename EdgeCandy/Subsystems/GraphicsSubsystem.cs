@@ -38,6 +38,8 @@ namespace EdgeCandy.Subsystems
         /// </summary>
         public void Draw()
         {
+            Clean();
+
             Graphics.SetView(new View(new FloatRect((int)activeCameraComponent.Position.X, (int)activeCameraComponent.Position.Y, Graphics.Width, Graphics.Height)));
 
             Graphics.Clear();

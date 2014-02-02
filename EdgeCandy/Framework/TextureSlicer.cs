@@ -14,7 +14,7 @@ namespace EdgeCandy.Framework
     public static class TextureSlicer
     {
         public static void SliceAndDice(Vector2f startPoint, Vector2f endPoint, Texture victim, out Texture sliceA,
-                                        out Texture sliceB)
+                                        out Texture sliceB, float repeatsX, float repeatsY)
         {
             //startPoint = new Vector2f(ConvertUnits.ToDisplayUnits(startPoint.X),
             //                          ConvertUnits.ToDisplayUnits(startPoint.Y));
@@ -22,18 +22,23 @@ namespace EdgeCandy.Framework
             //                          ConvertUnits.ToDisplayUnits(endPoint.Y));
 
             var input = victim.CopyToImage();
-            var outputA = new Image(input.Size.X, input.Size.Y, Color.Transparent);
-            var outputB = new Image(input.Size.X, input.Size.Y, Color.Transparent);
 
-            for (uint y = 0; y < input.Size.Y; y++)
+            var outputA = new Image((uint)(input.Size.X * repeatsX), (uint)(input.Size.Y * repeatsY), Color.Transparent);
+            var outputB = new Image((uint)(input.Size.X * repeatsX), (uint)(input.Size.Y * repeatsY), Color.Transparent);
+
+            for (uint y = 0; y < input.Size.Y * repeatsY; y++)
             {
-                for (uint x = 0; x < input.Size.X; x++)
+                for (uint x = 0; x < input.Size.X * repeatsX; x++)
                 {
                     var pos = new Vector2f(x, y);
+                    var start = new Vector2(startPoint.X, startPoint.Y);
+                    var end = new Vector2(endPoint.X, endPoint.Y);
+                    var line = end - start;
+                    line.Normalize();
                     if (WhichSideOfLine(startPoint, endPoint, pos))
-                        outputA.SetPixel(x, y, input.GetPixel(x, y));
+                        outputA.SetPixel(x, y, input.GetPixel(x % input.Size.X, y % input.Size.Y));
                     else
-                        outputB.SetPixel(x, y, input.GetPixel(x, y));
+                        outputB.SetPixel(x, y, input.GetPixel(x % input.Size.X, y % input.Size.Y));
                 }
             }
             
