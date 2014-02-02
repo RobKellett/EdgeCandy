@@ -182,42 +182,8 @@ namespace EdgeCandy.Objects
                         direction.Normalize();
                         direction *= 2.5f;
                         var endPos = position + direction;
-//                        mousePos.Normalize();
-//                        mousePos *= 10;
-                        ////PhysicsSubsystem.Instance.World.RayCast((fix, point, floatA, floatB) =>
-                        ////{
-                        ////    var userData = fix.Body.UserData as CandyObject;
-                        ////    if (floatB != 1 && userData != null)
-                        ////    {
-
-                        ////        Vertices first;
-                        ////        Vertices second;
-                        ////        FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fix, );
-                        ////        textureA.CopyToImage().SaveToFile("a.png");
-                        ////        textureB.CopyToImage().SaveToFile("b.png");
-                        ////        var pos = point; //ConvertUnits.ToDisplayUnits(point);
-                        ////        new RectangleCompontent(Color.White)
-                        ////        {
-                        ////            Rectangle = new FloatRect(pos.X, pos.Y, 0.1f, 0.1f)
-                        ////        };
-                        ////    }
-                        //    return 0;
-                        //}, 
-                        //position, position + direction);
                         
                         // Find the first thing hit, and if it's a candy, keep track of it.
-                        Vector2 hitPoint;
-                        Fixture candyHit;
-                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
-                        {
-                            if (f.Body.UserData is CandyObject)
-                            {
-                                hitPoint = p;
-                                candyHit = f;
-                            }
-                            return 0;
-                        }, position, position + direction);
-
                         List<Fixture> fixtures = new List<Fixture>();
                         List<Vector2> entryPoints = new List<Vector2>();
                         List<Vector2> exitPoints = new List<Vector2>();
@@ -225,6 +191,10 @@ namespace EdgeCandy.Objects
                         //Get the entry points
                         PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
                                           {
+                                              if (f.Body.UserData is PlatformObject)
+                                              {
+                                                  return 0;
+                                              }
                                               if (f.Body.UserData is CandyObject)
                                               {
                                                   fixtures.Add(f);
@@ -232,7 +202,8 @@ namespace EdgeCandy.Objects
                                               }
                                               return 1;
                                           }, position, endPos);
-
+                        if (!entryPoints.Any())
+                            return;
                         //Reverse the ray to get the exitpoints
                         PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
                                           {
