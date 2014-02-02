@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
+using EdgeCandy.States;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using FarseerPhysics.Common;
@@ -30,25 +31,26 @@ namespace EdgeCandy.Objects
     {
         public SpriteComponent Sprite = new SpriteComponent();
         public PhysicsComponent Physics = new PhysicsComponent();
-        public TimerComponent DecayTimer = new TimerComponent(5);
 
         public float RepeatsX = 1, RepeatsY = 1; // 1WEEK
+
+        public float HitPoints;
 
         public CandyObject(Body body, Texture tex, Vector2 position)
         {
             Sprite.Sprite = new Sprite(tex);
             Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
             Physics.Body = body;
-
-            DecayTimer.DingDingDing += (sender, args) => Kill();
         }
 
         public CandyObject(CandyKind kind, Vector2 position, Vector2 size = default(Vector2))
         {
+            var density = 25f;
             switch (kind)
             {
                 case CandyKind.CandyCane:
                     Sprite.Sprite = new Sprite(Content.CandyCane);
+                    HitPoints = 3;
                     break;
                 case CandyKind.Chocolate:
                     Sprite.Sprite = new Sprite(Content.Chocolate) 
@@ -62,12 +64,16 @@ namespace EdgeCandy.Objects
                     Physics.Body.Position = new Vector2(ConvertUnits.ToSimUnits(position.X + size.X / 2), ConvertUnits.ToSimUnits(position.Y + size.Y / 2));
                     RepeatsX = size.X / Content.Chocolate.Size.X;
                     RepeatsY = size.Y / Content.Chocolate.Size.Y;
+                    HitPoints = 1;
                     break;
                 case CandyKind.DoubleCandyCane:
                     Sprite.Sprite = new Sprite(Content.DoubleCandyCane);
+                    HitPoints = 6;
                     break;
                 case CandyKind.Rancher:
                     Sprite.Sprite = new Sprite(Content.Rancher);
+                    HitPoints = 2;
+                    density = 2;
                     break;
             }
 
@@ -75,14 +81,12 @@ namespace EdgeCandy.Objects
             {
                 Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
                 Physics.Body = BodyFactory.CreateRectangle(PhysicsSubsystem.Instance.World, ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.X),
-                                                           ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.Y), 25);
+                                                           ConvertUnits.ToSimUnits(Sprite.Sprite.Texture.Size.Y), density);
                 Physics.Body.Position = ConvertUnits.ToSimUnits(position);
 
                 Physics.Body.BodyType = BodyType.Dynamic;
             }
             Physics.Body.UserData = this;
-
-            DecayTimer.DingDingDing += (sender, args) => Kill();
         }
 
         public override void SyncComponents()
@@ -91,8 +95,22 @@ namespace EdgeCandy.Objects
             Sprite.Sprite.Rotation = MathHelper.ToDegrees(Physics.Rotation);
         }
 
-        public void Slice(Vector2 entryPoint, Vector2 exitPoint)
+        public void Hit(float damage, Vector2 point, Vector2 direction)
         {
+            if (HitPoints <= 0) return;
+
+            HitPoints -= damage;
+
+            if (HitPoints <= 0)
+                Crush(direction);
+            else
+                Physics.Body.ApplyLinearImpulse(direction * Physics.Body.Mass, point);
+        }
+
+        public void Slice(Vector2 entryPoint, Vector2 exitPoint, bool crush = false, Vector2 direction = default(Vector2))
+        {
+            HitPoints = 0;
+
             var textureOrigin = Sprite.Sprite.Texture;
             Texture textureA, textureB;
             var spriteOrigin = Sprite.Sprite.Origin;
@@ -115,47 +133,95 @@ namespace EdgeCandy.Objects
             var fixture = Physics.Body.FixtureList[0];
             FarseerPhysics.Common.PolygonManipulation.CuttingTools.SplitShape(fixture, entryPoint, exitPoint, out first, out second);
             //Delete the original shape and create two new. Retain the properties of the body.
-            if (first.GetArea() * fixture.Shape.Density < 0.5 ||
-                second.GetArea() * fixture.Shape.Density < 0.5)
+            if (first.GetArea() < 0.005f ||
+                second.GetArea() < 0.005f || first.CheckPolygon() != PolygonError.NoError ||
+                second.CheckPolygon() != PolygonError.NoError)
                 return;
-            if (first.CheckPolygon() == PolygonError.NoError)
+
+            Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, 1f,
+                                                            fixture.Body.Position);
+            firstFixture.Rotation = fixture.Body.Rotation;
+            firstFixture.LinearVelocity = fixture.Body.LinearVelocity;
+            firstFixture.AngularVelocity = fixture.Body.AngularVelocity;
+            firstFixture.BodyType = BodyType.Dynamic;
+            firstFixture.UserData = this;
+            Physics.Body = firstFixture;
+            Sprite.Sprite.Texture = textureA;
+            RepeatsX = RepeatsY = 1; // 1WEEK
+
+            if (first.GetArea() < 0.1f)
             {
-                Body firstFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, first, fixture.Shape.Density * 0.9f, fixture.Body.Position);
-                firstFixture.Rotation = fixture.Body.Rotation;
-                firstFixture.LinearVelocity = fixture.Body.LinearVelocity;
-                firstFixture.AngularVelocity = fixture.Body.AngularVelocity;
-                firstFixture.BodyType = BodyType.Dynamic;
-                firstFixture.UserData = this;
-                Physics.Body = firstFixture;
-                Sprite.Sprite.Texture = textureA;
-                RepeatsX = RepeatsY = 1; // 1WEEK
-
-                if (first.GetArea() * fixture.Shape.Density < 5)
-                    DecayTimer.Start();
+                Physics.Body.IgnoreCollisionWith(GameplayState.Player.Torso.Body);
+                Physics.Body.IgnoreCollisionWith(GameplayState.Player.Legs.Body);
+                Physics.Body.IgnoreCollisionWith(GameplayState.Player.Piston.Body);
             }
+            else if (crush)
+                Crush(direction);
 
-            if (second.CheckPolygon() == PolygonError.NoError)
+            Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, 1f,
+                                                            fixture.Body.Position);
+            secondFixture.Rotation = fixture.Body.Rotation;
+            secondFixture.LinearVelocity = fixture.Body.LinearVelocity;
+            secondFixture.AngularVelocity = fixture.Body.AngularVelocity;
+            secondFixture.BodyType = BodyType.Dynamic;
+            var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position) { HitPoints = 0 };
+            secondFixture.UserData = secondCandy;
+
+            if (second.GetArea() < 0.05f)
             {
-                Body secondFixture = BodyFactory.CreatePolygon(PhysicsSubsystem.Instance.World, second, fixture.Shape.Density * 0.9f, fixture.Body.Position);
-                secondFixture.Rotation = fixture.Body.Rotation;
-                secondFixture.LinearVelocity = fixture.Body.LinearVelocity;
-                secondFixture.AngularVelocity = fixture.Body.AngularVelocity;
-                secondFixture.BodyType = BodyType.Dynamic;
-                var secondCandy = new CandyObject(secondFixture, textureB, secondFixture.Position);
-                secondFixture.UserData = secondCandy;
-
-                if (second.GetArea() * fixture.Shape.Density < 5)
-                    secondCandy.DecayTimer.Start();
+                secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Torso.Body);
+                secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Legs.Body);
+                secondCandy.Physics.Body.IgnoreCollisionWith(GameplayState.Player.Piston.Body);
             }
+            else if (crush)
+                secondCandy.Crush(direction);
 
             PhysicsSubsystem.Instance.World.RemoveBody(fixture.Body);
+        }
+
+        private void Crush(Vector2 direction)
+        {
+            var rotation = Transform.Identity;
+            rotation.Rotate((float)Content.Random.NextDouble() * 180); // 1WEEK
+
+            var start = rotation.TransformPoint(-5, 0);
+            var end = rotation.TransformPoint(5, 0);
+
+            Vector2 startPoint = Vector2.Zero, endPoint = Vector2.Zero;
+
+            PhysicsSubsystem.Instance.World.RayCast((fixture, pos, arg3, arg4) =>
+                                                    {
+                                                        if (fixture.Body.UserData == this)
+                                                        {
+                                                            startPoint = pos;
+                                                            return 0;
+                                                        }
+
+                                                        return 1;
+                                                    }, Physics.Body.Position + new Vector2(start.X, start.Y),
+                                                    Physics.Body.Position + new Vector2(end.X, end.Y));
+            PhysicsSubsystem.Instance.World.RayCast((fixture, pos, arg3, arg4) =>
+                                                    {
+                                                        if (fixture.Body.UserData == this)
+                                                        {
+                                                            endPoint = pos;
+                                                            return 0;
+                                                        }
+
+                                                        return 1;
+                                                    }, Physics.Body.Position + new Vector2(end.X, end.Y),
+                                                    Physics.Body.Position + new Vector2(start.X, start.Y));
+
+            if (startPoint != Vector2.Zero && endPoint != Vector2.Zero)
+                Slice(startPoint, endPoint, true);
+
+            Physics.Body.ApplyLinearImpulse(direction);
         }
 
         public void Kill()
         {
             GraphicsSubsystem.Instance.Unregister(Sprite);
             PhysicsSubsystem.Instance.Unregister(Physics);
-            UpdateSubsystem.Instance.Unregister(DecayTimer);
             GameObjectSubsystem.Instance.Unregister(this);
             //this = null; // SEPPUKU
         }

@@ -12,7 +12,7 @@ namespace EdgeCandy.Framework
     public static class Content
     {
         // These properties are ordered by type, then by name
-        private static Random rand = new Random();
+        public static Random Random = new Random();
 
         #region Fonts
         public static Font Font { get; set; }
@@ -25,7 +25,7 @@ namespace EdgeCandy.Framework
         private static Texture[] chocolates;
         public static Texture Chocolate
         {
-            get { return chocolates[rand.Next(chocolates.Length)]; }
+            get { return chocolates[Random.Next(chocolates.Length)]; }
         }
 
         public static Texture DoubleCandyCane { get; set; }
@@ -36,7 +36,7 @@ namespace EdgeCandy.Framework
         private static Texture[] ranchers;
         public static Texture Rancher
         {
-            get { return ranchers[rand.Next(ranchers.Length)]; }
+            get { return ranchers[Random.Next(ranchers.Length)]; }
         }
         public static Texture Tileset { get; set; }
 

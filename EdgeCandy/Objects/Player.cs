@@ -156,7 +156,9 @@ namespace EdgeCandy.Objects
             };
 
             Input.MouseInput += (btn) =>
-            {
+                                {
+                Vector2 mousePos, position, direction, endPos;
+
                 switch (btn)
                 {
                     case Mouse.Button.Left:
@@ -168,13 +170,40 @@ namespace EdgeCandy.Objects
                         attacking = true;
                         attackTimer.Start();
 
-                        var mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
+                        mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
                             ConvertUnits.ToSimUnits(Input.MousePosition.Y));
-                        var position = new Vector2(Torso.Position.X, Torso.Position.Y);
-                        var direction = mousePos - position;
+                        position = new Vector2(Torso.Position.X, Torso.Position.Y);
+                        direction = mousePos - position;
+                        direction.Normalize();
+                        endPos = position + (direction * 2.5f);
+
+                        PhysicsSubsystem.Instance.World.RayCast((f, p, n, fr) =>
+                        {
+                            var candy = f.Body.UserData as CandyObject;
+                            if (candy != null && candy.HitPoints > 0)
+                                candy.Hit(1, p, direction);
+                            return 0;
+                        }, position, endPos);
+
+                        break;
+                    case Mouse.Button.Middle:
+                        break;
+                    case Mouse.Button.Right:
+                        if (!canAttack) break;
+
+                        canAttack = false;
+                        Graphics.Animation = jumpInProgress ? hSwingAerialAnimation : hSwingAnimation;
+                        axis.MotorSpeed = 0;
+                        attacking = true;
+                        attackTimer.Start();
+
+                        mousePos = new Vector2(ConvertUnits.ToSimUnits(Input.MousePosition.X),
+                            ConvertUnits.ToSimUnits(Input.MousePosition.Y));
+                        position = new Vector2(Torso.Position.X, Torso.Position.Y);
+                        direction = mousePos - position;
                         direction.Normalize();
                         direction *= 2.5f;
-                        var endPos = position + direction;
+                        endPos = position + direction;
                         
                         // Find the first thing hit, and if it's a candy, keep track of it.
                         List<Fixture> fixtures = new List<Fixture>();
@@ -220,17 +249,6 @@ namespace EdgeCandy.Objects
                             originalCandy.Slice(entryPoints[i], exitPoints[i]);
                         }
 
-                        break;
-                    case Mouse.Button.Middle:
-                        break;
-                    case Mouse.Button.Right:
-                        if (!canAttack) break;
-
-                        canAttack = false;
-                        Graphics.Animation = jumpInProgress ? hSwingAerialAnimation : hSwingAnimation;
-                        axis.MotorSpeed = 0;
-                        attacking = true;
-                        attackTimer.Start();
                         break;
                 }
             };

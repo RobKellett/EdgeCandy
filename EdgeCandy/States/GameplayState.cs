@@ -13,13 +13,13 @@ namespace EdgeCandy.States
 {
     public class GameplayState : IGameState
     {
-        private Player player;
+        public static Player Player;
         private CameraComponent camera;
 
         public GameplayState()
         {
             var map = new MapObject(Content.Level);
-            player = new Player(map.Spawn);
+            Player = new Player(map.Spawn);
             camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 90); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
@@ -32,7 +32,7 @@ namespace EdgeCandy.States
             PhysicsSubsystem.Instance.Update(elapsedTime);
             GameObjectSubsystem.Instance.Synchronize();
 
-            if (player.Torso.Position.Y > ConvertUnits.ToSimUnits(camera.Position.Y + Graphics.Height) + 1)
+            if (Player.Torso.Position.Y > ConvertUnits.ToSimUnits(camera.Position.Y + Graphics.Height) + 1)
                 Program.ChangeState<GameOverState>();
         }
 
