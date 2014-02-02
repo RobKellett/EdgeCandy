@@ -52,6 +52,10 @@ namespace EdgeCandy.Objects
         public const float playerAirSpeed = 0.015f;
         public const float playerJumpForce = 1.5f;
 
+        public double Slicing
+        {
+            get; set;
+        }
         public Player(Vector2 spawn)
         {
             // To locomote the player, we're going to create a model like this:
@@ -69,6 +73,7 @@ namespace EdgeCandy.Objects
             Torso.Body.BodyType = BodyType.Dynamic;
             Torso.Body.FixedRotation = true;
             Torso.Body.Friction = 0;
+            Torso.Body.UserData = this;
 
             Legs.Body = BodyFactory.CreateCircle(PhysicsSubsystem.Instance.World, playerWidth/2, 4f, new Vector2(spawn.X, spawn.Y + torsoHeight / 2 + playerWidth / 4));
             Legs.Body.BodyType = BodyType.Dynamic;
@@ -99,6 +104,8 @@ namespace EdgeCandy.Objects
             Graphics.Animation = standingAnimation;
             Graphics.FrameSize = new Vector2i(64, 64);
             Graphics.Sprite.Origin = new Vector2f(32, 40);
+
+            Slicing = 45;
 
             bool jumpInProgress = false, canJump = true, attacking = false, canAttack = true; // 1WEEK
             // Map the input to the legs
@@ -194,7 +201,7 @@ namespace EdgeCandy.Objects
                     case Mouse.Button.Middle:
                         break;
                     case Mouse.Button.Right:
-                        if (!canAttack) break;
+                        if (!canAttack || Slicing <= 0) break;
 
                         canAttack = false;
                         Graphics.Animation = jumpInProgress ? hSwingAerialAnimation : hSwingAnimation;
@@ -251,6 +258,7 @@ namespace EdgeCandy.Objects
                             if (fixtures[i].Body.Mass < 2.5) continue;
                             var originalCandy = fixtures[i].Body.UserData as CandyObject;
                             Debug.Assert(originalCandy != null);
+                            Slicing -= originalCandy.Physics.Body.Mass;
                             originalCandy.Slice(entryPoints[i], exitPoints[i]);
                         }
 

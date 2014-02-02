@@ -40,6 +40,24 @@ namespace EdgeCandy.Objects
 
             var sensor = FixtureFactory.AttachRectangle(.5f, .5f, 0, Vector2.Zero, Physics.Body);
             sensor.IsSensor = true;
+            sensor.OnCollision += (a, b, contact) =>
+            {
+                var player = (a.Body.UserData as Player) ?? (b.Body.UserData as Player);
+                if (player != null)
+                {
+                    player.Slicing += 60;
+                    Kill();
+                }
+                return true;
+            };
+        }
+
+        public void Kill()
+        {
+            GraphicsSubsystem.Instance.Unregister(Sprite);
+            PhysicsSubsystem.Instance.Unregister(Physics);
+            GameObjectSubsystem.Instance.Unregister(this);
+            //this = null; // SEPPUKU
         }
 
         public override void SyncComponents()
