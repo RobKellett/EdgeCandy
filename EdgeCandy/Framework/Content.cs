@@ -50,13 +50,13 @@ namespace EdgeCandy.Framework
         public static Music Music { get; set; }
         #endregion
 
-        #region SoundBuffers
-        public static SoundBuffer Jump { get; set; }
-        public static SoundBuffer NoiseSound { get; set; }
-        public static SoundBuffer Hit { get; set; }
-        public static SoundBuffer PowerupSound { get; set; }
-        public static SoundBuffer Shatter { get; set; }
-        public static SoundBuffer Slice { get; set; }
+        #region Sounds
+        public static Sound JumpSound { get; set; }
+        public static Sound NoiseSound { get; set; }
+        public static Sound HitSound { get; set; }
+        public static Sound PowerupSound { get; set; }
+        public static Sound ShatterSound { get; set; }
+        public static Sound SliceSound { get; set; }
         #endregion
 
         #region TmxMaps
@@ -99,12 +99,12 @@ namespace EdgeCandy.Framework
 
             Music = new Music("Content/Music/CandyRush.ogg") { Loop = true };
 
-            Jump = new SoundBuffer("Content/Sounds/jump.wav");
-            NoiseSound = new SoundBuffer("Content/Sounds/noise.wav");
-            Hit = new SoundBuffer("Content/Sounds/hit.wav");
-            PowerupSound = new SoundBuffer("Content/Sounds/powerup.wav");
-            Shatter = new SoundBuffer("Content/Sounds/shatter.wav");
-            Slice = new SoundBuffer("Content/Sounds/slice.wav");
+            JumpSound = new Sound(new SoundBuffer("Content/Sounds/jump.wav"));
+            NoiseSound = new Sound(new SoundBuffer("Content/Sounds/noise.wav"));
+            HitSound = new Sound(new SoundBuffer("Content/Sounds/hit.wav"));
+            PowerupSound = new Sound(new SoundBuffer("Content/Sounds/powerup.wav"));
+            ShatterSound = new Sound(new SoundBuffer("Content/Sounds/shatter.wav"));
+            SliceSound = new Sound(new SoundBuffer("Content/Sounds/slice.wav"));
 
             TestMap = new TmxMap("Content/Levels/test.tmx");
             Level = new TmxMap("Content/Levels/level.tmx");

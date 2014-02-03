@@ -24,8 +24,6 @@ namespace EdgeCandy.Objects
 
         private Animation animation = new Animation(0, 3, 0.33, true);
 
-        private Sound powerupSound;
-
         public PowerupObject(Vector2f position)
         {
             Sprite.Sprite = new Sprite(Content.Powerup)
@@ -42,8 +40,6 @@ namespace EdgeCandy.Objects
                                IgnoreGravity = true
                            };
 
-            powerupSound = new Sound(Content.PowerupSound);
-
             var sensor = FixtureFactory.AttachRectangle(.5f, .5f, 0, Vector2.Zero, Physics.Body);
             sensor.IsSensor = true;
             sensor.OnCollision += (a, b, contact) =>
@@ -53,7 +49,7 @@ namespace EdgeCandy.Objects
                 {
                     player.Slicing = Math.Min(player.Slicing + 60, Player.MaxSlicing);
                     GameplayState.Score += 50;
-                    powerupSound.Play();
+                    Content.PowerupSound.Play();
                     Kill();
                 }
                 return true;

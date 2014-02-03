@@ -17,7 +17,6 @@ namespace EdgeCandy.States
         private AnimatableGraphicsComponent noise = new AnimatableGraphicsComponent();
         private TimerComponent restartTimer = new TimerComponent(0.5);
         private CameraComponent camera;
-        private Sound sound;
 
         public TransitionState()
         {
@@ -27,8 +26,7 @@ namespace EdgeCandy.States
 
             GraphicsSubsystem.Instance.SwitchCamera(null);
 
-            sound = new Sound(Content.NoiseSound);
-            sound.Play();
+            Content.NoiseSound.Play();
 
             restartTimer.DingDingDing += (sender, args) => Program.ChangeState<TState>();
             restartTimer.Start();

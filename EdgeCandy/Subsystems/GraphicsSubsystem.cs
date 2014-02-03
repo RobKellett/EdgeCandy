@@ -33,6 +33,11 @@ namespace EdgeCandy.Subsystems
             return activeCameraComponent.Position;
         }
 
+        public void ShakeCamera(float shake)
+        {
+            activeCameraComponent.Shake = shake;
+        }
+
         /// <summary>
         /// Draw!
         /// </summary>

@@ -54,8 +54,6 @@ namespace EdgeCandy.Objects
         public const float playerAirSpeed = 0.015f;
         public const float playerJumpForce = 1.5f;
 
-        private Sound jumpSound, sliceSound;
-
         public double Slicing
         {
             get; set;
@@ -113,9 +111,6 @@ namespace EdgeCandy.Objects
             Graphics.Sprite.Origin = new Vector2f(32, 40);
 
             Slicing = 45;
-
-            jumpSound = new Sound(Content.Jump);
-            sliceSound = new Sound(Content.Slice);
 
             bool jumpInProgress = false, canJump = true, attacking = false, canAttack = true; // 1WEEK
             // Map the input to the legs
@@ -264,7 +259,7 @@ namespace EdgeCandy.Objects
 
                         GameplayState.Score += fixtures.Count * 500;
                         if (fixtures.Count > 0)
-                            sliceSound.Play();
+                            Content.SliceSound.Play();
 
                         for (int i = 0; i < fixtures.Count; i++)
                         {
@@ -305,7 +300,7 @@ namespace EdgeCandy.Objects
             Piston.Body.OnCollision += (a, b, c) =>
                                        {
                                            Graphics.Animation = jumpingAnimation;
-                                           jumpSound.Play();
+                                           Content.JumpSound.Play();
                                            return true;
                                        };
 
