@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
+using EdgeCandy.States;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using FarseerPhysics.Collision;
@@ -56,6 +57,9 @@ namespace EdgeCandy.Objects
         {
             get; set;
         }
+
+        public const double MaxSlicing = 200;
+
         public Player(Vector2 spawn)
         {
             // To locomote the player, we're going to create a model like this:
@@ -252,13 +256,14 @@ namespace EdgeCandy.Objects
                             entryPoints.Remove(entryPoints.Last());
                         }
 
+                        GameplayState.Score += fixtures.Count * 500;
 
                         for (int i = 0; i < fixtures.Count; i++)
                         {
                             if (fixtures[i].Body.Mass < 2.5) continue;
                             var originalCandy = fixtures[i].Body.UserData as CandyObject;
                             Debug.Assert(originalCandy != null);
-                            Slicing -= originalCandy.Physics.Body.Mass;
+                            Slicing = Math.Max(Slicing - originalCandy.Physics.Body.Mass, 0);
                             originalCandy.Slice(entryPoints[i], exitPoints[i]);
                         }
 

@@ -8,6 +8,8 @@ using EdgeCandy.Framework;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace EdgeCandy.States
 {
@@ -15,6 +17,10 @@ namespace EdgeCandy.States
     {
         public static Player Player;
         private CameraComponent camera;
+        private SpriteComponent meterBack, meterFront;
+        private TextComponent score;
+
+        public static int Score;
 
         public GameplayState()
         {
@@ -23,6 +29,12 @@ namespace EdgeCandy.States
             camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 160); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
+            
+            score = new TextComponent { Text = new Text("", Content.Font, 16) };
+            meterBack = new SpriteComponent { Sprite = new Sprite(Content.MeterBack) };
+            meterFront = new SpriteComponent { Sprite = new Sprite(Content.MeterFront) };
+
+            Score = 0;
         }
 
         public void Update(double elapsedTime)
@@ -33,7 +45,15 @@ namespace EdgeCandy.States
             GameObjectSubsystem.Instance.Synchronize();
 
             if (Player.Torso.Position.Y > ConvertUnits.ToSimUnits(camera.Position.Y + Graphics.Height) + 1)
-                Program.ChangeState<GameOverState>();
+                Program.TransitionToState<GameplayState>();
+
+            score.Text.Position = new Vector2f(8, (int)camera.Position.Y + 8);
+            score.Text.DisplayedString = "Score: " + Score.ToString("00000");
+
+            meterBack.Sprite.Position =
+                meterFront.Sprite.Position =
+                new Vector2f(Graphics.Width - meterBack.Sprite.Texture.Size.X - 8, (int)camera.Position.Y + 8);
+            meterFront.Sprite.TextureRect = new IntRect(0, 0, (int)(100 * Player.Slicing / Player.MaxSlicing), 8);
         }
 
         public void Draw(double elapsedTime)

@@ -10,7 +10,7 @@
  </layer>
  <layer name="Foreground" width="23" height="175">
   <data encoding="base64" compression="zlib">
-   eJztmk2SgjAQRh28xNzBQnGjXsGynNXoQWbmquNhXImLVCE0PwndEuC9qm9BFg10f+mEFKdksTghhBBCCM1EABAH+6Vd7Ith7F+P2Gnec9aBgirlHG3IkyltHiX/uoT0idhqcDDsvVfD2H+GsQEczA8YI5/L5uvY6LL3HnLtzPJ7fyneP5vJd8OxUL9Vj/et84c7K4rNL2MDf8eBzxlErP7eCWuNNBbCtxBHGgvhR4gjjT0Z0t9HT4/4+sTy7L1vbPdeUq+K+bmnEjtLXtde0CVt8Lcm90T3eqyEnvePZS2eMpuPvB8VBDq4vG7JqSrkVZ/i/Cevw1PuyUWlRvU5G9bdOjb+1afOg9sGb7KHqEfKI9jR5tE6lesizQMt/pNX3Sb8/dO0ptFP/PHxMLyfst+pyXBwxqFHSB+HKn33JfA+2jzvmMP//V0J3et10RlV9ADCTAxY
+   eJztmk1ugzAQRlNyid6hoiGbtleoonTV5CBJjpartIfpqnRhicLwYzODDbwnfQu8GGDm89hYHLLN5oAQQgghtBIBQHxet3axT4axr56x87LnPAcKmtRztCNPpvR5lPzrEtInUqvBm2H/PRvGvhnGBnAwP2COPG67r1NjyN475tpZlPf+ULx/sZLvhvdK/Z5GvG+bP9xZUWp+mRv4Ow18ziBS9feLsNZIYyF8CnGksRAuQhxp7I+Y/i48PeLrE8uz97Gx3XtJvSrl515SbOc/i9j3RHvaVOQd/tbkJ9O9niuh5/1zWYuXzO6h7EUVgQ4ur3tyqgp51ac6/8lrfOo9uarcqD5Hw7pbx8a/+rR5cN/hTfYQ7Uh5BDv6PNqmel2keaDFV/Zf3wv+/ula0+gn/vh4GKan7ndqEg/OOPQI6ePQZOy+BKajz/OOtfzjP4TQvd4QHVFDv1SADMU=
   </data>
  </layer>
  <objectgroup name="Solid" width="23" height="175">
@@ -35,10 +35,10 @@
   <object x="0" y="2520" width="84" height="21"/>
   <object x="0" y="2184" width="399" height="21"/>
   <object x="0" y="2100" width="63" height="21"/>
-  <object x="84" y="2016" width="84" height="21"/>
+  <object x="105" y="2016" width="63" height="21"/>
   <object x="0" y="1932" width="63" height="21"/>
   <object x="147" y="1890" width="21" height="126"/>
-  <object x="147" y="1869" width="252" height="21"/>
+  <object x="126" y="1869" width="273" height="21"/>
   <object x="147" y="1743" width="252" height="21"/>
   <object x="441" y="1827" width="42" height="21"/>
   <object x="21" y="1659" width="42" height="21"/>
@@ -71,10 +71,7 @@
   <object name="Rancher" x="294" y="2583" width="21" height="21"/>
   <object name="Chocolate" x="399" y="2184" width="84" height="21"/>
   <object name="DoubleCandyCane" x="210" y="2121" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="231" y="2058" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="273" y="2058" width="42" height="63"/>
   <object name="DoubleCandyCane" x="294" y="2121" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="252" y="1995" width="42" height="63"/>
   <object name="Chocolate" x="147" y="1764" width="42" height="105"/>
   <object name="Chocolate" x="252" y="1764" width="42" height="105"/>
   <object name="Chocolate" x="357" y="1764" width="42" height="105"/>
@@ -95,31 +92,14 @@
   <object name="Rancher" x="420" y="1092"/>
   <object name="Rancher" x="399" y="1092"/>
   <object name="Rancher" x="399" y="1050" width="21" height="21"/>
-  <object name="Chocolate" x="378" y="525" width="21" height="252"/>
-  <object name="Chocolate" x="315" y="525" width="21" height="252"/>
-  <object name="Chocolate" x="252" y="525" width="21" height="252"/>
-  <object name="Chocolate" x="189" y="525" width="21" height="252"/>
+  <object name="DoubleCandyCane" x="441" y="714" width="42" height="63"/>
   <object name="DoubleCandyCane" x="336" y="714" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="336" y="630" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="336" y="546" width="42" height="63"/>
-  <object name="CandyCane" x="210" y="714" width="21" height="63"/>
-  <object name="CandyCane" x="231" y="714" width="21" height="63"/>
-  <object name="CandyCane" x="210" y="630" width="21" height="63"/>
-  <object name="CandyCane" x="231" y="630" width="21" height="63"/>
-  <object name="CandyCane" x="210" y="546" width="21" height="63"/>
-  <object name="CandyCane" x="231" y="546" width="21" height="63"/>
-  <object name="Rancher" x="273" y="546" width="21" height="21"/>
-  <object name="Rancher" x="294" y="546" width="21" height="21"/>
-  <object name="Rancher" x="273" y="588" width="21" height="21"/>
-  <object name="Rancher" x="294" y="588" width="21" height="21"/>
-  <object name="Rancher" x="273" y="630" width="21" height="21"/>
-  <object name="Rancher" x="294" y="630" width="21" height="21"/>
-  <object name="Rancher" x="273" y="672" width="21" height="21"/>
-  <object name="Rancher" x="294" y="672" width="21" height="21"/>
-  <object name="Rancher" x="273" y="714" width="21" height="21"/>
-  <object name="Rancher" x="294" y="714" width="21" height="21"/>
-  <object name="Rancher" x="273" y="756" width="21" height="21"/>
-  <object name="Rancher" x="294" y="756" width="21" height="21"/>
+  <object name="Chocolate" x="84" y="882" width="21" height="63"/>
+  <object name="Chocolate" x="168" y="966" width="21" height="63"/>
+  <object name="DoubleCandyCane" x="357" y="651" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="420" y="651" width="42" height="63"/>
+  <object name="Chocolate" x="210" y="2079" width="126" height="21"/>
+  <object name="CandyCane" x="399" y="609" width="21" height="63"/>
  </objectgroup>
  <objectgroup name="Misc" width="23" height="175">
   <object name="Spawn" x="42" y="3528" width="21" height="63"/>
@@ -155,13 +135,13 @@
    </properties>
   </object>
   <object name="Powerup" x="21" y="2877" width="21" height="21"/>
-  <object name="Powerup" x="273" y="1953" width="21" height="21"/>
+  <object name="Powerup" x="273" y="2037" width="21" height="21"/>
   <object name="Powerup" x="273" y="2142" width="21" height="21"/>
   <object name="Powerup" x="252" y="2142" width="21" height="21"/>
   <object name="Powerup" x="168" y="1533" width="21" height="21"/>
   <object name="Powerup" x="231" y="1407" width="21" height="21"/>
   <object name="Powerup" x="21" y="987" width="21" height="21"/>
   <object name="Powerup" x="21" y="903" width="21" height="21"/>
-  <object name="Exit" x="420" y="714" width="21" height="63"/>
+  <object name="Exit" x="399" y="714" width="21" height="63"/>
  </objectgroup>
 </map>

@@ -105,9 +105,17 @@ namespace EdgeCandy.Objects
             HitPoints -= damage;
 
             if (HitPoints <= 0)
+            {
                 Crush(direction);
+
+                GameplayState.Score += 200;
+            }
             else
+            {
                 Physics.Body.ApplyLinearImpulse(direction * 10, point);
+
+                GameplayState.Score += (int)(damage * 10);
+            }
         }
 
         public void Slice(Vector2 entryPoint, Vector2 exitPoint, bool crush = false, Vector2 direction = default(Vector2))

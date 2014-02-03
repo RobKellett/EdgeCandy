@@ -81,7 +81,7 @@ namespace EdgeCandy.Framework
 
         public static void Clear()
         {
-            windowTexture.Clear(Color.Black);
+            windowTexture.Clear(new Color(64, 64, 64));
         }
 
         public static void SetView(View view)

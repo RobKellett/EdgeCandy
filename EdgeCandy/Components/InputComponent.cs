@@ -51,7 +51,7 @@ namespace EdgeCandy.Components
             KeyEvents = new Dictionary<Keyboard.Key, KeyInputEvent>();
         }
 
-        private bool wasPressingW = false;
+        private bool wasPressingW, wasPressingRShift;
         public void Update(double elapsedTime)
         {
             Modifiers mods = Modifiers.None;
@@ -74,6 +74,14 @@ namespace EdgeCandy.Components
                         wasPressingW = true;
                     }
 
+                    if (kvp.Key == Keyboard.Key.RShift)
+                    {
+                        if (wasPressingRShift)
+                            continue;
+
+                        wasPressingRShift = true;
+                    }
+
                     kvp.Value(kvp.Key, mods);
                     Any = true;
                 }
@@ -81,16 +89,19 @@ namespace EdgeCandy.Components
                 {
                     if (kvp.Key == Keyboard.Key.W)
                         wasPressingW = false;
+                    if (kvp.Key == Keyboard.Key.RShift)
+                        wasPressingRShift = false;
                 }
             }
 
             var btns = new [] {Mouse.Button.Left, Mouse.Button.Middle, Mouse.Button.Right};
             foreach (var btn in btns.Where(Mouse.IsButtonPressed))
             {
-                MouseInput(btn);
+                if (MouseInput != null)
+                    MouseInput(btn);
                 Any = true;
             }
-            if (!Any)
+            if (!Any && NoInput != null)
                 NoInput();
         }
     }

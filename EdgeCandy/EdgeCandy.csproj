@@ -87,9 +87,11 @@
     <Compile Include="Objects\WallObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="States\GameOverState.cs" />
+    <Compile Include="States\TransitionState.cs" />
     <Compile Include="States\GameplayState.cs" />
     <Compile Include="States\IGameState.cs" />
+    <Compile Include="States\TitleScreenState.cs" />
+    <Compile Include="States\VictoryState.cs" />
     <Compile Include="Subsystems\GameObjectSubsystem.cs" />
     <Compile Include="Subsystems\GraphicsSubsystem.cs" />
     <Compile Include="Subsystems\PhysicsSubsystem.cs" />
@@ -98,15 +100,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Content\font.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Content\Levels\level.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\test.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\font.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -137,7 +139,13 @@
     <Content Include="Content\Sprites\Candy\white_chocolate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Sprites\deathsphere.png">
+    <Content Include="Content\Sprites\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\meter_back.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\meter_front.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\noise.png">

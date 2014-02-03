@@ -19,7 +19,6 @@ namespace EdgeCandy.Framework
         #endregion
 
         #region Textures
-        public static Texture Ball { get; set; }
         public static Texture CandyCane { get; set; }
 
         private static Texture[] chocolates;
@@ -29,6 +28,9 @@ namespace EdgeCandy.Framework
         }
 
         public static Texture DoubleCandyCane { get; set; }
+        public static Texture Logo { get; set; }
+        public static Texture MeterBack { get; set; }
+        public static Texture MeterFront { get; set; }
         public static Texture Noise { get; set; }
         public static Texture Player { get; set; }
         public static Texture Powerup { get; set; }
@@ -62,7 +64,6 @@ namespace EdgeCandy.Framework
         {
             Font = new Font("Content/font.ttf");
 
-            Ball = new Texture("Content/Sprites/deathsphere.png");
             CandyCane = new Texture("Content/Sprites/Candy/candy_cane.png");
             chocolates = new[] 
                 {
@@ -72,6 +73,9 @@ namespace EdgeCandy.Framework
                 };
 
             DoubleCandyCane = new Texture("Content/Sprites/Candy/double_candy_cane.png");
+            Logo = new Texture("Content/SPrites/logo.png");
+            MeterBack = new Texture("Content/Sprites/meter_back.png");
+            MeterFront = new Texture("Content/Sprites/meter_front.png");
             Noise = new Texture("Content/Sprites/noise.png");
             Player = new Texture("Content/Sprites/player.png");
             Powerup = new Texture("Content/Sprites/powerup.png");

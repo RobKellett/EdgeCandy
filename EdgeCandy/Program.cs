@@ -19,6 +19,11 @@ namespace EdgeCandy
         public static Window Window { get; set; }
         public static IGameState GameState { get; private set; }
 
+        public static void TransitionToState<T>() where T : IGameState, new()
+        {
+            ChangeState<TransitionState<T>>();
+        }
+
         public static void ChangeState<T>() where T : IGameState, new()
         {
             UpdateSubsystem.Instance.Kill();
@@ -47,7 +52,7 @@ namespace EdgeCandy
 
                 var stopwatch = new Stopwatch();
 
-                GameState = new GameOverState(); //new GameplayState();
+                GameState = new TitleScreenState();
 
                 while (window.IsOpen())
                 {

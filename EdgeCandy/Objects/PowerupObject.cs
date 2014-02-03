@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
+using EdgeCandy.States;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
 using FarseerPhysics.Dynamics;
@@ -45,7 +46,8 @@ namespace EdgeCandy.Objects
                 var player = (a.Body.UserData as Player) ?? (b.Body.UserData as Player);
                 if (player != null)
                 {
-                    player.Slicing += 60;
+                    player.Slicing = Math.Min(player.Slicing + 60, Player.MaxSlicing);
+                    GameplayState.Score += 50;
                     Kill();
                 }
                 return true;

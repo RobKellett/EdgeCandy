@@ -11,13 +11,13 @@ using SFML.Window;
 
 namespace EdgeCandy.States
 {
-    public class GameOverState : IGameState
+    public class TransitionState<TState> : IGameState where TState : IGameState, new()
     {
         private AnimatableGraphicsComponent noise = new AnimatableGraphicsComponent();
-        private TimerComponent restartTimer = new TimerComponent(1);
+        private TimerComponent restartTimer = new TimerComponent(0.5);
         private CameraComponent camera;
 
-        public GameOverState()
+        public TransitionState()
         {
             noise.Sprite = new Sprite(Content.Noise);
             noise.FrameSize = new Vector2i((int)Graphics.Width, (int)Graphics.MaxHeight);
@@ -25,7 +25,7 @@ namespace EdgeCandy.States
 
             GraphicsSubsystem.Instance.SwitchCamera(null);
 
-            restartTimer.DingDingDing += (sender, args) => Program.ChangeState<GameplayState>();
+            restartTimer.DingDingDing += (sender, args) => Program.ChangeState<TState>();
             restartTimer.Start();
         }
 
