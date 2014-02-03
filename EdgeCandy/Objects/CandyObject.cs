@@ -13,6 +13,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using EdgeCandy.Framework;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 using Transform = SFML.Graphics.Transform;
@@ -36,11 +37,16 @@ namespace EdgeCandy.Objects
 
         public float HitPoints;
 
+        private Sound hitSound, shatterSound;
+
         public CandyObject(Body body, Texture tex, Vector2 position)
         {
             Sprite.Sprite = new Sprite(tex);
             Sprite.Sprite.Origin = new Vector2f(Sprite.Sprite.Texture.Size.X / 2, Sprite.Sprite.Texture.Size.Y / 2);
             Physics.Body = body;
+
+            hitSound = new Sound(Content.Hit);
+            shatterSound = new Sound(Content.Shatter);
         }
 
         public CandyObject(CandyKind kind, Vector2 position, Vector2 size = default(Vector2))
@@ -87,6 +93,9 @@ namespace EdgeCandy.Objects
                 Physics.Body.BodyType = BodyType.Dynamic;
             }
             Physics.Body.UserData = this;
+
+            hitSound = new Sound(Content.Hit);
+            shatterSound = new Sound(Content.Shatter);
         }
 
         public override void SyncComponents()
@@ -109,12 +118,14 @@ namespace EdgeCandy.Objects
                 Crush(direction);
 
                 GameplayState.Score += 200;
+                shatterSound.Play();
             }
             else
             {
                 Physics.Body.ApplyLinearImpulse(direction * 10, point);
 
                 GameplayState.Score += (int)(damage * 10);
+                hitSound.Play();
             }
         }
 

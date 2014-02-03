@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
 using EdgeCandy.Subsystems;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -16,6 +17,7 @@ namespace EdgeCandy.States
         private AnimatableGraphicsComponent noise = new AnimatableGraphicsComponent();
         private TimerComponent restartTimer = new TimerComponent(0.5);
         private CameraComponent camera;
+        private Sound sound;
 
         public TransitionState()
         {
@@ -24,6 +26,9 @@ namespace EdgeCandy.States
             noise.Animation = new Animation(0, 2, 0.1, true);
 
             GraphicsSubsystem.Instance.SwitchCamera(null);
+
+            sound = new Sound(Content.NoiseSound);
+            sound.Play();
 
             restartTimer.DingDingDing += (sender, args) => Program.ChangeState<TState>();
             restartTimer.Start();

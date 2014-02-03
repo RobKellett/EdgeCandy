@@ -8,6 +8,7 @@ using EdgeCandy.Framework;
 using EdgeCandy.Objects;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -35,6 +36,9 @@ namespace EdgeCandy.States
             meterFront = new SpriteComponent { Sprite = new Sprite(Content.MeterFront) };
 
             Score = 0;
+            Content.Music.PlayingOffset = TimeSpan.Zero;
+            Content.Music.Play();
+
         }
 
         public void Update(double elapsedTime)

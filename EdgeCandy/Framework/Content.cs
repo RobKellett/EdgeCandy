@@ -1,4 +1,5 @@
 ﻿using System;
+using SFML.Audio;
 using SFML.Graphics;
 using TiledSharp;
 
@@ -46,9 +47,16 @@ namespace EdgeCandy.Framework
         #endregion
 
         #region Music
+        public static Music Music { get; set; }
         #endregion
 
         #region SoundBuffers
+        public static SoundBuffer Jump { get; set; }
+        public static SoundBuffer NoiseSound { get; set; }
+        public static SoundBuffer Hit { get; set; }
+        public static SoundBuffer PowerupSound { get; set; }
+        public static SoundBuffer Shatter { get; set; }
+        public static SoundBuffer Slice { get; set; }
         #endregion
 
         #region TmxMaps
@@ -88,6 +96,15 @@ namespace EdgeCandy.Framework
                     new Texture("Content/Sprites/Candy/rancher_teal.png")
                 };
             Tileset = new Texture("Content/Sprites/tileset.png");
+
+            Music = new Music("Content/Music/CandyRush.ogg") { Loop = true };
+
+            Jump = new SoundBuffer("Content/Sounds/jump.wav");
+            NoiseSound = new SoundBuffer("Content/Sounds/noise.wav");
+            Hit = new SoundBuffer("Content/Sounds/hit.wav");
+            PowerupSound = new SoundBuffer("Content/Sounds/powerup.wav");
+            Shatter = new SoundBuffer("Content/Sounds/shatter.wav");
+            Slice = new SoundBuffer("Content/Sounds/slice.wav");
 
             TestMap = new TmxMap("Content/Levels/test.tmx");
             Level = new TmxMap("Content/Levels/level.tmx");

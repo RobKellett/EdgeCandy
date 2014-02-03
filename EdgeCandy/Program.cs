@@ -9,6 +9,7 @@ using EdgeCandy.Objects;
 using EdgeCandy.States;
 using EdgeCandy.Subsystems;
 using FarseerPhysics;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -26,6 +27,9 @@ namespace EdgeCandy
 
         public static void ChangeState<T>() where T : IGameState, new()
         {
+            if (Content.Music.Status == SoundStatus.Playing)
+                Content.Music.Stop();
+
             UpdateSubsystem.Instance.Kill();
             PhysicsSubsystem.Instance.Kill();
             GraphicsSubsystem.Instance.Kill();

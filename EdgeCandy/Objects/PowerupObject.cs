@@ -11,6 +11,7 @@ using FarseerPhysics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -22,6 +23,8 @@ namespace EdgeCandy.Objects
         public AnimatableGraphicsComponent Sprite = new AnimatableGraphicsComponent();
 
         private Animation animation = new Animation(0, 3, 0.33, true);
+
+        private Sound powerupSound;
 
         public PowerupObject(Vector2f position)
         {
@@ -39,6 +42,8 @@ namespace EdgeCandy.Objects
                                IgnoreGravity = true
                            };
 
+            powerupSound = new Sound(Content.PowerupSound);
+
             var sensor = FixtureFactory.AttachRectangle(.5f, .5f, 0, Vector2.Zero, Physics.Body);
             sensor.IsSensor = true;
             sensor.OnCollision += (a, b, contact) =>
@@ -48,6 +53,7 @@ namespace EdgeCandy.Objects
                 {
                     player.Slicing = Math.Min(player.Slicing + 60, Player.MaxSlicing);
                     GameplayState.Score += 50;
+                    powerupSound.Play();
                     Kill();
                 }
                 return true;
