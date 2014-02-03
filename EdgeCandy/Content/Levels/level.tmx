@@ -92,14 +92,13 @@
   <object name="Rancher" x="420" y="1092"/>
   <object name="Rancher" x="399" y="1092"/>
   <object name="Rancher" x="399" y="1050" width="21" height="21"/>
-  <object name="DoubleCandyCane" x="441" y="714" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="420" y="714" width="42" height="63"/>
   <object name="DoubleCandyCane" x="336" y="714" width="42" height="63"/>
   <object name="Chocolate" x="84" y="882" width="21" height="63"/>
   <object name="Chocolate" x="168" y="966" width="21" height="63"/>
   <object name="DoubleCandyCane" x="357" y="651" width="42" height="63"/>
-  <object name="DoubleCandyCane" x="420" y="651" width="42" height="63"/>
+  <object name="DoubleCandyCane" x="399" y="651" width="42" height="63"/>
   <object name="Chocolate" x="210" y="2079" width="126" height="21"/>
-  <object name="CandyCane" x="399" y="609" width="21" height="63"/>
  </objectgroup>
  <objectgroup name="Misc" width="23" height="175">
   <object name="Spawn" x="42" y="3528" width="21" height="63"/>
