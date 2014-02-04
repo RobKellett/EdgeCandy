@@ -3,3 +3,9 @@
 Mike Miller's "MV Platformer Male" - http://opengameart.org/content/mv-platformer-male-32x64   (CC0)
 Kenney's "Platformer Art: Redeux"  - http://opengameart.org/content/platformer-art-pixel-redux (CC0)
 Mark Weyer's "LPC Candy"           - http://opengameart.org/content/lpc-candy                  (CC0)
+
+All other assets (music, sound effects, fonts, other sprites) were made by Rob Kellett and are available under a CC BY 4.0 license.
+
+Relevant licenses:
+CC0:       http://creativecommons.org/publicdomain/zero/1.0/
+CC BY 4.0: http://creativecommons.org/licenses/by/4.0/
