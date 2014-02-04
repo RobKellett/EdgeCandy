@@ -21,17 +21,12 @@ namespace EdgeCandy.States
         public VictoryState()
         {
             text = new TextComponent { Text = new Text(string.Format(
-@"Congratulations!
-
-Your score: {0:D5}
-
-Press RIGHT SHIFT twice to play again.
-
-
-
-Brought to you by:
-@TheRobKellett - ""Finally, I can sleep!""
-@Quantumplation (π) - ""Please do not put my name in this crappy game.""", GameplayState.Score), Content.Font, 16)
+"Congratulations!\n" +
+"Your score: {0:D5}\n\n" +
+"Press RIGHT SHIFT twice to play again.\n\n\n" +
+"Brought to you by:\n" +
+"@TheRobKellett - \"Finally, I can sleep!\"\n" + 
+"@Quantumplation (π) - \"Please do not put my name in this crappy game.\"\n", GameplayState.Score), Content.Font, 16)
             };
 
             input.KeyEvents[Keyboard.Key.RShift] = (key, mod) =>

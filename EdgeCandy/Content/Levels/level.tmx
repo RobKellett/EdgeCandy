@@ -146,6 +146,6 @@
   <object name="Powerup" x="231" y="1407" width="21" height="21"/>
   <object name="Powerup" x="21" y="987" width="21" height="21"/>
   <object name="Powerup" x="21" y="903" width="21" height="21"/>
-  <object name="Exit" x="399" y="714" width="21" height="63"/>
+  <object name="Exit" x="189" y="3528" width="21" height="63"/>
  </objectgroup>
 </map>

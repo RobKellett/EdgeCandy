@@ -78,6 +78,7 @@
     <Compile Include="Framework\Content.cs" />
     <Compile Include="Framework\TextureSlicer.cs" />
     <Compile Include="Objects\CandyObject.cs" />
+    <Compile Include="Objects\ExitObject.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Framework\Graphics.cs" />
     <Compile Include="Objects\MapObject.cs" />

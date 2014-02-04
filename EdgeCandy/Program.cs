@@ -17,7 +17,7 @@ namespace EdgeCandy
 {
     class Program
     {
-        public static Window Window { get; set; }
+            public static Window Window { get; set; }
         public static IGameState GameState { get; private set; }
 
         public static void TransitionToState<T>() where T : IGameState, new()

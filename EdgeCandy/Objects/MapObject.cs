@@ -24,6 +24,7 @@ namespace EdgeCandy.Objects
         public TmxMap Map { get; set; }
 
         public Vector2 Spawn;
+        public ExitObject Exit;
 
         public MapObject(TmxMap map)
         {
@@ -80,6 +81,8 @@ namespace EdgeCandy.Objects
                 }
                 else if (obj.Name == "Spawn")
                     Spawn = new Vector2(ConvertUnits.ToSimUnits(obj.X + obj.Width / 2), ConvertUnits.ToSimUnits(obj.Y + obj.Height / 2));
+                else if (obj.Name == "Exit")
+                    Exit = new ExitObject(new Vector2(ConvertUnits.ToSimUnits(obj.X + obj.Width/2), ConvertUnits.ToSimUnits(obj.Y + obj.Height/2)));
             }
         }
 
