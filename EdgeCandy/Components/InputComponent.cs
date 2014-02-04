@@ -21,7 +21,7 @@ namespace EdgeCandy.Components
             Alt = 4,
         }
 
-        public delegate void KeyInputEvent(Keyboard.Key key, Modifiers mod);
+        public delegate void KeyInputEvent(Keyboard.Key key, Modifiers mod, double elapsedTime);
 
         public delegate void NoInputEvent();
 
@@ -82,7 +82,7 @@ namespace EdgeCandy.Components
                         wasPressingRShift = true;
                     }
 
-                    kvp.Value(kvp.Key, mods);
+                    kvp.Value(kvp.Key, mods, elapsedTime);
                     Any = true;
                 }
                 else

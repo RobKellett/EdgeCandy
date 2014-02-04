@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Framework;
@@ -37,8 +38,14 @@ namespace EdgeCandy
             GameState = new T();
         }
 
+        [DllImport("X11")]
+        extern public static int XInitThreads();
+
         static void Main(string[] args)
         {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+                XInitThreads();
+
             using (var window = new RenderWindow(new VideoMode(Graphics.Width, Graphics.Height), "The Edge of Candy: Scroll Saga Deluxe"))
             {
                 Window = window;

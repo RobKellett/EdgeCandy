@@ -81,7 +81,7 @@ namespace EdgeCandy.Framework
                 };
 
             DoubleCandyCane = new Texture("Content/Sprites/Candy/double_candy_cane.png");
-            Logo = new Texture("Content/SPrites/logo.png");
+            Logo = new Texture("Content/Sprites/logo.png");
             MeterBack = new Texture("Content/Sprites/meter_back.png");
             MeterFront = new Texture("Content/Sprites/meter_front.png");
             Noise = new Texture("Content/Sprites/noise.png");

@@ -31,7 +31,7 @@ namespace EdgeCandy.States
             logo = new SpriteComponent { Sprite = new Sprite(Content.Logo) };
             prompt = new TextComponent { Text = new Text("Press " + startKey.ToString().ToUpper(), Content.Font, 16) };
             input = new InputComponent();
-            input.KeyEvents[startKey] = (key, mod) => Program.TransitionToState<GameplayState>();
+            input.KeyEvents[startKey] = (key, mod, time) => Program.TransitionToState<GameplayState>();
         }
 
         public void Update(double elapsedTime)

@@ -51,7 +51,7 @@ namespace EdgeCandy.Objects
         public const float playerWidth = 0.5f;
         public const float playerHeight = 1.5f;
         public const float playerSpeed = 20;
-        public const float playerAirSpeed = 0.015f;
+        public const float playerAirSpeed = 5f;
         public const float playerJumpForce = 1.5f;
 
         public double Slicing
@@ -121,7 +121,7 @@ namespace EdgeCandy.Objects
                                     Graphics.Animation = standingAnimation;
                              };
             
-            Input.KeyEvents[Keyboard.Key.A] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.A] = (key, mods, time) =>
                                            {
                                                if (attacking) return;
 
@@ -131,12 +131,12 @@ namespace EdgeCandy.Objects
                                                    Graphics.Animation = walkingAnimation;
                                                }
                                                else
-                                                   Legs.Body.ApplyLinearImpulse(new Vector2(-playerAirSpeed, 0));
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(-playerAirSpeed * (float)time, 0));
 
                                                Graphics.Sprite.Scale = new Vector2f(-1, 1); // just flip it
                                            };
 
-            Input.KeyEvents[Keyboard.Key.D] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.D] = (key, mods, time) =>
                                            {
                                                if (attacking) return;
 
@@ -146,12 +146,12 @@ namespace EdgeCandy.Objects
                                                    Graphics.Animation = walkingAnimation;
                                                }
                                                else
-                                                   Legs.Body.ApplyLinearImpulse(new Vector2(playerAirSpeed, 0));
+                                                   Legs.Body.ApplyLinearImpulse(new Vector2(playerAirSpeed * (float)time, 0));
 
                                                Graphics.Sprite.Scale = new Vector2f(1, 1); // flip it good
                                            };
 
-            Input.KeyEvents[Keyboard.Key.W] = (key, mods) =>
+            Input.KeyEvents[Keyboard.Key.W] = (key, mods, time) =>
             {
                 if (canJump)// && !jumpInProgress && !attacking)
                 {

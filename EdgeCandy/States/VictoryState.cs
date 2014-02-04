@@ -29,7 +29,7 @@ namespace EdgeCandy.States
 "@Quantumplation (π) - \"Please do not put my name in this crappy game.\"\n", GameplayState.Score), Content.Font, 16)
             };
 
-            input.KeyEvents[Keyboard.Key.RShift] = (key, mod) =>
+            input.KeyEvents[Keyboard.Key.RShift] = (key, mod, time) =>
                                                    {
                                                        timesPressed++;
                                                        if (timesPressed >= 2)
