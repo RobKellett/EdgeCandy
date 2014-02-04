@@ -88,5 +88,11 @@ namespace EdgeCandy.Framework
         {
             windowTexture.SetView(view);
         }
+
+        public static void TakeScreenshot()
+        {
+            windowTexture.Display();
+            windowTexture.Texture.CopyToImage().SaveToFile("screenshot.png");
+        }
     }
 }

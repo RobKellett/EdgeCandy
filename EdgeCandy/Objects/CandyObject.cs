@@ -119,6 +119,7 @@ namespace EdgeCandy.Objects
 
                 GameplayState.Score += (int)(damage * 10);
                 Content.HitSound.Play();
+                GraphicsSubsystem.Instance.ShakeCamera(1);
             }
         }
 

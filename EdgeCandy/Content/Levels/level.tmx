@@ -5,12 +5,17 @@
  </tileset>
  <layer name="Background" width="23" height="175">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="23" height="175">
   <data encoding="base64" compression="zlib">
-   eJztmk1ugzAQRlNyid6hoiGbtleoonTV5CBJjpartIfpqnRhicLwYzODDbwnfQu8GGDm89hYHLLN5oAQQgghtBIBQHxet3axT4axr56x87LnPAcKmtRztCNPpvR5lPzrEtInUqvBm2H/PRvGvhnGBnAwP2COPG67r1NjyN475tpZlPf+ULx/sZLvhvdK/Z5GvG+bP9xZUWp+mRv4Ow18ziBS9feLsNZIYyF8CnGksRAuQhxp7I+Y/i48PeLrE8uz97Gx3XtJvSrl515SbOc/i9j3RHvaVOQd/tbkJ9O9niuh5/1zWYuXzO6h7EUVgQ4ur3tyqgp51ac6/8lrfOo9uarcqD5Hw7pbx8a/+rR5cN/hTfYQ7Uh5BDv6PNqmel2keaDFV/Zf3wv+/ula0+gn/vh4GKan7ndqEg/OOPQI6ePQZOy+BKajz/OOtfzjP4TQvd4QHVFDv1SADMU=
+   eJztmk1ugzAQRilconeICHTT5goVoqukB2l7tF6lPUxWoQtLxLj8mBls4D3pW+DFADOfx8aiSpOkQgghhBDaiQAgPC+ZXuyLYuzPibHzpuccPQVd7BwV5EmVIY+Sf1l8+kRsNTgp9t93xdhfirEBDMwPWCOPWf91bIzZe4dcO8vm3m+C9y938t3w2qrfYcb7/ucPc1YUm1/WBv4Oz9Tzh1j9/exYa1xjPpwdcVxjPnw44rjG/gjp71LZJ5pn73Njm3dy9aqYn3tLsY3/NGJ/R9rTliLv8bck11T2eq34nvevZS3eMsVD04taAhlMXp/IqSjkVZ72/Cev4bF7clu5Un1qxbprx8a/8vR5cEjQxc4RPtXF17t2XVzzQIqf9F6/G/7+oZ/IMsXDsDy236lJODjjkMOnj0OXufsSWI4hzxv28o//GHz3emNUo45uVRgM8w==
+  </data>
+ </layer>
+ <layer name="Foregrounder" width="23" height="175">
+  <data encoding="base64" compression="zlib">
+   eJzt2KENACAQBEGgHUqh/3YIDo0hF8JMBWv+xJcCAADwr5kOAAAAAICaDoC7eksXwLlqkwEy7C9swz0AADzLbwkgxP4+awEscAF/
   </data>
  </layer>
  <objectgroup name="Solid" width="23" height="175">
@@ -39,7 +44,7 @@
   <object x="0" y="1932" width="63" height="21"/>
   <object x="147" y="1890" width="21" height="126"/>
   <object x="126" y="1869" width="273" height="21"/>
-  <object x="147" y="1743" width="252" height="21"/>
+  <object x="126" y="1743" width="273" height="21"/>
   <object x="441" y="1827" width="42" height="21"/>
   <object x="21" y="1659" width="42" height="21"/>
   <object x="441" y="1659" width="42" height="21"/>
@@ -55,7 +60,7 @@
   <object x="168" y="777" width="315" height="21"/>
  </objectgroup>
  <objectgroup name="Candy" width="23" height="175">
-  <object name="CandyCane" x="105" y="3360" width="21" height="63"/>
+  <object name="CandyCane" x="189" y="3360" width="21" height="63"/>
   <object name="DoubleCandyCane" x="315" y="3276" width="42" height="63"/>
   <object name="Rancher" x="399" y="2898" width="21" height="21"/>
   <object name="Rancher" x="420" y="2898" width="21" height="21"/>

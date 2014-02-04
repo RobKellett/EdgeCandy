@@ -274,6 +274,10 @@ namespace EdgeCandy.Objects
                 }
             };
 
+#if DEBUG
+            Input.KeyEvents[Keyboard.Key.RShift] = (key, mod) => Framework.Graphics.TakeScreenshot();
+#endif
+
             Torso.OnFalling += (isFalling) =>
             {
                 if (isFalling)
