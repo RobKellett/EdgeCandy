@@ -33,6 +33,7 @@ namespace EdgeCandy
             UpdateSubsystem.Instance.Kill();
             PhysicsSubsystem.Instance.Kill();
             GraphicsSubsystem.Instance.Kill();
+            GameObjectSubsystem.Instance.Kill();
             GameState = new T();
         }
 

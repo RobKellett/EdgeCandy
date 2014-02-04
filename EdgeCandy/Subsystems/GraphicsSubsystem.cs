@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EdgeCandy.Components;
 using EdgeCandy.Framework;
+using Microsoft.Xna.Framework;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -30,7 +31,9 @@ namespace EdgeCandy.Subsystems
 
         public Vector2f GetCameraOffset()
         {
-            return activeCameraComponent.Position;
+            if (activeCameraComponent != null)
+                return activeCameraComponent.Position;
+            return new Vector2f(0, 0);
         }
 
         public void ShakeCamera(float shake)

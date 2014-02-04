@@ -77,7 +77,7 @@ namespace EdgeCandy.Objects
                     OnSlice += () =>
                     {
                         var hint = (Program.GameState as GameplayState).Map.Hints[3]; // 1 HOUR
-                        hint.Text = new Text("Now BASH IT!", hint.Text.Font, 20)
+                        hint.Text = new Text("Now BASH IT!", hint.Text.Font, 16)
                         {
                             Position = hint.Text.Position,
                         };
