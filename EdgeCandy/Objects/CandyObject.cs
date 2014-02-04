@@ -37,6 +37,10 @@ namespace EdgeCandy.Objects
 
         public float HitPoints;
 
+        public delegate void SliceEvent();
+
+        public event SliceEvent OnSlice;
+
         public CandyObject(Body body, Texture tex, Vector2 position)
         {
             Sprite.Sprite = new Sprite(tex);
@@ -70,6 +74,14 @@ namespace EdgeCandy.Objects
                 case CandyKind.DoubleCandyCane:
                     Sprite.Sprite = new Sprite(Content.DoubleCandyCane);
                     HitPoints = 12;
+                    OnSlice += () =>
+                    {
+                        var hint = (Program.GameState as GameplayState).Map.Hints[3]; // 1 HOUR
+                        hint.Text = new Text("Now BASH IT!", hint.Text.Font, 20)
+                        {
+                            Position = hint.Text.Position,
+                        };
+                    };
                     break;
                 case CandyKind.Rancher:
                     Sprite.Sprite = new Sprite(Content.Rancher);
@@ -193,6 +205,9 @@ namespace EdgeCandy.Objects
             }
 
             PhysicsSubsystem.Instance.World.RemoveBody(fixture.Body);
+
+            if(OnSlice != null)
+                OnSlice();
         }
 
         private void Crush(Vector2 direction)

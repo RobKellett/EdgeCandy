@@ -60,7 +60,7 @@
   <object x="168" y="777" width="315" height="21"/>
  </objectgroup>
  <objectgroup name="Candy" width="23" height="175">
-  <object name="CandyCane" x="189" y="3360" width="21" height="63"/>
+  <object name="CandyCane" x="231" y="3360" width="21" height="63"/>
   <object name="DoubleCandyCane" x="315" y="3276" width="42" height="63"/>
   <object name="Rancher" x="399" y="2898" width="21" height="21"/>
   <object name="Rancher" x="420" y="2898" width="21" height="21"/>

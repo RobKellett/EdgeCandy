@@ -20,14 +20,14 @@ namespace EdgeCandy.States
         private CameraComponent camera;
         private SpriteComponent meterBack, meterFront;
         private TextComponent score;
-
+        public MapObject Map;
         public static int Score;
 
         public GameplayState()
         {
-            var map = new MapObject(Content.Level);
-            Player = new Player(map.Spawn);
-            camera = new CameraComponent("scroll", map.Map.Height * map.Map.TileHeight, 160); // could be worse
+            Map = new MapObject(Content.Level);
+            Player = new Player(Map.Spawn);
+            camera = new CameraComponent("scroll", Map.Map.Height * Map.Map.TileHeight, 160); // could be worse
 
             GraphicsSubsystem.Instance.SwitchCamera("scroll");
             
